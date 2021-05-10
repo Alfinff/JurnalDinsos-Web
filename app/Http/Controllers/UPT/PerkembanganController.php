@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
-use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Storage;
-use App\Models\PendaftaranPerkembangan;
+use Illuminate\Support\Carbon;
+use Yajra\Datatables\Datatables;
 use App\Helpers\Fungsi;
+use App\Helpers\UploadImage;
+use App\Helpers\UploadFile;
+use App\Models\PendaftaranPerkembangan;
 
 class PerkembanganController extends Controller
 {
@@ -54,8 +57,13 @@ class PerkembanganController extends Controller
                 $dataBaru['perkembangan']  = $request->input('perkembangan');
                 $dataBaru['soft_delete']   = 0;
                 if(file_exists($_FILES['dokumentasi']['tmp_name']) || is_uploaded_file($_FILES['dokumentasi']['tmp_name'])) {
-                    $dataBaru['dokumentasi']   =  Str::uuid().".".$request->file("dokumentasi")->extension();
-                    Storage::put('public/dokumentasi/'.$dataBaru['dokumentasi'], $request->file("dokumentasi")->getContent());
+                    // $dataBaru['dokumentasi']   =  Str::uuid().".".$request->file("dokumentasi")->extension();
+                    // Storage::put('public/dokumentasi/'.$dataBaru['dokumentasi'], $request->file("dokumentasi")->getContent());
+                    UploadImage::setPath('dokumentasi');
+                    UploadImage::setImage($request->file("dokumentasi")->getContent());
+                    UploadImage::setExt($request->file("dokumentasi")->extension());
+                    $path_dokumentasi = UploadImage::uploadImage();
+                    $dataBaru['dokumentasi'] = $path_dokumentasi;
                 }
                 $dataBaru->save();
 

@@ -25,6 +25,7 @@ Route::namespace('App\Http\Controllers')->group(function() {
     Route::prefix('halaman')->group(function() {
         Route::get('/upt', 'IndexController@upt')->name('halaman-upt');
         Route::get('/profil', 'IndexController@profil')->name('profil');
+        Route::get('/upt/{id}', 'IndexController@detailupt')->name('detailupt');
         Route::get('/berita', 'IndexController@berita')->name('halaman-berita');
         Route::get('/berita/{id}', 'IndexController@detail')->name('detailberita');
         Route::get('/tentang', 'IndexController@tentang')->name('tentang');
@@ -44,25 +45,28 @@ Route::namespace('App\Http\Controllers')->group(function() {
 
         Route::prefix('pegawai')->middleware('accesscheck:master_kepegawaian')->group(function() {
             Route::get('/', 'DINSOS\KepegawaianController@index')->name('dinsos-pegawai');
+            Route::match(['GET', 'POST'], '/filter', 'DINSOS\KepegawaianController@filter')->name('dinsos-filter-pegawai');
             Route::get('/aktif', 'DINSOS\KepegawaianController@pegawaiAktif')->name('dinsos-pegawai-aktif');
-            Route::get('/semua', 'DINSOS\KepegawaianController@semua')->name('dinsos-pegawai-semua');
-            Route::get('/pegawai-upt', 'DINSOS\KepegawaianController@pegawaiupt')->name('pegawai-upt');
+            Route::get('/struktur', 'DINSOS\KepegawaianController@struktur')->name('dinsos-pegawai-struktur');
         });
 
         Route::prefix('kegiatan')->middleware('accesscheck:kegiatan')->group(function() {
             Route::get('/', 'DINSOS\KegiatanUPTController@index')->name('dinsos-kegiatan');
+            Route::match(['GET', 'POST'], '/filter', 'DINSOS\KegiatanUPTController@filter')->name('dinsos-filter-kegiatan');
             Route::get('/lihat/{id}', 'DINSOS\KegiatanUPTController@lihatKegiatan')->name('dinsos-lihat-kegiatan');
         });
 
         Route::prefix('dataupt')->middleware('accesscheck:data_upt')->group(function() {
             Route::get('/', 'DINSOS\DataUPTController@index')->name('dinsos-dataupt');
+            Route::match(['GET', 'POST'], '/filter', 'DINSOS\DataUPTController@filter')->name('dinsos-filter-dataupt');
             Route::get('/data/{uuid}', 'DINSOS\DataUPTController@dataKlien');
             Route::get('/detail/{uuid}', 'DINSOS\DataUPTController@detail')->name('dinsos-dataupt-detail');
         });
 
         Route::prefix('pendaftar')->middleware('accesscheck:data_pendaftar')->group(function() {
             Route::get('/', 'DINSOS\DataPendaftarController@index')->name('dinsos-pegawai-pendaftar');
-            Route::get('/data', 'DINSOS\DataPendaftarController@dataPendaftar');
+            Route::match(['GET', 'POST'], '/filter', 'DINSOS\DataPendaftarController@filter')->name('dinsos-filter-pendaftar');
+            Route::get('/data/{uptid?}', 'DINSOS\DataPendaftarController@dataPendaftar');
             Route::get('/daftarbantuan/{uuid}/{uptid}', 'DINSOS\DataPendaftarController@daftarBantuan')->name('dinsos-pendaftar-selesai-bantuan');
             Route::get('/databantuan/{uuid}/{uptid}', 'DINSOS\DataPendaftarController@dataBantuan');
             Route::get('/detail/{uuid}', 'DINSOS\DataPendaftarController@detail')->name('dinsos-pegawai-pendaftar-detail');
@@ -70,10 +74,19 @@ Route::namespace('App\Http\Controllers')->group(function() {
 
         Route::prefix('pengguna')->middleware('accesscheck:master_pengguna')->group(function() {
             Route::get('/', 'DINSOS\PenggunaController@index')->name('dinsos-pengguna');
-            Route::get('/data', 'DINSOS\PenggunaController@dataPengguna');
+            Route::match(['GET', 'POST'], '/filter', 'DINSOS\PenggunaController@filter')->name('dinsos-filter-pengguna');
+            Route::get('/data/{uptid?}', 'DINSOS\PenggunaController@dataPengguna');
             Route::get('/hapus/{uuid}', 'DINSOS\PenggunaController@hapus')->name('dinsos-pengguna-hapus');
             Route::match(['GET', 'POST'], '/tambah', 'DINSOS\PenggunaController@tambah')->name('dinsos-pengguna-tambah');
             Route::match(['GET', 'POST'], '/edit/{uuid}', 'DINSOS\PenggunaController@edit')->name('dinsos-pengguna-edit');
+        });
+
+        Route::prefix('berita')->group(function() {
+            Route::get('/', 'DINSOS\BeritaController@index')->name('dinsos-berita');
+            Route::get('/data', 'DINSOS\BeritaController@dataBerita');
+            Route::get('/hapus/{id}', 'DINSOS\BeritaController@hapus')->name('dinsos-berita-hapus');
+            Route::match(['GET', 'POST'], '/tambah', 'DINSOS\BeritaController@tambah')->name('dinsos-berita-tambah');
+            Route::match(['GET', 'POST'], '/edit/{id}', 'DINSOS\BeritaController@edit')->name('dinsos-berita-edit');
         });
     });
 
@@ -85,7 +98,6 @@ Route::namespace('App\Http\Controllers')->group(function() {
         Route::prefix('kepegawaian')->middleware('accesscheck:master_kepegawaian')->group(function() {
             Route::prefix('unitkerja')->group(function() {
                 Route::get('/', 'UPT\UnitKerjaController@index')->name('upt-kepegawaian-unitkerja');
-                // Route::get('/data', 'UPT\UnitKerjaController@dataUnitkerja');
                 Route::get('/hapus/{idunitkerja}', 'UPT\UnitKerjaController@hapus')->name('upt-hapus-unitkerja');
                 Route::match(['GET', 'POST'], '/tambah', 'UPT\UnitKerjaController@tambah')->name('upt-tambah-unitkerja');
                 Route::match(['GET', 'POST'], '/edit/{idunitkerja}', 'UPT\UnitKerjaController@edit')->name('upt-edit-unitkerja');
@@ -99,6 +111,11 @@ Route::namespace('App\Http\Controllers')->group(function() {
                 Route::get('/hapus/{uuid}', 'UPT\KepegawaianController@hapus')->name('upt-hapus-pegawai');
                 Route::match(['GET', 'POST'], '/tambah', 'UPT\KepegawaianController@tambah')->name('upt-tambah-pegawai');
                 Route::match(['GET', 'POST'], '/edit/{uuid}', 'UPT\KepegawaianController@edit')->name('upt-edit-pegawai');
+            });
+
+            Route::prefix('pimpinan')->group(function() {
+                Route::get('/', 'UPT\PimpinanController@index')->name('upt-pimpinan');
+                Route::get('/set', 'UPT\PimpinanController@setPimpinan')->name('set-pimpinan');
             });
         });
 

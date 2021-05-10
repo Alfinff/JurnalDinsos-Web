@@ -85,7 +85,7 @@
       }
     }
 </style>
-    <div class="col-md-10">
+    <div class="col-lg-10">
         <div class="row">
             <div class="col-md-12 my-3">
                 <div class="card">
@@ -125,7 +125,7 @@
                                         <div class="row">
                                           <div class="col-md-12">
                                             <div class="form-group">
-                                              <label for="perkembangan">Apakah Ada Perkembangan ?</label>
+                                              <label for="perkembangan">Apakah Ada Perkembangan ? <small class="text-danger">*</small></label>
                                               <select name="perkembangan" required id="perkembangan" class="form-select">
                                                 <option value="" selected disabled>Pilih Perkembangan</option>
                                                 <option value="1" @if(old('perkembangan') == 1) selected @endif>Ya</option>
@@ -135,7 +135,7 @@
                                           </div>
                                           <div class="col-md-12">
                                             <div class="form-group">
-                                              <label for="bukti">Dokumentasi</label>
+                                              <label for="bukti">Dokumentasi <small class="text-danger">*</small></label>
                                               <input type="file" required id="bukti" name="dokumentasi" data-show-remove="false" class="dropify" data-default-file="{{old('dokumentasi')}}" accept="image/*"/>
                                               <div class="warn">
                                                 <small class="text-danger">Jenis File yang diterima : .jpg dan .png saja</small>
@@ -148,7 +148,7 @@
                                         <div class="row">
                                           <div class="col-md-12">
                                             <div class="form-group">
-                                              <label for="keterangan">Keterangan</label>
+                                              <label for="keterangan">Keterangan <small class="text-danger">*</small></label>
                                               <textarea name="keterangan" id="keterangan" cols="30" rows="3" class="form-control" placeholder="Cth: Keterangan Perkembangan" required>{{old('keterangan')}}</textarea>
                                             </div>
                                           </div>
@@ -156,7 +156,7 @@
                                       </div>
                                       <div class="col-md-12">
                                         <div class="d-flex justify-content-center">
-                                          <button class="btn btn-success" style="margin-right: 10px">Tambah</button>
+                                          <button class="btn btn-primary" style="margin-right: 10px">Tambah</button>
                                           <a href="{{route('upt-penerima-manfaat')}}" class="btn btn-danger">Batal</a>
                                         </div>
                                       </div>
@@ -197,7 +197,7 @@
                                                               <p>{{$s['keterangan']}}</p>
                                                             </div>
                                                             <div class="col-md-6">
-                                                              <img src="{{route('images-getter', ['module' => 'dokumentasi', 'filename' => $s['dokumentasi']])}}" class="w-100" style="height: 290px;border-radius: 10px;">
+                                                              <img src="{{Storage::disk('s3')->temporaryUrl($s['dokumentasi'], \Carbon\Carbon::now()->addMinutes(3600))}}" class="w-100" style="height: 290px;border-radius: 10px;">
                                                             </div>
                                                           </div>
                                                         </div>

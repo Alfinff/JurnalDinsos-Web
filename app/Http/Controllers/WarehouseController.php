@@ -31,4 +31,5 @@ class WarehouseController extends Controller
           }, 200, ["Content-Type"=> $type]);
         return $response;
     }
+
 }

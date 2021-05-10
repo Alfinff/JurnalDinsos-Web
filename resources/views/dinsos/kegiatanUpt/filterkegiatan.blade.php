@@ -10,28 +10,15 @@
     <div class="col-md-12 my-3">
       <div class="card">
         <div class="card-card">
-          <div class="head-judul text-center">
-            <h3>Kegiatan UPT</h3>
-          </div>
-            <form action="{{route('dinsos-filter-kegiatan')}}" class="data-pegawai" method="post">
-                {!! csrf_field() !!}
-                <div class="row justify-content-between align-items-start">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label for="daftarupt">Pilih UPT</label> <br>
-                            <select class="js-example-basic-single w-100 form-control" name="upt" id="daftarupt">
-                                <option value="" selected disabled>Daftar UPT</option>
-                                @foreach ($upt as $u)
-                                    <option value="{{$u->uuid}}">{{$u->nama}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div style="width: auto; margin-left: 10px;" class="mt-3">
-                    <button class="btn btn-primary" style="">Filter</button>
-                </div>
-            </form>
+            <div class="back">
+                <a href="{{route('dinsos-kegiatan')}}" class="d-flex">
+                    <img src="{{asset('assets/images/back.png')}}" alt="">
+                    <p>Kembali</p>
+                </a>
+            </div>
+            <div class="head-judul text-center">
+                <h3>Kegiatan UPT {{$upt->nama}}</h3>
+            </div>
         </div>
       </div>
     </div>

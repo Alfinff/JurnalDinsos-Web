@@ -17,7 +17,7 @@ class UnitKerjaController extends Controller
 {
 
     public function index() {
-        $rsData = UnitKerja::where('soft_delete', 0)->OrderBy('kode_unit_kerja', 'asc')->get();
+        $rsData = UnitKerja::where('upt_id', auth()->user()->upt_id)->where('soft_delete', 0)->OrderBy('kode_unit_kerja', 'asc')->get();
         $arrData = array();
         $child3 = array();
         foreach ($rsData as $rs => $r) {

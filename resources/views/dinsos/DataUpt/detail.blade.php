@@ -9,7 +9,7 @@
         border: 1px solid #E9E9E9;
     }
 </style>
-<div class="col-md-10">
+<div class="col-lg-10">
   <div class="row">
     <div class="col-md-12 my-3">
       <div class="card">
@@ -21,7 +21,7 @@
                 </a>
             </div>
             <div class="head-judul text-center">
-                <h3>Data Klien</h3>
+                <h3>Data Penerima Manfaat</h3>
             </div>
           {{-- <form action="" class="data-pendaftar">
             <div class="row">
@@ -104,8 +104,8 @@
                 {data:'alamat', name:'Alamat'},
             ],
             "columnDefs":[{
-                "defaultContent":"-",
-                "targets":"-all"
+              "defaultContent":"-",
+              "targets":"_all"
             }],
             "order":[]
         });

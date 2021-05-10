@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 use App\Models\User;
 use App\Models\UsersProfile;
+use App\Helpers\UploadImage;
+use App\Helpers\UploadFile;
 
 class ProfilController extends Controller
 {
@@ -28,9 +31,16 @@ class ProfilController extends Controller
                 $profile->address = $request->address;
                 $profile->gender = $request->gender;
                 if(file_exists($_FILES['photo']['tmp_name']) || is_uploaded_file($_FILES['photo']['tmp_name'])) {
-                    $profile->photo   =  Str::uuid().".".$request->file("photo")->extension();
-                    Storage::put('public/profile/'.$profile->photo, $request->file("photo")->getContent());
+                    // $profile->photo   =  Str::uuid().".".$request->file("photo")->extension();
+                    // Storage::put('public/profile/'.$profile->photo, $request->file("photo")->getContent());
+
+                    UploadImage::setPath('profil');
+                    UploadImage::setImage($request->file("photo")->getContent());
+                    UploadImage::setExt($request->file("photo")->extension());
+                    $path_profile = UploadImage::uploadImage();
+                    $profile->photo = $path_profile;
                 }
+
                 $profile->save();
 
                 DB:: commit();

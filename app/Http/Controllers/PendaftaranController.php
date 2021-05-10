@@ -12,6 +12,8 @@ use App\Models\Pendaftaran;
 use App\Models\Upt;
 use App\Models\User;
 use App\Models\JenisAduan;
+use App\Helpers\UploadImage;
+use App\Helpers\UploadFile;
 
 class PendaftaranController extends Controller
 {
@@ -44,15 +46,31 @@ class PendaftaranController extends Controller
             $data_in['telp_rekomendasi'] = $request->telp_rekomendasi;
             $data_in['created_at']       = date('Y-m-d H:i:s');
             $data_in['uuid']             = Str::uuid();
-            $data_in['foto_kondisi']     = Str::uuid().".".
-                $request->file("foto_kondisi")->extension();
-            $data_in['surat_pengantar'] = Str::uuid().".".
-                $request->file("surat_pengantar")->extension();
+
+            // $data_in['foto_kondisi']     = Str::uuid().".".
+            //     $request->file("foto_kondisi")->extension();
+            // $data_in['surat_pengantar'] = Str::uuid().".".
+            //     $request->file("surat_pengantar")->extension();
+            // Storage::put('public/pendaftaran/'.$data_in['foto_kondisi'],
+            //     $request->file("foto_kondisi")->getContent());
+            // Storage::put('public/pendaftaran/'.$data_in['surat_pengantar'],
+            //     $request->file("surat_pengantar")->getContent());
+
+            // upload to s3 foto kondisi & surat pengantar
+            UploadImage::setPath('pendaftaran/foto_kondisi');
+            UploadImage::setImage($request->file("foto_kondisi")->getContent());
+            UploadImage::setExt($request->file("foto_kondisi")->extension());
+            $path_foto_kondisi = UploadImage::uploadImage();
+
+            UploadFile::setPath('pendaftaran/surat_pengantar');
+            UploadFile::setFile($request->file("surat_pengantar")->getContent());
+            UploadFile::setExt($request->file("surat_pengantar")->extension());
+            $path_surat_pengantar = UploadFile::uploadFile();
+
+            $data_in['foto_kondisi'] = $path_foto_kondisi;
+            $data_in['surat_pengantar'] = $path_surat_pengantar;
+
             $pendaftaran = new Pendaftaran;
-            Storage::put('public/pendaftaran/'.$data_in['foto_kondisi'],
-                $request->file("foto_kondisi")->getContent());
-            Storage::put('public/pendaftaran/'.$data_in['surat_pengantar'],
-                $request->file("surat_pengantar")->getContent());
             $pendaftaran->fill($data_in);
             $pendaftaran->save();
 
@@ -83,7 +101,7 @@ class PendaftaranController extends Controller
         } catch (\Throwable $th) {
             DB:: rollback();
             return redirect()->back()->with(array(
-                'message'    => 'Terdapat Kesalahan',
+                'message'    => $th->getMessage(),
                 'alert-type' => 'error',
                 'style'      => 'hide'
             ))->withInput();

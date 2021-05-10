@@ -1,4 +1,4 @@
-<div class="col-md-2 shad">
+<div class="col-lg-2 col-md-4 shad ">
     <div class="sidebar">
         <div class="side1 flex-column align-items-center">
             <img src="{{asset('assets/images/photouser.png')}}" alt="">
@@ -36,7 +36,7 @@
                     </label>
                     <ul class="sub_menu">
                         <li class="sub_menu--item">
-                            <a href="{{route('dinsos-pegawai')}}" class="sub_menu--link @if(request()->is('dinsos/pegawai')) active @endif">
+                            <a href="{{route('dinsos-pegawai')}}" class="sub_menu--link @if(isset($url[1])) @if($url[1] == 'pegawai') active @else @endif @endif">
                             <svg width="24" height="24" class="iconside" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12 5.9C13.16 5.9 14.1 6.84 14.1 8C14.1 9.16 13.16 10.1 12 10.1C10.84 10.1 9.9 9.16 9.9 8C9.9 6.84 10.84 5.9 12 5.9ZM12 14.9C14.97 14.9 18.1 16.36 18.1 17V18.1H5.9V17C5.9 16.36 9.03 14.9 12 14.9ZM12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4ZM12 13C9.33 13 4 14.34 4 17V20H20V17C20 14.34 14.67 13 12 13Z" fill="#8C8C8C"/>
                             </svg>
@@ -44,14 +44,14 @@
                             </a>
                         </li>
 
-                    <li class="sub_menu--item">
-                        <a href="{{route('dinsos-pegawai-semua')}}" class="sub_menu--link @if(request()->is('dinsos/pegawai/semua')) active @endif">
+                    {{-- <li class="sub_menu--item">
+                        <a href="{{route('dinsos-pegawai-struktur')}}" class="sub_menu--link @if(request()->is('dinsos/pegawai/semua')) active @endif">
                         <svg width="24" class="iconside" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M19 3H14.82C14.4 1.84 13.3 1 12 1C10.7 1 9.6 1.84 9.18 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM12 2.75C12.22 2.75 12.41 2.85 12.55 3C12.67 3.13 12.75 3.31 12.75 3.5C12.75 3.91 12.41 4.25 12 4.25C11.59 4.25 11.25 3.91 11.25 3.5C11.25 3.31 11.33 3.13 11.45 3C11.59 2.85 11.78 2.75 12 2.75ZM19 19H5V5H19V19ZM12 6C10.35 6 9 7.35 9 9C9 10.65 10.35 12 12 12C13.65 12 15 10.65 15 9C15 7.35 13.65 6 12 6ZM12 10C11.45 10 11 9.55 11 9C11 8.45 11.45 8 12 8C12.55 8 13 8.45 13 9C13 9.55 12.55 10 12 10ZM6 16.47V18H18V16.47C18 13.97 14.03 12.89 12 12.89C9.97 12.89 6 13.96 6 16.47ZM8.31 16C9 15.44 10.69 14.88 12 14.88C13.31 14.88 15.01 15.44 15.69 16H8.31Z" fill="#8C8C8C"/>
                         </svg>
                         Struktur
                         </a>
-                    </li>
+                    </li> --}}
                     {{-- <li class="sub_menu--item">
                         <a href="{{route('dinsos-pegawai-aktif')}}" class="sub_menu--link @if(request()->is('dinsos/pegawai/aktif')) active @endif">
                         <svg width="24" class="iconside" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -110,16 +110,16 @@
             </div>
             <hr>
             <div id="chartjenisaduan"></div>
-            {{-- <div class="d-flex justify-content-around">
-              <div class="jenis-legend">
+            <div class="d-flex justify-content-around">
+              {{-- <div class="jenis-legend">
                 <p>Pria</p>
                 <h3 id="blue">{{$lakilaki}}%</h3>
               </div>
               <div class="jenis-legend">
                 <p>Wanita</p>
                 <h3 id="yellow">{{$perempuan}}%</h3>
-              </div>
-            </div> --}}
+              </div> --}}
+            </div>
           </div>
         </div>
       </div>
@@ -129,13 +129,11 @@
             <h4 class="title-header">KLIEN MASUK</h4>
             <div id="chartklien"></div>
           </div>
-          {{-- {{dd($datajenisaduan)}} --}}
         </div>
       </div>
       <script>
         var options = {
           chart: {
-            // width: 300,
             height: 350,
             type: 'bar',
             toolbar: {
@@ -159,14 +157,6 @@
           },
           colors: ["#5766da", "#999999"],
           series: [
-              // {
-              //     name: 'Tahun Kemarin',
-              //     data: [
-              //         @foreach($klienmasuk_tahunini as $k)
-              //             {{$k->jumlah}},
-              //         @endforeach
-              //     ]
-              // },
               {
                   name: 'Tahun Ini',
                   data: [
@@ -235,7 +225,6 @@
 <script>
     var options = {
     chart: {
-        // width: 20,
         height: 250,
         type: 'donut',
     },
@@ -291,10 +280,6 @@
     series: [@foreach($datajenisaduan as $dd)
               {{ $dd['jumlah']}},
             @endforeach],
-    // series: [{{$lakilaki}}, {{$perempuan}}],
-    // series: [
-    //     <?php foreach($datajenisaduan as $dd) { echo (int)$dd->jumlah.","; } ?>
-    // ],
     legend: {
         show: false,
         position: 'bottom',
@@ -305,12 +290,9 @@
         offsetX: 0,
         offsetY: 6
     },
-    labels: [@foreach($datajenisaduan as $dd)
-              {{ $dd[0]}},
+    labels: [@foreach($datajenisaduan as $aa)
+              "{{ $aa['nama'] }}",
             @endforeach],
-    // labels: [
-    //     <?php foreach($datajenisaduan as $dd) { echo $dd->nama; } ?>
-    // ],
     colors: ["#34495E", "#FF5733"],
     responsive: [{
         breakpoint: 600,

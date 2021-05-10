@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use App\Notifications\PendaftarNotification;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 use App\Models\Pendaftaran;
 use App\Models\User;
 use App\Models\KodeWilayah;
@@ -17,6 +19,8 @@ use App\Models\Upt;
 use App\Models\JenisAduan;
 use App\Models\Permasalahan;
 use App\Helpers\Fungsi;
+use App\Helpers\UploadImage;
+use App\Helpers\UploadFile;
 
 class PendaftarController extends Controller
 {
@@ -76,16 +80,29 @@ class PendaftarController extends Controller
                 $pendaftar['kec_id']           = $request->kec_id;
                 $pendaftar['alamat']           = $request->alamat;
                 $pendaftar['jenis_aduan']      = $request->jenis_aduan;
-                $pendaftar['upt_id']           = $request->upt_id;
+                $pendaftar['upt_id']           = auth()->user()->upt_id;
                 $pendaftar['nama_rekomendasi'] = $request->nama_rekomendasi;
                 $pendaftar['telp_rekomendasi'] = $request->telp_rekomendasi;
+
                 if(file_exists($_FILES['foto_kondisi']['tmp_name']) || is_uploaded_file($_FILES['foto_kondisi']['tmp_name'])) {
-                    $pendaftar['foto_kondisi'] = Str::uuid().".".$request->file("foto_kondisi")->extension();
-                    Storage:: put('public/pendaftaran/'.$pendaftar['foto_kondisi'], $request->file("foto_kondisi")->getContent());
+                    // $pendaftar['foto_kondisi'] = Str::uuid().".".$request->file("foto_kondisi")->extension();
+                    // Storage:: put('public/pendaftaran/'.$pendaftar['foto_kondisi'], $request->file("foto_kondisi")->getContent());
+
+                    UploadImage::setPath('pendaftaran/foto_kondisi');
+                    UploadImage::setImage($request->file("foto_kondisi")->getContent());
+                    UploadImage::setExt($request->file("foto_kondisi")->extension());
+                    $path_foto_kondisi = UploadImage::uploadImage();
+                    $pendaftar['foto_kondisi'] = $path_foto_kondisi;
                 }
                 if(file_exists($_FILES['surat_pengantar']['tmp_name']) || is_uploaded_file($_FILES['surat_pengantar']['tmp_name'])) {
-                    $pendaftar['surat_pengantar'] = Str::uuid().".".$request->file("surat_pengantar")->extension();
-                    Storage:: put('public/pendaftaran/'.$pendaftar['surat_pengantar'], $request->file("surat_pengantar")->getContent());
+                    // $pendaftar['surat_pengantar'] = Str::uuid().".".$request->file("surat_pengantar")->extension();
+                    // Storage:: put('public/pendaftaran/'.$pendaftar['surat_pengantar'], $request->file("surat_pengantar")->getContent());
+
+                    UploadFile::setPath('pendaftaran/surat_pengantar');
+                    UploadFile::setFile($request->file("surat_pengantar")->getContent());
+                    UploadFile::setExt($request->file("surat_pengantar")->extension());
+                    $path_surat_pengantar = UploadFile::uploadFile();
+                    $pendaftar['surat_pengantar'] = $path_surat_pengantar;
                 }
                 $pendaftar->update();
 
@@ -207,12 +224,18 @@ class PendaftarController extends Controller
                 $pendaftar['tanggal_keluar']   = date('Y-m-d', strtotime($request->tanggal_keluar));
                 $pendaftar['permasalahan']     = $request->permasalahan;
                 if(file_exists($_FILES['foto_kondisi']['tmp_name']) || is_uploaded_file($_FILES['foto_kondisi']['tmp_name'])) {
-                    $pendaftar['foto_kondisi'] = Str::uuid().".".$request->file("foto_kondisi")->extension();
-                    Storage:: put('public/pendaftaran/'.$pendaftar['foto_kondisi'], $request->file("foto_kondisi")->getContent());
+                    UploadImage::setPath('pendaftaran/foto_kondisi');
+                    UploadImage::setImage($request->file("foto_kondisi")->getContent());
+                    UploadImage::setExt($request->file("foto_kondisi")->extension());
+                    $path_foto_kondisi = UploadImage::uploadImage();
+                    $pendaftar['foto_kondisi'] = $path_foto_kondisi;
                 }
                 if(file_exists($_FILES['surat_pengantar']['tmp_name']) || is_uploaded_file($_FILES['surat_pengantar']['tmp_name'])) {
-                    $pendaftar['surat_pengantar'] = Str::uuid().".".$request->file("surat_pengantar")->extension();
-                    Storage:: put('public/pendaftaran/'.$pendaftar['surat_pengantar'], $request->file("surat_pengantar")->getContent());
+                    UploadFile::setPath('pendaftaran/surat_pengantar');
+                    UploadFile::setFile($request->file("surat_pengantar")->getContent());
+                    UploadFile::setExt($request->file("surat_pengantar")->extension());
+                    $path_surat_pengantar = UploadFile::uploadFile();
+                    $pendaftar['surat_pengantar'] = $path_surat_pengantar;
                 }
                 $pendaftar->update();
 

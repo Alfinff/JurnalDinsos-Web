@@ -24,7 +24,7 @@
 		margin: 0 0 20px 0;
 	}
 </style>
-<div class="col-md-10 bg-col">
+<div class="col-lg-10 bg-col">
     <div class="row">
       <div class="col-md-12 my-3">
         <div class="card">
@@ -57,7 +57,7 @@
                         <div class="form-group">
                             <div class="form-group file-area">
                                 <label for="foto_bukti">Masukkan Foto Bukti</label>
-                                <input type="file" id="foto_bukti" name="foto_bukti" data-show-remove="false" class="dropify" data-default-file="{{route('images-getter', ['module' => 'bukti', 'filename' => $bantuan->bukti])}}" accept="image/*" />
+                                <input type="file" id="foto_bukti" name="foto_bukti" data-show-remove="false" class="dropify" data-default-file="{{Storage::disk('s3')->temporaryUrl($bantuan->bukti, \Carbon\Carbon::now()->addMinutes(3600))}}" accept="image/*" />
                                 <div class="warn">
                                     <small class="text-danger">Jenis File yang diterima : .jpg dan .png saja</small>
                                 </div>
@@ -65,8 +65,8 @@
                         </div>
                     </div>
                         <div class="d-flex justify-content-center actionnya">
-                            <button class="btn btn-success" type="submit">Simpan</button>
-                            <a href="{{route('upt-penerima-manfaat')}}" class="btn btn-danger">Batal</a>
+                            <button class="btn btn-primary" type="submit" style="width: auto;">Simpan</button>
+                            <a href="{{route('upt-penerima-tambah-bantuan', ['uuid' => $bantuan->pendaftar_id])}}" class="btn btn-danger">Batal</a>
                         </div>
                     </div>
               </div>

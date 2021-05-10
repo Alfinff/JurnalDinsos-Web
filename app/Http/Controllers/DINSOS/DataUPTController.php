@@ -14,8 +14,23 @@ use App\Models\Upt;
 class DataUPTController extends Controller
 {
     public function index() {
-        $upt = Upt::with('pendaftaran')->get();
+        $upt = Upt::with('pendaftaran')->where('soft_delete', 0)->get();
         return view('dinsos.dataUpt.index', compact('upt'));
+    }
+
+    public function filter(Request $request)
+    {
+        $idupt = $request->upt;
+        $upt = Upt::where('uuid', $idupt)->first();
+
+        if(!$upt) {
+            return redirect()->route('dinsos-dataupt')->with(array(
+                'message'    => 'Data Upt Tidak Ditemukan',
+                'alert-type' => 'error'
+            ));
+        }
+
+        return view('dinsos.dataUpt.filterupt', compact('upt'));
     }
 
     public function detail($uuid) {

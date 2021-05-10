@@ -1,13 +1,21 @@
-<div class="col-md-2 shad">
+<div class="col-lg-2 col-md-4 shad" style="z-index: 2; margin: 0;">
     <div class="sidebar">
-        <div class="side1">
-            <img src="{{asset('assets/images/photouser.png')}}" alt="">
-            <h3>{{auth()->user()->username}} ?</h3>
-            <p>UPT Malang</p>
+        <div class="side1 flex-column align-items-center">
+            @if(!isset(auth()->user()->profile->photo))
+                <img src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" alt="">
+            @else
+                <img src="{{route('images-getter', ['module' => 'profile', 'filename' => auth()->user()->profile->photo])}}" alt="">
+            @endif
+            <h3>{{auth()->user()->username}}</h3>
+            {{-- <p>UPT Malang</p> --}}
+            <div style="padding-top: 15px;">
+                <a href="{{route('profil-home', ['uuid' => auth()->user()->uuid])}}"" type="button" id="btnEdit" class="btn btn-primary btn-sm d-block">Edit Profil</a>
+            </div>
         </div>
         <hr>
         <div class="legendside">
             <h6>Menu</h6>
+            {{-- <h6>{{auth()->user()->profile->photo}}</h6> --}}
         </div>
         <div class="vertical_nav">
             <ul id="js-menu" style="position: relative;" class="menu">
@@ -51,6 +59,14 @@
                         Pegawai
                         </a>
                     </li>
+                    {{-- <li class="sub_menu--item">
+                        <a href="{{route('upt-pimpinan')}}" class="sub_menu--link @if(isset($url[2])) @if($url[2] == 'pegawai') active @endif @endif">
+                        <svg width="24" class="iconside" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 3H14.82C14.4 1.84 13.3 1 12 1C10.7 1 9.6 1.84 9.18 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM12 2.75C12.22 2.75 12.41 2.85 12.55 3C12.67 3.13 12.75 3.31 12.75 3.5C12.75 3.91 12.41 4.25 12 4.25C11.59 4.25 11.25 3.91 11.25 3.5C11.25 3.31 11.33 3.13 11.45 3C11.59 2.85 11.78 2.75 12 2.75ZM19 19H5V5H19V19ZM12 6C10.35 6 9 7.35 9 9C9 10.65 10.35 12 12 12C13.65 12 15 10.65 15 9C15 7.35 13.65 6 12 6ZM12 10C11.45 10 11 9.55 11 9C11 8.45 11.45 8 12 8C12.55 8 13 8.45 13 9C13 9.55 12.55 10 12 10ZM6 16.47V18H18V16.47C18 13.97 14.03 12.89 12 12.89C9.97 12.89 6 13.96 6 16.47ZM8.31 16C9 15.44 10.69 14.88 12 14.88C13.31 14.88 15.01 15.44 15.69 16H8.31Z" fill="#8C8C8C"/>
+                        </svg>
+                        Pimpinan
+                        </a>
+                    </li> --}}
                     </ul>
                 </li>
                 @endif
@@ -112,14 +128,14 @@
             </ul>
             <hr style="border: 1px solid #E9E9E9;">
             <ul id="js-menu" class="menu" style="position: relative">
-            <li class="menu--item  ">
-                <a href="#" class="menu--link" title="Item 1">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path class="iconside" d="M11 18H13V16H11V18ZM12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM12 6C9.79 6 8 7.79 8 10H10C10 8.9 10.9 8 12 8C13.1 8 14 8.9 14 10C14 12 11 11.75 11 15H13C13 12.75 16 12.5 16 10C16 7.79 14.21 6 12 6Z" fill="#8C8C8C"/>
-                </svg>
-                <span class="menu--label">Support</span>
-                </a>
-            </li>
+                <li class="menu--item logoutside">
+                    <a href="{{route('logout')}}" class="menu--link" title="Item 1">
+                        <svg class="iconside" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.09 15.59L11.5 17L16.5 12L11.5 7L10.09 8.41L12.67 11H3V13H12.67L10.09 15.59ZM19 3H5C3.89 3 3 3.9 3 5V9H5V5H19V19H5V15H3V19C3 20.1 3.89 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3Z" fill="#8C8C8C"/>
+                        </svg>
+                    <span class="menu--label">Keluar</span>
+                    </a>
+                </li>
             </ul>
         </div>
 

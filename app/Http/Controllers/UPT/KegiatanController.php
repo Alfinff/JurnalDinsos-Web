@@ -10,11 +10,14 @@ use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 use App\Notifications\PendaftarNotification;
 use App\Helpers\Fungsi;
 use App\Models\Kegiatan;
 use App\Models\KegiatanTipe;
 use App\Models\User;
+use App\Helpers\UploadImage;
+use App\Helpers\UploadFile;
 
 class KegiatanController extends Controller
 {
@@ -90,9 +93,14 @@ class KegiatanController extends Controller
 
                 // Upload photo
                 if(file_exists($_FILES['dokumentasi']['tmp_name']) || is_uploaded_file($_FILES['dokumentasi']['tmp_name'])) {
-                    $data_in['photo'] = Str:: uuid().".".$request->file("dokumentasi")->extension();
-                    Storage::put('public/kegiatan/'.$data_in['photo'],$request->file("dokumentasi")->getContent());
-                    $kegiatan->photo = $data_in['photo'];
+                    // $data_in['photo'] = Str:: uuid().".".$request->file("dokumentasi")->extension();
+                    // Storage::put('public/kegiatan/'.$data_in['photo'],$request->file("dokumentasi")->getContent());
+                    // $kegiatan->photo = $data_in['photo'];
+                    UploadImage::setPath('kegiatan');
+                    UploadImage::setImage($request->file("dokumentasi")->getContent());
+                    UploadImage::setExt($request->file("dokumentasi")->extension());
+                    $path_kegiatan = UploadImage::uploadImage();
+                    $kegiatan->photo = $path_kegiatan;
                 }
 
                 $kegiatan->save();
@@ -148,9 +156,11 @@ class KegiatanController extends Controller
 
                 // Upload photo
                 if(file_exists($_FILES['dokumentasi']['tmp_name']) || is_uploaded_file($_FILES['dokumentasi']['tmp_name'])) {
-                    $data_in['photo'] = Str:: uuid().".".$request->file("dokumentasi")->extension();
-                    Storage::put('public/kegiatan/'.$data_in['photo'],$request->file("dokumentasi")->getContent());
-                    $kegiatan->photo = $data_in['photo'];
+                    UploadImage::setPath('dokumentasi');
+                    UploadImage::setImage($request->file("dokumentasi")->getContent());
+                    UploadImage::setExt($request->file("dokumentasi")->extension());
+                    $path_kegiatan = UploadImage::uploadImage();
+                    $kegiatan->photo = $path_kegiatan;
                 }
 
                 $kegiatan->save();

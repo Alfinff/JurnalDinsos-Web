@@ -17,17 +17,37 @@ use App\Models\Upt;
 class PenggunaController extends Controller
 {
     public function index() {
-        return view('dinsos.pengguna.index');
+        $upt = Upt::orderBy('nama', 'asc')->get();
+        return view('dinsos.pengguna.index', compact('upt'));
     }
 
-    public function dataPengguna() {
-        $pengguna = User::with(['upt', 'role'])->where('soft_delete', 0)->orderBy('username', 'asc')->get();
-        return    Datatables:: of($pengguna)
+    public function filter(Request $request) {
+        $idupt = $request->upt;
+        $upt = Upt::where('uuid', $idupt)->first();
+
+        if(!$upt) {
+            return redirect()->route('dinsos-pengguna')->with(array(
+                'message'    => 'Data Upt Tidak Ditemukan',
+                'alert-type' => 'error'
+            ));
+        }
+
+        return view('dinsos.pengguna.filterpengguna', compact('upt'));
+    }
+
+    public function dataPengguna($uptid=null) {
+        if($uptid!=null) {
+            $pengguna = User::with(['upt', 'role'])->where('upt_id', $uptid)->where('soft_delete', 0)->orderBy('username', 'asc')->get();
+        } else {
+            $pengguna = User::with(['upt', 'role'])->where('soft_delete', 0)->orderBy('username', 'asc')->get();
+        }
+
+        return Datatables::of($pengguna)
             ->editColumn('status', function ($data){
                 if($data->aktif == 1) {
-                    return '<a class="btn btn-success">Aktif</a>';
+                    return '<p class="badge badge-success">Aktif</p>';
                 } else if($data->aktif == 0) {
-                    return '<a class="btn btn-warning">Non-Aktif</a>';
+                    return '<p class="badge badge-warning">Non-Aktif</p>';
                 } else {
 
                 }

@@ -24,7 +24,7 @@
         /* max-width: 15% !important; */
     }
 </style>
-<div class="col-md-10 bg-col">
+<div class="col-lg-10 bg-col">
   <div class="row">
     <div class="col-md-12 my-3">
       <div class="card">

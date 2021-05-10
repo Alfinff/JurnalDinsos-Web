@@ -3,7 +3,7 @@
     <link rel="stylesheet" href="{{asset('assets/css/dropify.css')}}">
 @endsection
 @section('content')
-    <div class="col-md-10 bg-col">
+    <div class="col-lg-10 bg-col">
         <div class="row">
             <div class="col-md-12 my-3">
                 <div class="card">
@@ -132,12 +132,12 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="d-flex flex-row-reverse justify-content-between">
-                                                <a href="{{route('images-getter', ['module' => 'pendaftaran', 'filename' => $pendaftar->foto_kondisi])}}" data-fancybox="images" data-caption="">
+                                                <a href="{{Storage::disk('s3')->temporaryUrl($pendaftar->foto_kondisi, \Carbon\Carbon::now()->addMinutes(3600))}}" data-fancybox="images" data-caption="">
                                                     Lihat
                                                 </a>
                                                 <label for="fotokondisi">Foto Kondisi <small class="text-danger">*</small></label>
                                             </div>
-                                            <input type="file" id="fotokondisi" name="foto_kondisi" data-show-remove="false" class="dropify" data-default-file="{{route('images-getter', ['module' => 'pendaftaran', 'filename' => $pendaftar->foto_kondisi])}}" />
+                                            <input type="file" id="fotokondisi" name="foto_kondisi" data-show-remove="false" class="dropify" data-default-file="{{Storage::disk('s3')->temporaryUrl($pendaftar->foto_kondisi, \Carbon\Carbon::now()->addMinutes(3600))}}" />
                                             <div class="warn">
                                                 <small class="text-danger">Jenis File yang diterima : .png .jpg Max file 5mb</small>
                                             </div>
@@ -145,7 +145,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group file-area">
                                                 <div class="d-flex flex-row-reverse justify-content-between">
-                                                    <a href="{{route('images-getter', ['module' => 'pendaftaran', 'filename' => $pendaftar->surat_pengantar])}}" target="_blank">Lihat</a>
+                                                    <a href="{{Storage::disk('s3')->temporaryUrl($pendaftar->foto_kondisi, \Carbon\Carbon::now()->addMinutes(3600))}}" target="_blank">Lihat</a>
                                                     <label for="suratpengantar">Surat Pengantar <small class="text-danger">*</small></label>
                                                 </div>
                                                 <div style="position: relative">

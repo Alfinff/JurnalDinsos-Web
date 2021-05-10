@@ -1,14 +1,35 @@
 @extends('layout.template')
 @section('content')
 {{-- <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css"> --}}
-<div class="col-md-10 bg-col">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<div class="col-lg-10 bg-col" style="min-height: 100vh">
   <div class="row">
     <div class="col-md-12 my-3">
       <div class="card">
         <div class="card-card">
-          <div class="head-judul">
-            <h3>Data Pendaftar </h3>
-          </div>
+            <div class="head-judul text-center">
+                <h3>Data Pendaftar </h3>
+            </div>
+            <form action="{{route('dinsos-filter-pendaftar')}}" class="data-pendaftar" method="post">
+                {!! csrf_field() !!}
+                <div class="row justify-content-between align-items-start">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="daftarupt">Pilih UPT</label> <br>
+                            <select class="js-example-basic-single w-100 form-control" name="upt" id="daftarupt">
+                                <option value="" selected disabled>Daftar UPT</option>
+                                @foreach ($upt as $u)
+                                    <option value="{{$u->uuid}}">{{$u->nama}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                <div style="width: auto; margin-left: 10px;" class="mt-3">
+                    <button class="btn btn-primary" style="">Filter</button>
+                </div>
+                </div>
+            </form>
           {{-- <form action="" class="data-pendaftar">
             <div class="row">
               <div class="col-md-3">
@@ -77,44 +98,49 @@
 </div>
 @endsection
 @section('jquery')
-  {{-- <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-  <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script> --}}
-  <script>
-        $(function() {
-            $('#dinsos-Data-Pendaftar').DataTable({
-                processing: true,
-                ajax: '{{URL::to('/dinsos/pendaftar/data')}}',
-                columns:[
-                    {data:'nama_lengkap', name:'Nama Lengkap'},
-                    {data:'jenisaduan', name:'Jenis Aduan'},
-                    {data:'nik', name:'NIK'},
-                    {data:'upt', name:'Nama UPT'},
-                    {data:'no_hp', name:'Telepon'},
-                    {data:'status', name:'Status'},
-                    {data:'tindakan', name:'Tindakan'},
-                ],
-                "columnDefs":[{
-                    "defaultContent":"-",
-                    "targets":"-all"
-                }],
-                "order":[]
+    {{-- <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script> --}}
+    <script>
+            $(function() {
+                $('#dinsos-Data-Pendaftar').DataTable({
+                    processing: true,
+                    ajax: '{{URL::to('/dinsos/pendaftar/data')}}',
+                    columns:[
+                        {data:'nama_lengkap', name:'Nama Lengkap'},
+                        {data:'jenisaduan', name:'Jenis Aduan'},
+                        {data:'nik', name:'NIK'},
+                        {data:'upt', name:'Nama UPT'},
+                        {data:'no_hp', name:'Telepon'},
+                        {data:'status', name:'Status'},
+                        {data:'tindakan', name:'Tindakan'},
+                    ],
+                    "columnDefs":[{
+                        "defaultContent":"-",
+                        "targets":"_all"
+                    }],
+                    "order":[]
+                });
             });
+        // $(document).ready(function() {
+        //     $('#datatable').DataTable({
+        //       order: [],
+        //       dom: 'Bfrtip',
+        //       buttons: [
+        //         'copyHtml5',
+        //         'excelHtml5',
+        //         'csvHtml5',
+        //         'pdfHtml5'
+        //       ]
+        //     })
+        // })
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
         });
-    // $(document).ready(function() {
-    //     $('#datatable').DataTable({
-    //       order: [],
-    //       dom: 'Bfrtip',
-    //       buttons: [
-    //         'copyHtml5',
-    //         'excelHtml5',
-    //         'csvHtml5',
-    //         'pdfHtml5'
-    //       ]
-    //     })
-    // })
-  </script>
+    </script>
 @endsection

@@ -97,6 +97,18 @@ class Fungsi
         return $pendaftar;
     }
 
+    public static function getPendaftar($uptid)
+    {
+        $pendaftar = Pendaftaran::
+                    with(['upt', 'jenisaduan'])
+                    ->where('upt_id', $uptid)
+                    ->where('soft_delete', 0)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        return $pendaftar;
+    }
+
     // public static function getPerkembangan($uuidpenerima)
     // {
     //     $perkembangan = PendaftaranPerkembangan::

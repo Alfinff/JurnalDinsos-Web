@@ -14,35 +14,21 @@
             <div class="col-md-12 my-3">
                 <div class="card">
                     <div class="card-card">
-                        <div class="head-judul text-center">
-                            <h3>Daftar UPT</h3>
+                        <div class="back">
+                            <a href="{{route('dinsos-dataupt')}}" class="d-flex">
+                                <img src="{{asset('assets/images/back.png')}}" alt="">
+                                <p>Kembali</p>
+                            </a>
                         </div>
-                        <form action="{{route('dinsos-filter-dataupt')}}" class="data-pegawai" method="post">
-                            {!! csrf_field() !!}
-                            <div class="row justify-content-between align-items-start">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label for="daftarupt">Pilih UPT</label> <br>
-                                        <select class="js-example-basic-single w-100 form-control" name="upt" id="daftarupt">
-                                            <option value="" selected disabled>Daftar UPT</option>
-                                            @foreach ($upt as $u)
-                                                <option value="{{$u->uuid}}">{{$u->nama}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="width: auto; margin-left: 10px;" class="mt-3">
-                                <button class="btn btn-primary" style="">Filter</button>
-                            </div>
-                        </form>
+                        <div class="head-judul text-center">
+                            <h3>UPT {{$upt->nama}}</h3>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row list-card">
 
-            @foreach($upt as $u)
                 <div class="col-md-4 my-3">
                     <div class="card">
                         <div class="card-card">
@@ -50,25 +36,24 @@
                                 <img src="{{asset('assets/images/dataupt2.png')}}" alt="">
                             </div>
                             <div class="judulcards">
-                                <h3>{{ucwords($u->nama)}}</h3>
+                                <h3>{{ucwords($upt->nama)}}</h3>
                             </div>
                             <div class="row justify-content-between">
                                 <div class="location col-md-6">
                                     <i class="fa fa-map-marker"></i>
-                                    <p>{{ucwords($u->alamat)}}</p>
+                                    <p>{{ucwords($upt->alamat)}}</p>
                                 </div>
                                 <div class="count-people col-md-6">
                                     <i class="fa fa-user"></i>
-                                    <p>{{count($u->pendaftaran)}} Orang</p>
+                                    <p>{{count($upt->pendaftaran)}} Orang</p>
                                 </div>
                             </div>
                             <div class="d-flex mt-4 button-cards">
-                                <a href="{{route('dinsos-dataupt-detail', ['uuid' => $u->uuid])}}" class="btn btn-success" >Lihat Detail</a>
+                                <a href="{{route('dinsos-dataupt-detail', ['uuid' => $upt->uuid])}}" class="btn btn-success" >Lihat Detail</a>
                             </div>
                         </div>
                     </div>
                 </div>
-            @endforeach
 
         </div>
     </div>

@@ -11,17 +11,36 @@ use App\Helpers\Fungsi;
 use App\Models\Pendaftaran;
 use App\Models\JenisAduan;
 use App\Models\KodeWilayah;
-use App\Models\Upt;
 use App\Models\Permasalahan;
+use App\Models\Upt;
 
 class DataPendaftarController extends Controller
 {
     public function index() {
-        return view('dinsos.dataPendaftar.index');
+        $upt = Upt::orderBy('nama', 'asc')->get();
+        return view('dinsos.dataPendaftar.index', compact('upt'));
     }
 
-    public function dataPendaftar() {
-        $pendaftaran = Fungsi::getPendaftarAll();
+    public function filter(Request $request) {
+        $idupt = $request->upt;
+        $upt = Upt::where('uuid', $idupt)->first();
+
+        if(!$upt) {
+            return redirect()->route('dinsos-pegawai-pendaftar')->with(array(
+                'message'    => 'Data Upt Tidak Ditemukan',
+                'alert-type' => 'error'
+            ));
+        }
+
+        return view('dinsos.dataPendaftar.filterpendaftar', compact('upt'));
+    }
+
+    public function dataPendaftar($uptid=null) {
+        if($uptid!=null) {
+            $pendaftaran = Fungsi::getPendaftar($uptid);
+        } else {
+            $pendaftaran = Fungsi::getPendaftarAll();
+        }
 
         return    Datatables:: of($pendaftaran)
             ->editColumn('jenisaduan', function ($data){
@@ -45,7 +64,7 @@ class DataPendaftarController extends Controller
             })
             ->editColumn('tindakan', function ($dataPenerima){
                 $actionBtn = '<div class="aksi-button">
-                    <div class="relative">';
+                    <div class="relative  d-flex justify-content-end">';
                 if($dataPenerima->tindakan == 3) {
                     $actionBtn .='
                         <a href="'.route('dinsos-pendaftar-selesai-bantuan', array('uuid' => $dataPenerima->uuid,'uptid' => $dataPenerima->upt_id)).'" class="btn btn-secondary"><i class = "fa fa-hand-holding-medical"></i></a>';

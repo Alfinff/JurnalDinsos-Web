@@ -30,31 +30,15 @@
     <div class="col-md-12 my-3">
       <div class="card">
         <div class="card-card">
-            <div class="d-flex justify-content-between mb-3">
-                <div class="head-juduls">
-                    <h5><i class="fa fa-users text-primary"></i> Data Pengguna</h5>
-                </div>
-                <a href="{{route('dinsos-pengguna-tambah')}}" class="btn btn-primary">Tambah Pengguna</a>
+            <div class="back">
+                <a href="{{route('dinsos-pengguna')}}" class="d-flex">
+                    <img src="{{asset('assets/images/back.png')}}" alt="">
+                    <p>Kembali</p>
+                </a>
             </div>
-            <form action="{{route('dinsos-filter-pengguna')}}" class="data-pengguna" method="post">
-                {!! csrf_field() !!}
-                <div class="row justify-content-between align-items-start">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="daftarupt">Pilih UPT</label> <br>
-                            <select class="js-example-basic-single w-100 form-control" name="upt" id="daftarupt">
-                                <option value="" selected disabled>Daftar UPT</option>
-                                @foreach ($upt as $u)
-                                    <option value="{{$u->uuid}}">{{$u->nama}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                <div style="width: auto; margin-left: 10px;" class="mt-3">
-                    <button class="btn btn-primary" style="">Filter</button>
-                </div>
-                </div>
-            </form>
+            <div class="head-judul text-center">
+                <h5><i class="fa fa-users text-primary"></i> Data Pengguna {{$upt->nama}}</h5>
+            </div>
             <hr>
           <table id="dinsos-Pengguna" class="table table-bordered dt-responsive table" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
             <thead style="background-color: #F5F5F5;padding: 1rem .5rem !important;">
@@ -88,7 +72,7 @@
             $('#dinsos-Pengguna').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{URL::to('/dinsos/pengguna/data')}}',
+                ajax: '{{URL::to('/dinsos/pengguna/data')}}'+'/{{$upt->uuid}}',
                 columns:[
                     {data:'username', name:'Nama'},
                     {data:'email', name:'Email'},

@@ -15,12 +15,14 @@ class DashboardController extends Controller
     public function index() {
         $tahunini = date('Y');
         $tahunkemarin = $tahunini-1;
-        $countklien = Pendaftaran::count();
-        $countupt = Upt::count();
-        $jmllaki = Pendaftaran::where('jenis_kelamin', 'L')->count();
-        $jmlperempuan = Pendaftaran::where('jenis_kelamin', 'P')->count();
-        $lakilaki = round(($jmllaki / $countklien) * 100, 2);
-        $perempuan = round(($jmlperempuan / $countklien) * 100, 2);
+        $countklien = Pendaftaran::where('soft_delete', 0)->count();
+        $countupt = Upt::where('soft_delete', 0)->count();
+        $jmllaki = Pendaftaran::where('jenis_kelamin', 'L')->where('soft_delete', 0)->count();
+        $jmlperempuan = Pendaftaran::where('jenis_kelamin', 'P')->where('soft_delete', 0)->count();
+        // $lakilaki = round(($jmllaki / $countklien) * 100, 2);
+        // $perempuan = round(($jmlperempuan / $countklien) * 100, 2);
+        $lakilaki = $jmllaki;
+        $perempuan = $jmlperempuan;
 
         $klienmasuk_tahunini = DB::select("SELECT count(*) as jumlah FROM ms_pendaftaran WHERE soft_delete = 0 AND YEAR(created_at) = '$tahunini' GROUP BY MONTH(created_at) ORDER BY MONTH(created_at) ASC");
 
@@ -29,10 +31,10 @@ class DashboardController extends Controller
             $bulan_tahunini[$b] = Fungsi::nama_bulan($val->bulan);
         }
 
-        $pengeluaransemuaupt = DB::select("SELECT SUM(budget) as jumlah FROM ms_kegiatan");
+        $pengeluaransemuaupt = DB::select("SELECT SUM(budget) as jumlah FROM ms_kegiatan WHERE soft_delete = 0");
         $pengeluaransemuaupt = Fungsi::rupiah($pengeluaransemuaupt[0]->jumlah);
 
-        $jenisaduan = DB::select("SELECT j.nama, COUNT(*) AS jumlah FROM ms_pendaftaran p JOIN ms_jenis_aduan j ON j.uuid = p.jenis_aduan GROUP BY jenis_aduan");
+        $jenisaduan = DB::select("SELECT j.nama, COUNT(*) AS jumlah FROM ms_pendaftaran p JOIN ms_jenis_aduan j ON j.uuid = p.jenis_aduan WHERE soft_delete = 0 GROUP BY jenis_aduan");
         $jumlahdatajenisaduan = array();
         foreach($jenisaduan as $jj => $vv) {
             $datajenisaduan[$jj]['nama'] = $vv->nama;

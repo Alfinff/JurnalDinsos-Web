@@ -3,7 +3,7 @@
   <link rel="stylesheet" href="{{asset('assets/css/dropify.css')}}">
 @endsection
 @section('content')
-<div class="col-md-10 bg-col">
+<div class="col-lg-10 bg-col">
   <div class="row">
     <div class="col-md-12 my-3">
       <div class="card">
@@ -31,25 +31,25 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="tanggalmulai">Tanggal Mulai</label>
+                      <label for="tanggalmulai">Tanggal Mulai <small class="text-danger">*</small></label>
                       <input type="date" name="start_date" value="{{date('Y-m-d', strtotime($kegiatan->start_date))}}" id="tanggalmulai" class="form-control">
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="tanggalselesai">Tanggal Selesai</label>
+                      <label for="tanggalselesai">Tanggal Selesai <small class="text-danger">*</small></label>
                       <input type="date" name="end_date" value="{{date('Y-m-d', strtotime($kegiatan->end_date))}}" id="tanggalselesai" class="form-control">
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="judul">Judul</label>
+                      <label for="judul">Judul <small class="text-danger">*</small></label>
                       <input type="text" name="title" id="judul" class="form-control" value="{{$kegiatan->title}}" placeholder="Cth: Judul Kegiatan">
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="jeniskegiatan">Jenis Kegiatan</label>
+                      <label for="jeniskegiatan">Jenis Kegiatan <small class="text-danger">*</small></label>
                       <select name="type" id="jeniskegiatan" class="form-select">
                         <option value="" selected disabled>Pilih Kegiatan</option>
                         @foreach($kegiatanTipe as $type)
@@ -60,13 +60,13 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="jumlahpeserta">Jumlah Peserta</label>
+                      <label for="jumlahpeserta">Jumlah Peserta <small class="text-danger">*</small></label>
                       <input type="number" name="number_of_p" min="0" value="{{(int)$kegiatan->number_of_p}}" id="jumlahpeserta" class="form-control" placeholder="Cth: 12" required>
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="budget">Budget</label>
+                      <label for="budget">Budget <small class="text-danger">*</small></label>
                       <input type="text" name="budget" id="budget"  value="{{$kegiatan->budget}}" placeholder="Cth: 1000000"
                       class="form-control" required>
                     </div>
@@ -82,8 +82,8 @@
                 </div>
                 <div class="col-md-12">
                   <div class="form-group file-area">
-                    <label for="dokumentasi">Dokumentasi Kegiatan</label>
-                    <input type="file" id="fotokondisi" name="dokumentasi" data-show-remove="false" class="dropify" data-default-file="{{route('images-getter', ['module' => 'kegiatan', 'filename' => $kegiatan->photo])}}" accept="image/*" />
+                    <label for="dokumentasi">Dokumentasi Kegiatan <small class="text-danger">*</small></label>
+                    <input type="file" id="fotokondisi" name="dokumentasi" data-show-remove="false" class="dropify" data-default-file="{{Storage::disk('s3')->temporaryUrl($kegiatan->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" accept="image/*" />
                     <div class="warn">
                       <small class="text-danger">Jenis File yang diterima : .jpg dan .png saja</small>
                     </div>
@@ -92,8 +92,8 @@
               </div>
               <div class="col-md-12 mt-5">
                 <center>
-                    <button class="btn btn-success" style="background-color: #12C58E;border-color: #12C58E;">Upload</button>
-                    <a href="{{route('upt-kegiatan')}}" class="btn btn-primary">Kembali</a>
+                    <button class="btn btn-primary">Upload</button>
+                    <a href="{{route('upt-kegiatan')}}" class="btn btn-danger">Kembali</a>
                 </center>
               </div>
             </div>
