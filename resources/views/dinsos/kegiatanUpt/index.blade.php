@@ -42,8 +42,8 @@
               <div class="card">
                   <div class="card-card">
                       <div class="photocard">
-                            <a href="{{route('images-getter', ['module' => 'kegiatan', 'filename' => $k->photo])}}" data-fancybox="images" data-caption="">
-                                <img src="{{route('images-getter', ['module' => 'kegiatan', 'filename' => $k->photo])}}" alt="">
+                            <a href="{{Storage::disk('s3')->temporaryUrl($k->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" data-fancybox="images" data-caption="">
+                                <img src="{{Storage::disk('s3')->temporaryUrl($k->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
                             </a>
                       </div>
                       <div class="judulcards">

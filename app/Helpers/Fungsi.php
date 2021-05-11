@@ -10,6 +10,7 @@ use Carbon\Carbon;
 
 error_reporting(0);
 
+use App\Models\Berita;
 use App\Models\Pendaftaran;
 use App\Models\PendaftaranBantuan;
 use App\Models\PendaftaranPerkembangan;
@@ -95,6 +96,17 @@ class Fungsi
                     ->get();
 
         return $pendaftar;
+    }
+
+    public static function getBerita()
+    {
+        $berita = Berita::
+                    with(['editorberita'])
+                    ->where('soft_delete', 0)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+        return $berita;
     }
 
     public static function getPendaftar($uptid)

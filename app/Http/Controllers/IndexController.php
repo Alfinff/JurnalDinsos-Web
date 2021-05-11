@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Auth;
 use App\Models\Role;
+use App\Models\Berita;
+use Auth;
 use DB;
 
 class IndexController extends Controller
@@ -22,7 +23,18 @@ class IndexController extends Controller
     }
 
     public function berita() {
-        return view('berita');
+        $beritaterbaru = Berita::where('soft_delete', 0)->orderBy('created_at', 'desc')->limit(3)->get();
+        $semuaberita = Berita::where('soft_delete', 0)->get();
+        return view('berita', compact('semuaberita', 'beritaterbaru'));
+    }
+
+    public function detailberita($id) {
+        $berita = Berita::where('id', $id)->first();
+        return view('detail_berita', compact('berita'));
+    }
+
+    public function detailupt() {
+        return view('detailProfilUpt');
     }
 
     public function home() {

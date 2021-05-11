@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\KodeWilayah;
 use App\Models\Upt;
 use App\Models\JenisAduan;
+use App\Models\JenisKelamin;
 use App\Models\Permasalahan;
 use App\Helpers\Fungsi;
 use App\Helpers\UploadImage;
@@ -53,6 +54,7 @@ class PendaftarController extends Controller
     public function dataTertundaDetailEdit(Request $request, $uuid) {
         $provinsi    = KodeWilayah::select(['prov_id', 'prov'])->distinct()->get();
         $jenis_aduan = JenisAduan::get();
+        $jenis_kelamin = JenisKelamin::get();
         $upt         = Upt::get();
         $pendaftar   = Pendaftaran::where('uuid', $uuid)->first();
         if(!$pendaftar) {
@@ -63,7 +65,7 @@ class PendaftarController extends Controller
         }
 
         if($_SERVER['REQUEST_METHOD'] == 'GET') {
-            return view('upt.pendaftar.detailTertunda', compact('pendaftar', 'provinsi', 'upt', 'jenis_aduan'));
+            return view('upt.pendaftar.detailTertunda', compact('pendaftar', 'provinsi', 'upt', 'jenis_aduan','jenis_kelamin'));
         } else if($_SERVER['REQUEST_METHOD'] == 'POST') {
             DB:: beginTransaction();
             try {
@@ -187,6 +189,7 @@ class PendaftarController extends Controller
         $users = Fungsi::getPegawai(auth()->user()->upt_id);
         $provinsi    = KodeWilayah::select(['prov_id', 'prov'])->distinct()->get();
         $jenis_aduan = JenisAduan::get();
+        $jenis_kelamin = JenisKelamin::get();
         $permasalahan = Permasalahan::get();
         $pendaftar   = Pendaftaran::where('uuid', $uuid)->first();
         if(!$pendaftar) {
@@ -197,7 +200,7 @@ class PendaftarController extends Controller
         }
 
         if($_SERVER['REQUEST_METHOD'] == 'GET') {
-            return view('upt.pendaftar.ditanganiForm', compact('pendaftar', 'provinsi', 'jenis_aduan', 'permasalahan', 'users'));
+            return view('upt.pendaftar.ditanganiForm', compact('pendaftar', 'provinsi', 'jenis_aduan', 'jenis_kelamin', 'permasalahan', 'users'));
         } else if($_SERVER['REQUEST_METHOD'] == 'POST') {
             DB:: beginTransaction();
             try {

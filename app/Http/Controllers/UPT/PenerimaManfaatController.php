@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
 use App\Models\KodeWilayah;
 use App\Models\JenisAduan;
+use App\Models\JenisKelamin;
 use App\Models\Permasalahan;
 use App\Models\Upt;
 use App\Models\User;
@@ -105,6 +106,7 @@ class PenerimaManfaatController extends Controller
         $users = Fungsi::getPegawai(auth()->user()->upt_id);
         $provinsi     = KodeWilayah::select(['prov_id', 'prov'])->distinct()->get();
         $jenis_aduan  = JenisAduan::get();
+        $jenis_kelamin  = JenisKelamin::get();
         $upt          = Upt::get();
         $permasalahan = Permasalahan::get();
         $pendaftar    = Pendaftaran::where('uuid', $uuid)->first();
@@ -114,13 +116,14 @@ class PenerimaManfaatController extends Controller
                 'alert-type' => 'error'
             ));
         }
-        return view('upt.penerimaManfaat.selesaibantuan', compact('pendaftar', 'provinsi', 'upt', 'jenis_aduan', 'permasalahan', 'users', 'uuid'));
+        return view('upt.penerimaManfaat.selesaibantuan', compact('pendaftar', 'provinsi', 'upt', 'jenis_aduan', 'jenis_kelamin', 'permasalahan', 'users', 'uuid'));
     }
 
     public function dataPenerimaDetailEdit(Request $request, $uuid) {
         $users = Fungsi::getPegawai(auth()->user()->upt_id);
         $provinsi     = KodeWilayah::select(['prov_id', 'prov'])->distinct()->get();
         $jenis_aduan  = JenisAduan::get();
+        $jenis_kelamin  = JenisKelamin::get();
         $upt          = Upt::get();
         $permasalahan = Permasalahan::get();
         $pendaftar    = Pendaftaran::where('uuid', $uuid)->first();
@@ -132,7 +135,7 @@ class PenerimaManfaatController extends Controller
         }
 
         if($_SERVER['REQUEST_METHOD'] == 'GET') {
-            return view('upt.penerimaManfaat.edit', compact('pendaftar', 'provinsi', 'upt', 'jenis_aduan', 'permasalahan', 'users'));
+            return view('upt.penerimaManfaat.edit', compact('pendaftar', 'provinsi', 'upt', 'jenis_aduan', 'jenis_kelamin', 'permasalahan', 'users'));
         } else if($_SERVER['REQUEST_METHOD'] == 'POST') {
             DB:: beginTransaction();
             try {

@@ -126,19 +126,19 @@
         <div class="col-md-7">
           <div class="card">
             <div class="logo-berita">
-              <img src="{{asset('assets/images/image 4.png')}}" alt="">
+              <img src="{{Storage::disk('s3')->temporaryUrl($beritaterbaru[0]->images, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
             </div>
             <div class="card-card">
               <div class="judul-berita">
                 <a href="#">
-                  <h4>Pensosmas Jatim Lakukan Screening Assist pada Warga Terindikasi Penyalahguna Narkoba</h4>
+                  <h4>{{ucwords(substr($beritaterbaru[0]->title, 0, 35))}}</h4>
                 </a>
               </div>
               <div class="content-berita">
-                <p>GRESIK - Tri Juli Yansyah, relawan Penyuluh Sosial Masyarakat (Pensosmas) Jatim melakukan screening assist pada salah satu warga Desa Cerme Lor, Kec. Cerme, Kab. Gresik, Minggu (11/4/2021). Hal ini dilakukan Iyan, sapaan akrabnya, karena warga berinisial FK tersebut terin... </p>
+                <p>{!! substr($beritaterbaru[0]->content, 0, 50) !!} ...</p>
                 <div class="click-berita">
-                  <a href="#">BPPK | 11 April 2021</a>
-                  <a href="#">Baca Selengkapnya ></a>
+                    <a href="#">{{\App\Helpers\Fungsi::hari_indo($beritaterbaru[0]->created_at)}}</a>
+                    <a href="{{route('detailberita', ['id' => $beritaterbaru[0]->id])}}">Baca Selengkapnya ></a>
                 </div>
               </div>
             </div>
@@ -151,14 +151,14 @@
                 <div class="card-card">
                   <div class="judul-berita">
                     <a href="#">
-                      <h4>Hari Ketiga, Tim Gabungan Masih Lakukan Pencarian Misrin</h4>
+                      <h4>{{ucwords(substr($beritaterbaru[1]->title, 0, 35))}}</h4>
                     </a>
                   </div>
                   <div class="content-berita-2">
-                    <p>SITUBONDO – Tim gabungan masih mencari Misrin Balia (82), warga Dusun Jati RT 01 RW 02 Desa Ketah Kec...</p>
+                    <p>{!! substr($beritaterbaru[1]->content, 0, 50) !!} ...</p>
                     <div class="click-berita">
-                      <a href="#">BPPK | 11 April 2021</a>
-                      <a href="#">Baca Selengkapnya ></a>
+                        <a href="#">{{\App\Helpers\Fungsi::hari_indo($beritaterbaru[1]->created_at)}}</a>
+                        <a href="{{route('detailberita', ['id' => $beritaterbaru[1]->id])}}">Baca Selengkapnya ></a>
                     </div>
                   </div>
                 </div>
@@ -167,18 +167,18 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="logo-berita-2">
-                  <img src="{{asset('assets/images/image 5.png')}}" alt="">
+                  <img src="{{Storage::disk('s3')->temporaryUrl($beritaterbaru[2]->images, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
                 </div>
                 <div class="card-card">
                   <div class="judul-berita-2">
                     <a href="#">
-                      <h4>Siaga Hadapi Bencana, Dinsos Boj Dinsos Boj Dinsos Boj</h4>
+                      <p>{!! substr($beritaterbaru[2]->content, 0, 50) !!} ...</p>
                     </a>
                   </div>
                   <div class="content-berita">
                     <div class="click-berita">
-                      <a href="#">BPPK | 11 April 2021</a>
-                      <a href="#">Baca Selengkapnya ></a>
+                        <a href="#">{{\App\Helpers\Fungsi::hari_indo($beritaterbaru[2]->created_at)}}</a>
+                        <a href="{{route('detailberita', ['id' => $beritaterbaru[2]->id])}}">Baca Selengkapnya ></a>
                     </div>
                   </div>
                 </div>
@@ -188,106 +188,44 @@
         </div>
       </div>
     </div>
+
 </section>
 <section>
   <div class="subhead">
     <p>Berita</p>
   </div>
   <div class="head">
-    <h3>Berita Unggulan</h3>
+    <h3>Semua Berita</h3>
   </div>
   <div class="container">
     <div class="row owl-carousel bg-white">
-      <div class="w-100 p-3">
-        <div class="card">
-          <div class="card-card">
-            <div class="unggulan">
-              <img src="{{asset('assets/images/image 6.png')}}" alt="">
-              <div class="head-unggulan">
-                <h4>Mensos Risma Kunjungi Lokasi Terdampak Gem...</h4>
-                <div class="content-berita">
-                  <p>LUMAJANG – Gempa bumi 6,7 skala richter yang mengguncang Jatim, Sabtu (10/4/2021) dirasakan kuat di wilayah Malang dan Kab. Lumajang. Bahkan...</p>
-                  
+        @foreach ($semuaberita as $b)
+            <div class="w-100 p-3">
+                <div class="card">
+                    <div class="card-card">
+                        <div class="unggulan">
+                            <img src="{{Storage::disk('s3')->temporaryUrl($b->images, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
+                            <div class="head-unggulan">
+                                <h4>{{ucwords(substr($b->title, 0, 35))}} ...</h4>
+                                <div class="content-berita">
+                                    {!! substr($b->content, 0, 50) !!} ...
+                                </div>
+                            </div>
+                        </div>
+                        <div class="click-berita">
+                            <a href="#">{{\App\Helpers\Fungsi::hari_indo($b->created_at)}}</a>
+                            <a href="{{route('detailberita', ['id' => $b->id])}}">Baca Selengkapnya ></a>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-            <div class="click-berita">
-              <a href="#">BPPK | 11 April 2021</a>
-              <a href="#">Baca Selengkapnya ></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="w-100 p-3">
-        <div class="card">
-          <div class="card-card">
-            <div class="unggulan">
-              <img src="{{asset('assets/images/image 7.png')}}" alt="">
-              <div class="head-unggulan">
-                <h4>Sistem Akuntabilitas Laporan Kinerja Instans...</h4>
-                <div class="content-berita">
-                  <p>Sistem Akuntabilitas Laporan Kinerja Instansi Pemerintah Dinas Sosial Provinsi Jawa Timur Tahun 2018 :
-
-                    1. KATA PENGANTAR, 2. LAKIP 2018 BA...</p>
-                  
-                </div>
-              </div>
-            </div>
-            <div class="click-berita">
-              <a href="#">BPPK | 11 April 2021</a>
-              <a href="#">Baca Selengkapnya ></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="w-100 p-3">
-        <div class="card">
-          <div class="card-card">
-            <div class="unggulan">
-              <img src="{{asset('assets/images/image 7.png')}}" alt="">
-              <div class="head-unggulan">
-                <h4>Sistem Akuntabilitas Laporan Kinerja Instans...</h4>
-                <div class="content-berita">
-                  <p>Sistem Akuntabilitas Laporan Kinerja Instansi Pemerintah Dinas Sosial Provinsi Jawa Timur Tahun 2018 :
-
-                    1. KATA PENGANTAR, 2. LAKIP 2018 BA...</p>
-                  
-                </div>
-              </div>
-            </div>
-            <div class="click-berita">
-              <a href="#">BPPK | 11 April 2021</a>
-              <a href="#">Baca Selengkapnya ></a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="w-100 p-3">
-        <div class="card">
-          <div class="card-card">
-            <div class="unggulan">
-              <img src="{{asset('assets/images/image 7.png')}}" alt="">
-              <div class="head-unggulan">
-                <h4>Sistem Akuntabilitas Laporan Kinerja Instans...</h4>
-                <div class="content-berita">
-                  <p>Sistem Akuntabilitas Laporan Kinerja Instansi Pemerintah Dinas Sosial Provinsi Jawa Timur Tahun 2018 :
-
-                    1. KATA PENGANTAR, 2. LAKIP 2018 BA...</p>
-                  
-                </div>
-              </div>
-            </div>
-            <div class="click-berita">
-              <a href="#">BPPK | 11 April 2021</a>
-              <a href="#">Baca Selengkapnya ></a>
-            </div>
-          </div>
-        </div>
-      </div>
+        @endforeach
     </div>
   </div>
 </section>
-<section>
+
+
+{{-- <section>
   <div class="subhead">
       <p>Berita</p>
   </div>
@@ -361,7 +299,7 @@
       </div>
     </div>
   </div>
-</section>
+</section> --}}
 
 
 @endsection

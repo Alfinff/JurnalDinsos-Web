@@ -55,4 +55,53 @@ class KodeWilayahController extends Controller
         $data['success'] = true;
         return response()->json($data);
     }
+
+    // mobile
+    public function get_provinsi_mobile(Request $request) {
+        $data['data'] = KodeWilayah::select(['prov_id', 'prov'])->distinct()->get();
+        $data['msg'] = "Berhasil mendapatkan provinsi";
+        $data['success'] = true;
+        return response()->json($data);
+    }
+
+    public function get_kabupaten_mobile(Request $request, $prov_id) {
+        $where = array(
+            'prov_id' => $prov_id
+        );
+        $data['data'] = KodeWilayah::select(['kab_id', 'kab'])
+            ->where($where)
+            ->distinct()
+            ->get();
+        $data['msg'] = "Berhasil mendapatkan kabupaten";
+        $data['success'] = true;
+        return response()->json($data);
+    }
+
+    public function get_kecamatan_mobile(Request $request, $kab_id) {
+        $where = array(
+            'kab_id' => $kab_id
+        );
+
+        $data['data'] = KodeWilayah::select(['kec_id', 'kec'])
+            ->where($where)
+            ->distinct()
+            ->get();
+
+        $data['msg'] = "Berhasil mendapatkan kecamatan";
+        $data['success'] = true;
+        return response()->json($data);
+    }
+
+    public function get_kelurahan_mobile(Request $request, $kec_id) {
+        $where = array(
+            'kec_id' => $kec_id
+        );
+        $data['data'] = KodeWilayah::select(['kel_id', 'kel', 'koordinat'])
+            ->where($where)
+            ->distinct()
+            ->get();
+        $data['msg'] = "Berhasil mendapatkan kelurahan";
+        $data['success'] = true;
+        return response()->json($data);
+    }
 }

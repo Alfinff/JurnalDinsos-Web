@@ -15,4 +15,8 @@ class Kegiatan extends Model
         'id' => 'string'
     ];
 
+    public function tipe()
+    {
+        return $this->hasOne('App\Models\KegiatanTipe', 'id', 'type');
+    }
 }

@@ -94,12 +94,22 @@
                             <td><b>@if(isset($dtInduk['nama_unit_kerja'])){{$dtInduk['nama_unit_kerja']}}@endif</b></td>
                             <td>
                                 @if($pimpinan[$idInduk] != null)
-                                    {{ucwords($pimpinan[$idInduk]->users->username)}}
+                                    <div class="badge badge-primary">
+                                        {{ucwords($pimpinan[$idInduk]->users->username)}}
+                                    </div>
                                     <div class="btn-group" style="margin-left: 20px;">
                                         <div class="aksi-button">
                                             <div class="relative">
-                                                <button class="dropdown-item" type="button" onclick="setpim('{{$idInduk}}')" data-toggle="modal" data-target="#set_pim"><i class="fas fa-edit"> </i> Edit</button>
-                                                <a href="#" class="dropdown-item"><i class="fas fa-trash"> </i> Hapus</a>
+                                                <button class="btn btn-success" type="button" onclick="setpim('{{$idInduk}}')" data-toggle="modal" data-target="#set_pim">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M0 17.2501V21.0001H3.75L14.81 9.94006L11.06 6.19006L0 17.2501ZM17.71 7.04006C18.1 6.65006 18.1 6.02006 17.71 5.63006L15.37 3.29006C14.98 2.90006 14.35 2.90006 13.96 3.29006L12.13 5.12006L15.88 8.87006L17.71 7.04006Z" fill="white"/>
+                                                    </svg>
+                                                </button>
+                                                <a href="{{route('hapus-pimpinan', ['id_unit_kerja' => $idInduk])}}" class="btn btn-danger">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM19 4H15.5L14.5 3H9.5L8.5 4H5V6H19V4Z" fill="white"/>
+                                                    </svg>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -116,7 +126,34 @@
                                         <td><b>{{$dtUnit['kode_unit_kerja']}}</b></td>
                                         <td><b>{{$dtUnit['nama_unit_kerja']}}</b></td>
                                         <td>
-
+                                            @if($pimpinan[$id_unit] != null)
+                                                <div class="badge badge-primary">
+                                                    {{ucwords($pimpinan[$id_unit]->users->username)}}
+                                                </div>
+                                                <div class="btn-group" style="margin-left: 20px;">
+                                                    <div class="aksi-button">
+                                                        <div class="relative">
+                                                            <button class="btn btn-success" type="button" onclick="setpim('{{$id_unit}}')" data-toggle="modal" data-target="#set_pim">
+                                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M0 17.2501V21.0001H3.75L14.81 9.94006L11.06 6.19006L0 17.2501ZM17.71 7.04006C18.1 6.65006 18.1 6.02006 17.71 5.63006L15.37 3.29006C14.98 2.90006 14.35 2.90006 13.96 3.29006L12.13 5.12006L15.88 8.87006L17.71 7.04006Z" fill="white"/>
+                                                                </svg>
+                                                            </button>
+                                                            <a href="{{route('hapus-pimpinan', ['id_unit_kerja' => $id_unit])}}" class="btn btn-danger">
+                                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM19 4H15.5L14.5 3H9.5L8.5 4H5V6H19V4Z" fill="white"/>
+                                                                </svg>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <span onclick="setpim('{{$id_unit}}')" data-toggle="modal" data-target="#set_pim" class="align-center" style="cursor: pointer">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM17 13H13V17H11V13H7V11H11V7H13V11H17V13Z" fill="white"/>
+                                                    </svg>
+                                                    Pimpinan
+                                                </span>
+                                            @endif
                                         </td>
                                     </tr>
 
@@ -126,7 +163,34 @@
                                             <td><b>{{$dtx['kode_unit_kerja']}}</b></td>
                                             <td><b>{{$dtx['nama_unit_kerja']}}</b></td>
                                             <td>
-
+                                                @if($pimpinan[$idx] != null)
+                                                    <div class="badge badge-primary">
+                                                        {{ucwords($pimpinan[$idx]->users->username)}}
+                                                    </div>
+                                                    <div class="btn-group" style="margin-left: 20px;">
+                                                        <div class="aksi-button">
+                                                            <div class="relative">
+                                                                <button class="btn btn-success" type="button" onclick="setpim('{{$idx}}')" data-toggle="modal" data-target="#set_pim">
+                                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M0 17.2501V21.0001H3.75L14.81 9.94006L11.06 6.19006L0 17.2501ZM17.71 7.04006C18.1 6.65006 18.1 6.02006 17.71 5.63006L15.37 3.29006C14.98 2.90006 14.35 2.90006 13.96 3.29006L12.13 5.12006L15.88 8.87006L17.71 7.04006Z" fill="white"/>
+                                                                    </svg>
+                                                                </button>
+                                                                <a href="{{route('hapus-pimpinan', ['id_unit_kerja' => $idx])}}" class="btn btn-danger">
+                                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M6 19C6 20.1 6.9 21 8 21H16C17.1 21 18 20.1 18 19V7H6V19ZM19 4H15.5L14.5 3H9.5L8.5 4H5V6H19V4Z" fill="white"/>
+                                                                    </svg>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @else
+                                                    <span onclick="setpim('{{$idx}}')" data-toggle="modal" data-target="#set_pim" class="align-center" style="cursor: pointer">
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM17 13H13V17H11V13H7V11H11V7H13V11H17V13Z" fill="white"/>
+                                                        </svg>
+                                                        Pimpinan
+                                                    </span>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach
@@ -146,17 +210,17 @@
       </div>
   </div>
 </div>
-<div class="modals-fade" id="set_pim" tabindex="-1" role="dialog" aria-labelledby="set_pim" aria-hidden="true">
+<div class="modal fade" id="set_pim" tabindex="-1" role="dialog" aria-labelledby="set_pim" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-file-alt text-primary"></i> Setting Nama Pimpinan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i aria-hidden="true" class="ki ki-close"></i>
+                <button type="button" class="close bg-none" style="background: none;border: none;" onclick="closedd()" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="fa fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
-               <form class="form-horizontal" role="form" method="post" enctype="multipart/form-data" id="formsetPimpinan">
+               <form class="form-horizontal" role="form" method="post" id="formsetPimpinan">
                 {!! csrf_field() !!}
                <div id="formSetPim">
 
@@ -165,7 +229,7 @@
             </div>
             <div class="modal-footer">
             	<button type="button" class="btn btn-warning font-weight-bold" onclick="update_pimpinan()">Simpan</button>
-                <button type="button" class="btn btn-primary font-weight-bold" data-dismiss="modal">Close</button>
+                <button type="button" onclick="closedd()" class="btn btn-primary font-weight-bold" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -189,41 +253,50 @@
 @section('jquery')
     <meta name="csrf_token" content="{{ csrf_token() }}" />
     <script type="text/javascript">
+    function closedd() {
+        console.log('aa')
+        set_pim.style.display = 'none'
+        set_pim.style.opacity = 0
+    }
+
     function update_pimpinan()
     {
-    var form = $('#formsetPimpinan');
-    var formdata = false;
-        if (window.FormData){
-            formdata = new FormData(form[0]);
-        }
-    var request = $.ajax ({
-        url : "{{ URL::to('update_pimpinan') }}",
-        beforeSend: function (xhr) {
-                var token = $('meta[name="csrf_token"]').attr('content');
+        var form = $('#formsetPimpinan');
+        var formdata = false;
+            if (window.FormData){
+                formdata = new FormData(form[0]);
+            }
+        var request = $.ajax ({
+            url : "{{ route('update-pimpinan') }}",
+            beforeSend: function (xhr) {
+                    var token = $('meta[name="csrf_token"]').attr('content');
 
-                if (token) {
-                    return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-                }
-            },
-        data : formdata ? formdata : form.serialize(),
-        cache       : false,
-        contentType : false,
-        processData : false,
-        type : "post",
-        dataType: "html"
-    });
-    //menampilkan pesan Sedang mencari saat aplikasi melakukan proses pencarian
-    $('#balik').html('Proses Update .... ');
+                    if (token) {
+                        return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                    }
+                },
+            data : formdata ? formdata : form.serialize(),
+            cache       : false,
+            contentType : false,
+            processData : false,
+            type : "post",
+            dataType: "html"
+        });
 
-    //Jika pencarian selesai
-    request.done(function(output) {
-        //Tampilkan hasil pencarian pada tag div dengan id hasil-cari
+        //menampilkan pesan Sedang mencari saat aplikasi melakukan proses update
+        $('#balik').html('Proses Update .... ');
 
-        $('#balik').html(output);
-    });
+        //Jika pencarian selesai
+        request.done(function(output) {
+            //Tampilkan hasil pencarian pada tag div dengan id hasil-cari
+
+            $('#balik').html(output);
+        });
     }
     function setpim(id_unit)
     {
+        set_pim.style.display = 'block'
+        set_pim.style.opacity = 1
         var request = $.ajax ({
         url : "{{route('set-pimpinan')}}",
         data:"id_unit="+id_unit,

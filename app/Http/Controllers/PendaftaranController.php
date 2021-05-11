@@ -12,6 +12,7 @@ use App\Models\Pendaftaran;
 use App\Models\Upt;
 use App\Models\User;
 use App\Models\JenisAduan;
+use App\Models\JenisKelamin;
 use App\Helpers\UploadImage;
 use App\Helpers\UploadFile;
 
@@ -21,8 +22,9 @@ class PendaftaranController extends Controller
         $data['provinsi']    = KodeWilayah::select(['prov_id', 'prov'])->distinct()->get();
         $data['kabupaten']   = KodeWilayah::where('prov_id', '35')->select(['kab_id', 'kab'])->distinct()->get();
         $data['kecamatan']   = KodeWilayah::select(['kec_id', 'kec'])->distinct()->get();
-        $data['jenis_aduan'] = JenisAduan::get();
-        $data['upt']         = Upt::get();
+        $data['jenis_aduan'] = JenisAduan::orderBy('nama', 'asc')->get();
+        $data['jenis_kelamin'] = JenisKelamin::orderBy('nama', 'asc')->get();
+        $data['upt']         = Upt::orderBy('nama', 'asc')->get();
         return view('pendaftaran', $data);
     }
 

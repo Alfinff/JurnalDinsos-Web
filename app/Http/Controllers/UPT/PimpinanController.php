@@ -48,4 +48,60 @@ class PimpinanController extends Controller
 
         return view('upt.kepegawaian.pimpinan.setpimpinan', compact('unitkerja', 'pegawai', 'id_unit'));
     }
+
+    public function updatePimpinan(Request $request)
+    {
+        $id_unit_kerja = $request->input('id_unit_kerja');
+        $users_id = $request->input('users_id');
+        $kode_unit_kerja = $request->input('kode_unit_kerja');
+        if ($users_id) {
+            $cek = Pimpinan::where('id_unit_kerja', $id_unit_kerja)->first();
+            if ($cek) {
+                $update = Pimpinan::where('id_unit_kerja', $id_unit_kerja)->update(['users_id' => $users_id]);
+            } else {
+                $simpan = new Pimpinan;
+                $simpan->id_unit_kerja = $id_unit_kerja;
+                $simpan->users_id = $users_id;
+                $simpan->editor = auth()->user()->uuid;
+                $simpan->upt_id = auth()->user()->upt_id;
+                $simpan->save();
+            }
+            echo '<script type="text/javascript">toastr.success("Data Berhasil disimpan.")</script>';
+            echo "<script>
+                setTimeout(function () {
+                   location.reload();
+                }, 1000);
+                </script>";
+        } else {
+            echo '<script type="text/javascript">toastr.error("Tidak ada data yang disimpan.")</script>';
+        }
+    }
+
+    public function hapusPimpinan($id_unit_kerja)
+    {
+        $pimpinan = Pimpinan::where('id_unit_kerja', $id_unit_kerja)->first();
+        if(!$pimpinan) {
+            return redirect()->route('upt-pimpinan')->with(array(
+                'message'    => 'Data Pimpinan Tidak Ditemukan',
+                'alert-type' => 'error'
+            ));
+        }
+
+        DB:: beginTransaction();
+        try {
+            $pimpinan->delete();
+
+            DB:: commit();
+            return redirect()->route('upt-pimpinan')->with(array(
+                'message'    => 'Data Pimpinan Berhasil Dihapus',
+                'alert-type' => 'success'
+            ));
+        } catch (\Throwable $th) {
+            DB:: rollback();
+            return redirect()->back()->with(array(
+                'message'    => 'Terdapat Kesalahan',
+                'alert-type' => 'error'
+            ));
+        }
+    }
 }

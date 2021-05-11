@@ -3,7 +3,7 @@
     <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 @endsection
 @section('content')
-	<div class="col-md-10 bg-col">
+	<div class="col-lg-10 bg-col" style="min-height: 100vh">
 		<div class="row my-3">
 			<div class="col-md-12">
 				<div class="card">
@@ -21,8 +21,8 @@
 						{{-- <hr> --}}
 						<div class="row">
 							<div class="col-md-6 detailimg">
-                                <a href="{{route('images-getter', ['module' => 'kegiatan', 'filename' => $kegiatan->photo])}}" data-fancybox="images" data-caption="">
-								    <img class="shadow-sm" src="{{route('images-getter', ['module' => 'kegiatan', 'filename' => $kegiatan->photo])}}" alt="">
+                                <a href="{{Storage::disk('s3')->temporaryUrl($kegiatan->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" data-fancybox="images" data-caption="">
+								    <img class="shadow-sm" src="{{Storage::disk('s3')->temporaryUrl($kegiatan->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
                                 </a>
 							</div>
 							<div class="col-md-6">

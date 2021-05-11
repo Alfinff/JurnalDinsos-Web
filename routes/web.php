@@ -27,7 +27,7 @@ Route::namespace('App\Http\Controllers')->group(function() {
         Route::get('/profil', 'IndexController@profil')->name('profil');
         Route::get('/upt/{id}', 'IndexController@detailupt')->name('detailupt');
         Route::get('/berita', 'IndexController@berita')->name('halaman-berita');
-        Route::get('/berita/{id}', 'IndexController@detail')->name('detailberita');
+        Route::get('/berita/{id}', 'IndexController@detailberita')->name('detailberita');
         Route::get('/tentang', 'IndexController@tentang')->name('tentang');
 
         Route::get('/pendaftaran', 'PendaftaranController@index')->name('pendaftaran');
@@ -116,6 +116,8 @@ Route::namespace('App\Http\Controllers')->group(function() {
             Route::prefix('pimpinan')->group(function() {
                 Route::get('/', 'UPT\PimpinanController@index')->name('upt-pimpinan');
                 Route::get('/set', 'UPT\PimpinanController@setPimpinan')->name('set-pimpinan');
+                Route::get('/hapus/{id_unit_kerja}', 'UPT\PimpinanController@hapusPimpinan')->name('hapus-pimpinan');
+                Route::post('/update', 'UPT\PimpinanController@updatePimpinan')->name('update-pimpinan');
             });
         });
 

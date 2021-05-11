@@ -13,4 +13,9 @@ class Berita extends Model
     protected $casts = [
         'id' => 'string'
     ];
+
+    public function editorberita()
+    {
+        return $this->hasOne('App\Models\User', 'uuid', 'editor');
+    }
 }

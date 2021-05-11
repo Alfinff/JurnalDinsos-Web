@@ -9,10 +9,17 @@ class Pimpinan extends Model
 {
     use HasFactory;
     protected $table = 'ms_pimpinan';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_unit_kerja';
     protected $casts = [
-        'id' => 'string'
+        'id_unit_kerja' => 'string'
     ];
+
+    protected $fillable = array(
+        'id_unit_kerja',
+        'users_id',
+        'editor',
+        'upt_id',
+    );
 
     public function users()
     {

@@ -70,8 +70,9 @@
                                                 <label for="jeniskelamin">Jenis Kelamin <small class="text-danger">*</small></label>
                                                 <select name="jenis_kelamin" id="jeniskelamin" class="form-select" required>
                                                 <option value="" selected disabled>Pilih Jenis Kelamin</option>
-                                                <option value="L" @if($pendaftar->jenis_kelamin == "L") selected @endif>Laki Laki</option>
-                                                <option value="P" @if($pendaftar->jenis_kelamin == "P") selected @endif>Perempuan</option>
+                                                @foreach($jenis_kelamin as $jk)
+                                                    <option value="{{$jk->uuid}}" @if($pendaftar->jenis_kelamin == $jk->uuid) selected @endif>{{$jk->nama}}</option>
+                                                @endforeach
                                                 </select>
                                             </div>
                                         </div>

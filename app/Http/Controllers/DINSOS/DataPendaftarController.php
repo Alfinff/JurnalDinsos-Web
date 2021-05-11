@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use App\Helpers\Fungsi;
 use App\Models\Pendaftaran;
 use App\Models\JenisAduan;
+use App\Models\JenisKelamin;
 use App\Models\KodeWilayah;
 use App\Models\Permasalahan;
 use App\Models\Upt;
@@ -99,7 +100,7 @@ class DataPendaftarController extends Controller
         $bantuan = Fungsi::getPendaftarBantuan($uuid, $uptid);
         return Datatables:: of($bantuan)
             ->addColumn('fotobukti', function ($data){
-                $foto = '<a data-fancybox="images" href="'.route('images-getter', ['module' => 'bukti', 'filename' => $data->bukti]).'"><img class="img-fluid" src="'.route('images-getter', ['module' => 'bukti', 'filename' => $data->bukti]).'"></a>';
+                $foto = '<a data-fancybox="images" href="'.Storage::disk('s3')->temporaryUrl($data->bukti, Carbon::now()->addMinutes(3600)).'"><img class="img-fluid" src="'.Storage::disk('s3')->temporaryUrl($data->bukti, Carbon::now()->addMinutes(3600)).'"></a>';
                 return $foto;
             })
             ->editColumn('tanggal_beri', function ($data){
@@ -113,6 +114,7 @@ class DataPendaftarController extends Controller
         $users = Fungsi::getPegawai(auth()->user()->upt_id);
         $provinsi     = KodeWilayah::select(['prov_id', 'prov'])->distinct()->get();
         $jenis_aduan  = JenisAduan::get();
+        $jenis_kelamin  = JenisKelamin::get();
         $upt          = Upt::get();
         $permasalahan = Permasalahan::get();
         $pendaftar    = Pendaftaran::where('uuid', $uuid)->first();
@@ -123,7 +125,7 @@ class DataPendaftarController extends Controller
             ));
         }
 
-        return view('dinsos.dataPendaftar.detail', compact('pendaftar', 'provinsi', 'upt', 'jenis_aduan', 'permasalahan', 'users'));
+        return view('dinsos.dataPendaftar.detail', compact('pendaftar', 'provinsi', 'upt', 'jenis_aduan', 'jenis_kelamin', 'permasalahan', 'users'));
     }
 
 }

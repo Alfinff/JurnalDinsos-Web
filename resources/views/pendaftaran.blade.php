@@ -7,7 +7,6 @@
     <link rel="icon" href="{{asset('assets/images/dinsostitle.png')}}">
     <title>Jurnal Dinsos - Form Pendaftaran</title>
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
-    {{-- <script src="https://use.fontawesome.com/448f6b23f4.js"></script> --}}
     <script src="https://kit.fontawesome.com/8455e85ee2.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <script src="{{asset('assets/js/intlTelInput.min.js')}}"></script>
@@ -70,7 +69,6 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label for="nik">NIK <small style="color: red;">*</small> </label>
-                          <!-- <input type="number" name="nik" id="nik" class="form-control" placeholder="Masukkan NIK Pasien" required> -->
                           <input type="text" minlength="16"  class="form-control" maxlength="16" pattern="[0-9]{16}" name="nik" id="nik" onkeypress='validate(event)' placeholder="Cth: 1234567890123456" value="{{old('nik')}}" required>
                         </div>
                       </div>
@@ -102,8 +100,9 @@
                           <label for="jeniskelamin">Jenis Kelamin <small style="color: red;">*</small></label>
                           <select name="jenis_kelamin" id="jeniskelamin" class="form-control" required>
                             <option value="" selected disabled>Pilih Jenis Kelamin</option>
-                            <option value="L" @if(old('jenis_kelamin') == 'L') selected @endif>Laki Laki</option>
-                            <option value="P" @if(old('jenis_kelamin') == 'P') selected @endif>Perempuan</option>
+                            @foreach ($jenis_kelamin as $jk)
+                                <option value="{{$jk->uuid}}" @if(old('jenis_kelamin') == $jk->uuid) selected @endif>{{ucwords($jk->nama)}}</option>
+                            @endforeach
                           </select>
                         </div>
                       </div>
@@ -192,13 +191,14 @@
                       <div class="col-md-12">
                         <div class="form-group file-area">
                           <label for="images">Surat Pengantar <small style="color: red;">*</small></label>
-                          <input type="file" name="surat_pengantar" data-default-file="{{old('surat_pengantar')}}" accept="application/pdf" id="images2" required multiple="multiple"/>
-                          <div class="file-dummy">
-                            <div class="success">Great, your files are selected. Keep on.</div>
-                            <div class="default">
-                              <i class="fas fa-file-pdf" style="color: #1A73E8;font-size: 30px;margin: 10px 0;"></i>
-                              {{-- <img src="{{asset('assets/images/photo.png')}}" alt=""> --}}
-                              <p>Unggah Disini</p><p class="text-muted" id="alert-images2"></p>
+                          <div style="position: relative">
+                            <input type="file" name="surat_pengantar" data-default-file="{{old('surat_pengantar')}}" accept="application/pdf" id="images2" required multiple="multiple"/>
+                            <div class="file-dummy">
+                              <div class="success">Great, your files are selected. Keep on.</div>
+                              <div class="default">
+                                <i class="fas fa-file-pdf" style="color: #1A73E8;font-size: 30px;margin: 10px 0;"></i>
+                                <p>Unggah Disini</p><p class="text-muted" id="alert-images2"></p>
+                              </div>
                             </div>
                           </div>
                           <div class="warn">
@@ -217,12 +217,6 @@
                           <label for="telepom">Telepon <small style="color: red;">*</small></label>
                           <input required type="text" name="telp_rekomendasi" value="{{old('telp_rekomendasi')}}" onkeypress='validate(event)' pattern="[0][0-9]\d{9,}" id="telepon" class="form-control" placeholder="Cth: 08312890981" title="Harus Diawali Dengan 0">
                         </div>
-                        {{-- <script>
-                          const telephone = document.querySelector('#telepon')
-                          const phoneinputs = window.intlTelInput(telephone, {
-                            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-                          })
-                        </script> --}}
                       </div>
                     </div>
                   </div>
@@ -236,7 +230,6 @@
         </div>
       </div>
     </div>
-    {{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="{{asset('assets/js/dropify.js')}}"></script>
