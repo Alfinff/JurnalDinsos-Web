@@ -74,4 +74,9 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Models\UsersProfile', 'users_id', 'uuid');
     }
+
+    public function title()
+    {
+        return $this->hasOne('App\Models\Pimpinan', 'users_id', 'uuid')->with('unitkerja');
+    }
 }

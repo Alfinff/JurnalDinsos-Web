@@ -14,7 +14,7 @@
         border-color: #51628f;
     }
 </style>
-<div class="col-md-10 bg-col">
+<div class="col-lg-10 bg-col">
   <div class="row">
         <div class="col-md-12 my-3">
             <div class="card">
@@ -131,8 +131,7 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="deskripsikegiatan1">Deskripsi Kegiatan</label>
-                                            <textarea name="deskripsikegiatan1" id="editDescription" cols="30" rows="4"
-                                                                                                                  class="form-control" placeholder="Masukkan Deskripsi Kegiatan" required></textarea>
+                                            <textarea name="deskripsikegiatan1" id="editDescription" cols="30" rows="4" class="form-control" placeholder="Masukkan Deskripsi Kegiatan" required></textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -167,21 +166,21 @@
             document.getElementById('modalEdit').style.display = 'none';
         }
 
-function openModalEdit() {
-    $.ajax({
-        url: "{{url('api/kegiatan')}}/".id,
-        success: function(result) {
-            console.log("abc");
-            $('#editStartDate').val(result.start_date);
-            $('#editEndDate').val(result.end_date);
-            $('#editType').val(result.type);
-            $('#editBudget').val(result.budget);
-            $('#editDescription').val(result.description);
-            $('#editNumber').val(result.number_of_p);
-            document.getElementById('modalEdit').style.display = 'block';
-            }
-    });
-}
+// function openModalEdit() {
+//     $.ajax({
+//         url: "{{url('api/kegiatan')}}/".id,
+//         success: function(result) {
+//             console.log("abc");
+//             $('#editStartDate').val(result.start_date);
+//             $('#editEndDate').val(result.end_date);
+//             $('#editType').val(result.type);
+//             $('#editBudget').val(result.budget);
+//             $('#editDescription').val(result.description);
+//             $('#editNumber').val(result.number_of_p);
+//             document.getElementById('modalEdit').style.display = 'block';
+//             }
+//     });
+// }
     </script>
   </div>
 @endsection

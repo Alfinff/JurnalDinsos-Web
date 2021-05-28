@@ -22,4 +22,9 @@ class JenisAduan extends Model
     {
         return $this->hasMany('App\Models\Pendaftaran', 'jenis_aduan','uuid');
     }
+
+    public function editornya()
+    {
+        return $this->hasOne('App\Models\User', 'uuid', 'editor');
+    }
 }

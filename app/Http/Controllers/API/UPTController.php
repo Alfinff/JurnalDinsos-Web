@@ -15,6 +15,11 @@ class UPTController extends Controller
         } else {
             $data['data'] = Upt::distinct()->get();
         }
+        if(((!$data['data']) || (!$data['data']->count()))) {
+            $d['msg'] = "Data Upt Tidak Ada / Kosong";
+            $d['success'] = false;
+            return response()->json($d);
+        }
         $data['msg'] = "Berhasil mendapatkan upt";
         $data['success'] = true;
         return response()->json($data);

@@ -32,7 +32,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="nik">NIK <small class="text-danger">*</small></label>
-                                                <input type="text" minlength="16" class="form-control" maxlength="16" pattern="{0-9}{0,16}" value="{{(int)$pendaftar->nik}}" name="nik" id="nik" onkeypress='validate(event)' placeholder="NIK" title="Minimum 16 angka" required>
+                                                <input type="text" minlength="16" class="form-control" maxlength="16" pattern="{0-9}{0,16}" value="{{$pendaftar->nik}}" name="nik" id="nik" onkeypress='validate(event)' placeholder="NIK" title="Minimum 16 angka" required>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -72,7 +72,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group d-flex flex-column">
                                               <label for="handphone">No. Handphone <small class="text-danger">*</small></label>
-                                              <input type="text" title="Harus Diawali Angka 0 dan Minimum 9 angka" pattern="[0][0-9]{9,}" value="{{$pendaftar->no_hp}}" name="no_hp" id="handphone" class="form-control" onkeypress='validate(event)'
+                                              <input type="text" title="Harus Diawali Angka 0 dan Minimum 9 angka" pattern="[0][0-9]\d{8,}" value="{{$pendaftar->no_hp}}" name="no_hp" id="handphone" class="form-control" onkeypress='validate(event)'
                                               placeholder="Masukkan Nomor Handphone" required>
                                               {{-- <script>
                                                 const phone = document.querySelector('#handphone')
@@ -173,7 +173,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group d-flex flex-column">
                                                 <label for="telepom">Telepon <small class="text-danger">*</small></label>
-                                                <input required type="text" pattern="[0][0-9]{9,}" onkeypress='validate(event)' title="Harus Diawali Angka 0 dan Minimum 9 angka" name="telp_rekomendasi" value="{{$pendaftar->telp_rekomendasi}}" [ng2TelInputOptions]="{initialCountry: 'eg'}" id="telepon" class="form-control" placeholder="Masukkan Nomor Telepon">
+                                                <input required type="text" pattern="[0][0-9]\d{8,}" onkeypress='validate(event)' title="Harus Diawali Angka 0 dan Minimum 9 angka" name="telp_rekomendasi" value="{{$pendaftar->telp_rekomendasi}}" [ng2TelInputOptions]="{initialCountry: 'eg'}" id="telepon" class="form-control" placeholder="Masukkan Nomor Telepon">
                                             </div>
                                             {{-- <script>
                                                 const telephone = document.querySelector('#telepon')

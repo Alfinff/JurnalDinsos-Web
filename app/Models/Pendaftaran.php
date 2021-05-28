@@ -47,4 +47,24 @@ class Pendaftaran extends Model
     {
         return $this->belongsTo('App\Models\JenisAduan', 'jenis_aduan','uuid');
     }
+
+    public function jeniskelamin()
+    {
+        return $this->belongsTo('App\Models\JenisKelamin', 'jenis_kelamin','uuid');
+    }
+
+    public function kondisiterakhir()
+    {
+        return $this->belongsTo('App\Models\KondisiTerakhir', 'uuid','pendaftar_id');
+    }
+
+    public function permasalahanya()
+    {
+        return $this->belongsTo('App\Models\Permasalahan', 'permasalahan','uuid');
+    }
+
+    public function pendampinya()
+    {
+        return $this->hasOne('App\Models\User', 'uuid','pendamping');
+    }
 }

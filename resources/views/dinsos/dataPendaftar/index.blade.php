@@ -9,11 +9,11 @@
       <div class="card">
         <div class="card-card">
             <div class="head-judul text-center">
-                <h3>Data Pendaftar </h3>
+              <h5><i class="fa fa-user text-primary"></i> Data Pengguna</h5>
             </div>
             <form action="{{route('dinsos-filter-pendaftar')}}" class="data-pendaftar" method="post">
                 {!! csrf_field() !!}
-                <div class="row justify-content-between align-items-start">
+                <div class="row align-items-end my-4">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="daftarupt">Pilih UPT</label> <br>
@@ -25,11 +25,50 @@
                             </select>
                         </div>
                     </div>
-                <div style="width: auto; margin-left: 10px;" class="mt-3">
-                    <button class="btn btn-primary" style="">Filter</button>
+                    <div style="width: auto; margin-left: 10px;" class="mt-3">
+                        <button class="btn btn-primary" style="">Filter</button>
+                    </div>
+                    <div style="position: relative">
+                        <div style="position: absolute;right: 0;top: 0">
+                            <button id="export_excel_1" class="btn btn-warning" onclick="exportexcelpenerimamanfaat();">Export Excel</button>
+                        </div>
+                    </div>
                 </div>
-                </div>
+                <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+                <script>
+                function exportexcelpenerimamanfaat() {
+                    url = "{{route('dinsos-exportdatapenerima')}}";
+                    var req = new XMLHttpRequest();
+                    req.open("GET", url, true);
+
+                    req.onload = function(e) {
+                        var wb = XLSX.utils.book_new();
+                        var data = JSON.parse(req.response);
+                        var ws = XLSX.utils.json_to_sheet(data);
+                        XLSX.utils.book_append_sheet(wb, ws, "Penerima Manfaat");
+                        XLSX.writeFile(wb, "PenerimaManfaat.xlsx");
+                    }
+
+                    req.send();
+                }
+                function exportexcelpenerimamanfaatindividu(id) {
+                    url = "{{URL::to('dinsos/pendaftar/dataExport')}}/"+id;
+                    var req = new XMLHttpRequest();
+                    req.open("GET", url, true);
+
+                    req.onload = function(e) {
+                        var wb = XLSX.utils.book_new();
+                        var data = JSON.parse(req.response);
+                        var ws = XLSX.utils.json_to_sheet(data);
+                        XLSX.utils.book_append_sheet(wb, ws, "Penerima Manfaat");
+                        XLSX.writeFile(wb, "PenerimaManfaatIndividu.xlsx");
+                    }
+
+                    req.send();
+                }
+                </script>
             </form>
+            <hr>
           {{-- <form action="" class="data-pendaftar">
             <div class="row">
               <div class="col-md-3">

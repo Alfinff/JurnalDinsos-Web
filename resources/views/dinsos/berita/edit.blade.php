@@ -40,13 +40,13 @@
                                         <input type="file" id="images" name="images" data-show-remove="false" class="dropify" data-default-file="{{Storage::disk('s3')->temporaryUrl($berita->images ?? '' == null, \Carbon\Carbon::now()->addMinutes(3600))}}" />
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-12">
                                     <div class="form-group">
                                         <label for="deskripsi_berita">Deskripsi Berita</label>
-                                        <textarea name="content" id="deskripsiberita" cols="30" rows="10">{{$berita->content}}</textarea>
+                                        <textarea name="content" id="deskripsiberita" cols="30" rows="20">{{$berita->content}}</textarea>
                                     </div>
                                 </div>
-                                <div class="col-md-12 my-4">
+                                <div class="col-12 my-4">
                                     <div class="d-flex justify-content-center">
                                         <button type="submit" class="btn btn-success">Edit</button>
                                         <a style="margin-left: 5px;" href="{{route('dinsos-berita')}}" class="btn btn-danger">Batal</a>

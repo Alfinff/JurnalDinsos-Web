@@ -26,6 +26,11 @@ class Pimpinan extends Model
         return $this->hasOne('App\Models\User', 'uuid','users_id');
     }
 
+    public function profile()
+    {
+        return $this->hasOne('App\Models\UsersProfile', 'users_id','uuid');
+    }
+
     public function unitkerja()
     {
         return $this->hasOne('App\Models\UnitKerja', 'id_unit_kerja','id_unit_kerja');

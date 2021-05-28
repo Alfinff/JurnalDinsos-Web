@@ -17,12 +17,13 @@ class DashboardController extends Controller
         $tahunkemarin = $tahunini-1;
         $countklien = Pendaftaran::where('soft_delete', 0)->count();
         $countupt = Upt::where('soft_delete', 0)->count();
-        $jmllaki = Pendaftaran::where('jenis_kelamin', 'L')->where('soft_delete', 0)->count();
-        $jmlperempuan = Pendaftaran::where('jenis_kelamin', 'P')->where('soft_delete', 0)->count();
+        // $jmllaki = Pendaftaran::where('jenis_kelamin', 'L')->where('soft_delete', 0)->count();
+        // $jmlperempuan = Pendaftaran::where('jenis_kelamin', 'P')->where('soft_delete', 0)->count();
         // $lakilaki = round(($jmllaki / $countklien) * 100, 2);
         // $perempuan = round(($jmlperempuan / $countklien) * 100, 2);
-        $lakilaki = $jmllaki;
-        $perempuan = $jmlperempuan;
+        // $lakilaki = $jmllaki;
+        // $perempuan = $jmlperempuan;
+        $lakiperempuan = DB::select("SELECT k.nama, COUNT(p.jenis_kelamin) as jumlah FROM ms_pendaftaran p JOIN ms_jenis_kelamin k ON k.uuid = p.jenis_kelamin WHERE p.soft_delete = 0 GROUP BY p.jenis_kelamin");
 
         $klienmasuk_tahunini = DB::select("SELECT count(*) as jumlah FROM ms_pendaftaran WHERE soft_delete = 0 AND YEAR(created_at) = '$tahunini' GROUP BY MONTH(created_at) ORDER BY MONTH(created_at) ASC");
 
@@ -34,13 +35,13 @@ class DashboardController extends Controller
         $pengeluaransemuaupt = DB::select("SELECT SUM(budget) as jumlah FROM ms_kegiatan WHERE soft_delete = 0");
         $pengeluaransemuaupt = Fungsi::rupiah($pengeluaransemuaupt[0]->jumlah);
 
-        $jenisaduan = DB::select("SELECT j.nama, COUNT(*) AS jumlah FROM ms_pendaftaran p JOIN ms_jenis_aduan j ON j.uuid = p.jenis_aduan WHERE soft_delete = 0 GROUP BY jenis_aduan");
-        $jumlahdatajenisaduan = array();
-        foreach($jenisaduan as $jj => $vv) {
-            $datajenisaduan[$jj]['nama'] = $vv->nama;
-            $datajenisaduan[$jj]['jumlah'] = (int)round(($vv->jumlah / $countklien) * 100, 2);
-        }
+        $datajenisaduan = DB::select("SELECT j.nama, COUNT(*) AS jumlah FROM ms_pendaftaran p JOIN ms_jenis_aduan j ON j.uuid = p.jenis_aduan WHERE soft_delete = 0 GROUP BY jenis_aduan");
+        // $datajenisaduan = array();
+        // foreach($jenisaduan as $jj => $vv) {
+        //     $datajenisaduan[$jj]['nama'] = $vv->nama;
+        //     $datajenisaduan[$jj]['jumlah'] = (int)round(($vv->jumlah / $countklien) * 100, 2);
+        // }
 
-        return view('dinsos.dashboard', compact('countklien', 'countupt', 'lakilaki', 'perempuan', 'klienmasuk_tahunini', 'bulan_tahunini', 'pengeluaransemuaupt', 'datajenisaduan'));
+        return view('dinsos.dashboard', compact('countklien', 'countupt', 'lakiperempuan', 'klienmasuk_tahunini', 'bulan_tahunini', 'pengeluaransemuaupt', 'datajenisaduan'));
     }
 }

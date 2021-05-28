@@ -112,7 +112,7 @@ class PenggunaController extends Controller
                 $pengguna['password'] = Hash::make($request->password);
                 $pengguna['role']     = $request->role;
                 $pengguna['upt_id']   = $request->upt_id;
-                $pengguna['aktif']    = $request->aktif;
+                $pengguna['aktif']    = $request->status;
                 $pengguna['uuid']     = $uuid;
                 $pengguna->save();
 
@@ -181,7 +181,7 @@ class PenggunaController extends Controller
                 if(isset($request->upt_id) && ($request->upt_id != NULL)) {
                     $pengguna['upt_id']   = $request->upt_id;
                 }
-                $pengguna['aktif']    = $request->aktif;
+                $pengguna['aktif']    = $request->status;
                 $pengguna->update();
 
                 $hapus = UsersModule::where('users_id', $uuid)->delete();

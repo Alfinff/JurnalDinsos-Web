@@ -17,6 +17,6 @@ class Kegiatan extends Model
 
     public function tipe()
     {
-        return $this->hasOne('App\Models\KegiatanTipe', 'id', 'type');
+        return $this->hasOne('App\Models\KegiatanTipe', 'uuid', 'type');
     }
 }

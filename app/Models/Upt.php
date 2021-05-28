@@ -25,4 +25,9 @@ class Upt extends Model
     {
         return $this->hasMany('App\Models\Pendaftaran', 'upt_id','uuid');
     }
+
+    public function namawilayah()
+    {
+        return $this->hasOne('App\Models\KodeWilayah', 'kab_id','wilayah');
+    }
 }

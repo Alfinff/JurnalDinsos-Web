@@ -119,6 +119,50 @@
                     </a>
                 </li>
                 @endif
+                <li class="menu--item">
+                    <a href="{{route('dinsos-berita')}}" class="menu--link @if(isset($url[1])) @if($url[1] == 'berita') active @else @endif @endif" title="Item 3">
+                        <svg fill="#8C8C8C" class="iconside" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" width="22px" height="22px"><path d="M 0 0 L 0 20 C 0 22.199219 1.800781 24 4 24 L 20 24 C 22.199219 24 24 22.199219 24 20 L 24 4 L 18 4 L 18 0 Z M 2 2 L 16 2 L 16 20 C 16 20.742188 16.265625 21.402344 16.625 22 L 4 22 C 2.882813 22 2 21.117188 2 20 Z M 4 4 L 4 7 L 14 7 L 14 4 Z M 18 6 L 22 6 L 22 20 C 22 21.117188 21.117188 22 20 22 C 18.882813 22 18 21.117188 18 20 L 18 19 L 20 19 L 20 17 L 18 17 L 18 16 L 20 16 L 20 14 L 18 14 L 18 13 L 20 13 L 20 11 L 18 11 L 18 10 L 20 10 L 20 8 L 18 8 Z M 4 9 L 4 11 L 8 11 L 8 9 Z M 10 9 L 10 11 L 14 11 L 14 9 Z M 4 12 L 4 14 L 8 14 L 8 12 Z M 10 12 L 10 14 L 14 14 L 14 12 Z M 4 15 L 4 17 L 8 17 L 8 15 Z M 10 15 L 10 17 L 14 17 L 14 15 Z M 4 18 L 4 20 L 8 20 L 8 18 Z M 10 18 L 10 20 L 14 20 L 14 18 Z"/></svg>
+                    <span class="menu--label">Berita</span>
+                    </a>
+                </li>
+
+                <li class="menu--item menu--item__has_sub_menu @if(isset($url[1])) @if($url[1] == 'setting') menu--subitens__opened @else @endif @endif">
+                    <label class="menu--link" title="Item 2">
+                        <svg width="24" class="iconside" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19.9999 15.31L22.5999 12.71C22.9899 12.32 22.9899 11.69 22.5999 11.3L19.9999 8.69V5C19.9999 4.45 19.5499 4 18.9999 4H15.3099L12.7099 1.4C12.3199 1.01 11.6899 1.01 11.2999 1.4L8.68992 4H4.99992C4.44992 4 3.99992 4.45 3.99992 5V8.69L1.39992 11.29C1.00992 11.68 1.00992 12.31 1.39992 12.7L3.99992 15.3V19C3.99992 19.55 4.44992 20 4.99992 20H8.68992L11.2899 22.6C11.6799 22.99 12.3099 22.99 12.6999 22.6L15.2999 20H18.9999C19.5499 20 19.9999 19.55 19.9999 19V15.31ZM11.9999 18C8.68992 18 5.99992 15.31 5.99992 12C5.99992 8.69 8.68992 6 11.9999 6C15.3099 6 17.9999 8.69 17.9999 12C17.9999 15.31 15.3099 18 11.9999 18Z" fill="#8c8c8c"/>
+                            </svg>
+
+
+                    <span class="menu--label">Setting</span>
+                    </label>
+                    <ul class="sub_menu">
+                        <li class="sub_menu--item">
+                            <a href="{{route('dinsos-setting-visimisi')}}" class="sub_menu--link @if(isset($url[2])) @if($url[2] == 'visimisi') active @else @endif @endif">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="iconside" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM19 19H5V5H19V19ZM7 10H9V17H7V10ZM11 7H13V17H11V7ZM15 13H17V17H15V13Z" fill="#8c8c8c"/>
+                                </svg>
+
+                            Visi Misi
+                            </a>
+                        </li>
+                        <li class="sub_menu--item">
+                            <a href="{{route('dinsos-setting-jenisaduan')}}" class="sub_menu--link @if(isset($url[2])) @if($url[2] == 'jenisaduan') active @else @endif @endif">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="iconside" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 2H4C2.9 2 2.01 2.9 2.01 4L2 22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H5.17L4.58 16.59L4 17.17V4H20V16ZM11 12H13V14H11V12ZM11 6H13V10H11V6Z" fill="#8c8c8c"/>
+                                    </svg>
+                            Jenis Aduan
+                            </a>
+                        </li>
+                        <li class="sub_menu--item">
+                            <a href="{{route('dinsos-setting-video')}}" class="sub_menu--link @if(isset($url[2])) @if($url[2] == 'video') active @else @endif @endif">
+                                <svg width="24" height="24" class="iconside" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 2H4C2.9 2 2.01 2.9 2.01 4L2 22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H5.17L4.58 16.59L4 17.17V4H20V16ZM6 12H8V14H6V12ZM6 9H8V11H6V9ZM6 6H8V8H6V6ZM10 12H15V14H10V12ZM10 9H18V11H10V9ZM10 6H18V8H10V6Z" fill="#8c8c8c"/>
+                                </svg>
+                            Video
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
             <hr style="border: 1px solid #E9E9E9;">
             <ul id="js-menu" class="menu" style="position: relative">

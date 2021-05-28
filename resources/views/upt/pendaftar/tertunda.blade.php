@@ -37,15 +37,15 @@
           <hr>
           <div style="overflow-y: auto">
               <table id="upt-Pendaftar-Tertunda" class="table table-striped table-bordered dt-responsive" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                <colgroup>
+                {{-- <colgroup>
                     <col span="1" style="width: 15%;">
                     <col span="1" style="width: 15%;">
                     <col span="1" style="width: 15%;">
                     <col span="1" style="width: 20%;">
                     <col span="1" style="width: 15%;">
-                    <col span="1" style="width: 15%;">
-                    <col span="1" style="width: 15%;">
-                 </colgroup>
+                    <col span="1" style="width: 10%;">
+                    <col span="1" style="width: 20%;">
+                 </colgroup> --}}
                 <thead>
                 <tr>
                   <th style="width: 175px">Nama Lengkap</th>
@@ -53,7 +53,7 @@
                   <th>NIK</th>
                   <th style="width: 175px">Alamat</th>
                   <th>Telepon</th>
-                  <th>Aksi</th>
+                  <th width="60px">Aksi</th>
                 </tr>
                 </thead>
               </table>

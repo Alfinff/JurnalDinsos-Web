@@ -37,12 +37,6 @@
 										</div>
 										<div class="col-md-6 my-2">
 											<div class="d-flex align-items-center">
-												<img src="{{asset('assets/images/public.png')}}" alt="">
-												<p class="mb-0 ml-2">{{$kegiatan->tipe->nama}}</p>
-											</div>
-										</div>
-										<div class="col-md-6 my-2">
-											<div class="d-flex align-items-center">
 												<img src="{{asset('assets/images/person.png')}}" alt="">
 												<p class="mb-0 ml-2">{{$kegiatan->number_of_p}} Peserta</p>
 											</div>
@@ -53,6 +47,14 @@
 												<p class="mb-0 ml-2">{{\App\Helpers\Fungsi::rupiah($kegiatan->budget)}}</p>
 											</div>
 										</div>
+                                        @if ($kegiatan->filedokumen!=null)
+                                            <div class="col-md-6 my-2">
+                                                <div class="d-flex align-items-center">
+                                                    <a target="new" href="{{Storage::disk('s3')->temporaryUrl($kegiatan->filedokumen, \Carbon\Carbon::now()->addMinutes(3600))}}" class="btn btn-success"><i class="fa fa-download"></i> Download Document</a>
+                                                </div>
+                                            </div>
+                                        @endif
+
 									</div>
 									<div class="row">
 										<div class="col-md-12 deskripsikegiatan">
@@ -62,6 +64,16 @@
 								</div>
 							</div>
 						</div>
+                        @if ($kegiatan->video!=null)
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-6">
+                                    <h3>Video</h3>
+                                    <a href="{{Storage::disk('s3')->temporaryUrl($kegiatan->video, \Carbon\Carbon::now()->addMinutes(3600))}}" data-fancybox="images" data-caption="">
+                                        <video class="img-fluid" src="{{Storage::disk('s3')->temporaryUrl($kegiatan->video, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
 					</div>
 				</div>
 			</div>

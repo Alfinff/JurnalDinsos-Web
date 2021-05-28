@@ -73,7 +73,7 @@ class KegiatanController extends Controller
     }
 
     public function tambah_kegiatan(Request $request) {
-        $kegiatanTipe   = KegiatanTipe::all();
+        $kegiatanTipe   = KegiatanTipe::where('upt_id', auth()->user()->upt_id)->get();
         if($_SERVER['REQUEST_METHOD'] == 'GET') {
             return view('upt.kegiatan.tambah', compact('kegiatanTipe'));
         } else if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -91,6 +91,15 @@ class KegiatanController extends Controller
                 $kegiatan->soft_delete = 0;
                 $kegiatan->description = $request->input('description');
 
+                // upload video
+                if(file_exists($_FILES['video']['tmp_name']) || is_uploaded_file($_FILES['video']['tmp_name'])) {
+                    UploadFile::setPath('kegiatan/video');
+                    UploadFile::setFile($request->file("video")->getContent());
+                    UploadFile::setExt($request->file("video")->extension());
+                    $path_video = UploadFile::uploadFile();
+                    $kegiatan->video = $path_video;
+                }
+
                 // Upload photo
                 if(file_exists($_FILES['dokumentasi']['tmp_name']) || is_uploaded_file($_FILES['dokumentasi']['tmp_name'])) {
                     // $data_in['photo'] = Str:: uuid().".".$request->file("dokumentasi")->extension();
@@ -101,6 +110,15 @@ class KegiatanController extends Controller
                     UploadImage::setExt($request->file("dokumentasi")->extension());
                     $path_kegiatan = UploadImage::uploadImage();
                     $kegiatan->photo = $path_kegiatan;
+                }
+
+                // Upload Dokumen
+                if(file_exists($_FILES['filedokumen']['tmp_name']) || is_uploaded_file($_FILES['filedokumen']['tmp_name'])) {
+                    UploadFile::setPath('kegiatan/filedokumen');
+                    UploadFile::setFile($request->file("filedokumen")->getContent());
+                    UploadFile::setExt($request->file("filedokumen")->extension());
+                    $path_file_dokumen = UploadFile::uploadFile();
+                    $kegiatan->filedokumen = $path_file_dokumen;
                 }
 
                 $kegiatan->save();
@@ -131,7 +149,7 @@ class KegiatanController extends Controller
 
     public function edit_kegiatan(Request $request, $id) {
         $kegiatan   = Kegiatan::where('id', $id)->first();
-        $kegiatanTipe   = KegiatanTipe::all();
+        $kegiatanTipe   = KegiatanTipe::where('upt_id', auth()->user()->upt_id)->get();
         if(!$kegiatan) {
             return redirect()->route('upt-kegiatan')->with(array(
                 'message'    => 'Data Kegiatan Tidak Ditemukan',
@@ -154,6 +172,15 @@ class KegiatanController extends Controller
                 $kegiatan->budget      = $request->input('budget');
                 $kegiatan->description = $request->input('description');
 
+                // upload video
+                if(file_exists($_FILES['video']['tmp_name']) || is_uploaded_file($_FILES['video']['tmp_name'])) {
+                    UploadFile::setPath('kegiatan/video');
+                    UploadFile::setFile($request->file("video")->getContent());
+                    UploadFile::setExt($request->file("video")->extension());
+                    $path_video = UploadFile::uploadFile();
+                    $kegiatan->video = $path_video;
+                }
+
                 // Upload photo
                 if(file_exists($_FILES['dokumentasi']['tmp_name']) || is_uploaded_file($_FILES['dokumentasi']['tmp_name'])) {
                     UploadImage::setPath('dokumentasi');
@@ -161,6 +188,15 @@ class KegiatanController extends Controller
                     UploadImage::setExt($request->file("dokumentasi")->extension());
                     $path_kegiatan = UploadImage::uploadImage();
                     $kegiatan->photo = $path_kegiatan;
+                }
+
+                // Upload Dokumen
+                if(file_exists($_FILES['filedokumen']['tmp_name']) || is_uploaded_file($_FILES['filedokumen']['tmp_name'])) {
+                    UploadFile::setPath('kegiatan/filedokumen');
+                    UploadFile::setFile($request->file("filedokumen")->getContent());
+                    UploadFile::setExt($request->file("filedokumen")->extension());
+                    $path_file_dokumen = UploadFile::uploadFile();
+                    $kegiatan->filedokumen = $path_file_dokumen;
                 }
 
                 $kegiatan->save();

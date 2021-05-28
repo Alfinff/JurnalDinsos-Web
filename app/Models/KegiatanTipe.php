@@ -8,10 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class KegiatanTipe extends Model
 {
     use HasFactory;
-    protected $table = 'ms_kegiatan_tipe';
-    protected $primaryKey = 'id';
+    protected $table = 'ms_jenis_kegiatan';
+    protected $primaryKey = 'uuid';
     protected $keyType = 'uuid';
     protected $casts = [
-        'id' => 'string'
+        'uuid' => 'string'
     ];
+
+    public function editornya()
+    {
+        return $this->hasOne('App\Models\User', 'uuid', 'editor');
+    }
 }

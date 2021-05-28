@@ -109,7 +109,7 @@
                       <div class="col-md-12">
                         <div class="form-group d-flex flex-column">
                           <label for="handphone">No. Handphone <small style="color: red;">*</small></label>
-                          <input type="text" pattern="[0][0-9]\d{9,}" name="no_hp" value="{{old('no_hp')}}" id="handphone" class="form-control"
+                          <input type="text" pattern="[0][0-9]\d{8,}" name="no_hp" value="{{old('no_hp')}}" id="handphone" class="form-control"
                           placeholder="Cth: 08312890981" required>
                           {{-- <script>
                             const phone = document.querySelector('#handphone')
@@ -215,7 +215,7 @@
                       <div class="col-md-12">
                         <div class="form-group d-flex flex-column">
                           <label for="telepom">Telepon <small style="color: red;">*</small></label>
-                          <input required type="text" name="telp_rekomendasi" value="{{old('telp_rekomendasi')}}" onkeypress='validate(event)' pattern="[0][0-9]\d{9,}" id="telepon" class="form-control" placeholder="Cth: 08312890981" title="Harus Diawali Dengan 0">
+                          <input required type="text" name="telp_rekomendasi" value="{{old('telp_rekomendasi')}}" onkeypress='validate(event)' pattern="[0][0-9]\d{8,}" id="telepon" class="form-control" placeholder="Cth: 08312890981" title="Harus Diawali Dengan 0">
                         </div>
                       </div>
                     </div>

@@ -114,7 +114,6 @@ class PendaftarController extends Controller
                     'alert-type' => 'success',
                 ));
             } catch (\Throwable $th) {
-                return $th;
                 DB:: rollback();
                 return redirect()->back()->with(array(
                     'message'    => 'Terdapat Kesalahan',
@@ -190,7 +189,7 @@ class PendaftarController extends Controller
         $provinsi    = KodeWilayah::select(['prov_id', 'prov'])->distinct()->get();
         $jenis_aduan = JenisAduan::get();
         $jenis_kelamin = JenisKelamin::get();
-        $permasalahan = Permasalahan::get();
+        $permasalahan = Permasalahan::where('upt_id', auth()->user()->upt_id)->orderBy('nama', 'asc')->get();
         $pendaftar   = Pendaftaran::where('uuid', $uuid)->first();
         if(!$pendaftar) {
             return redirect()->back()->with(array(
@@ -222,7 +221,7 @@ class PendaftarController extends Controller
                 $pendaftar['nama_rekomendasi'] = $request->nama_rekomendasi;
                 $pendaftar['telp_rekomendasi'] = $request->telp_rekomendasi;
                 $pendaftar['pendamping']       = $request->pendamping;
-                $pendaftar['nomor_registrasi'] = $request->nomor_registrasi;
+                // $pendaftar['nomor_registrasi'] = $request->nomor_registrasi;
                 $pendaftar['tanggal_masuk']    = date('Y-m-d', strtotime($request->tanggal_masuk));
                 $pendaftar['tanggal_keluar']   = date('Y-m-d', strtotime($request->tanggal_keluar));
                 $pendaftar['permasalahan']     = $request->permasalahan;

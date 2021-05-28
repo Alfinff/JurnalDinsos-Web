@@ -38,6 +38,7 @@
       text-decoration: none;
     }
     .judul-berita h4{
+      overflow: hidden;
       margin-bottom: 20px;
       font-size: 20px;
       line-height: 26px;
@@ -63,8 +64,12 @@
       font-weight: 700;
       color: #282828
     }
-    .content-berita p {
+    .content-berita p:first-child {
       margin-bottom: 30px;
+      display: block !important;
+    }
+    .content-berita p {
+      display: none;
     }
     .click-berita{
       display: flex;
@@ -90,6 +95,12 @@
     }
     .unggulan{
       display: flex;
+    }
+    .height-card{
+      height: 188px;
+      overflow: hidden;
+      object-fit: cover;
+      border-radius: 10px
     }
     .unggulan img{
       height: 180px;
@@ -130,12 +141,12 @@
             </div>
             <div class="card-card">
               <div class="judul-berita">
-                <a href="#">
-                  <h4>{{ucwords(substr($beritaterbaru[0]->title, 0, 35))}}</h4>
+                <a href="{{route('detailberita', ['id' => $beritaterbaru[0]->id])}}">
+                  <h4>{{ucwords(substr($beritaterbaru[0]->title, 0, ))}}</h4>
                 </a>
               </div>
               <div class="content-berita">
-                <p>{!! substr($beritaterbaru[0]->content, 0, 50) !!} ...</p>
+                {!! substr($beritaterbaru[0]->content, 0, 100) !!}
                 <div class="click-berita">
                     <a href="#">{{\App\Helpers\Fungsi::hari_indo($beritaterbaru[0]->created_at)}}</a>
                     <a href="{{route('detailberita', ['id' => $beritaterbaru[0]->id])}}">Baca Selengkapnya ></a>
@@ -151,11 +162,11 @@
                 <div class="card-card">
                   <div class="judul-berita">
                     <a href="#">
-                      <h4>{{ucwords(substr($beritaterbaru[1]->title, 0, 35))}}</h4>
+                      <h4>{{ucwords(substr($beritaterbaru[1]->title, 0,))}}</h4>
                     </a>
                   </div>
                   <div class="content-berita-2">
-                    <p>{!! substr($beritaterbaru[1]->content, 0, 50) !!} ...</p>
+                    {!! substr($beritaterbaru[1]->content, 0, 100) !!}
                     <div class="click-berita">
                         <a href="#">{{\App\Helpers\Fungsi::hari_indo($beritaterbaru[1]->created_at)}}</a>
                         <a href="{{route('detailberita', ['id' => $beritaterbaru[1]->id])}}">Baca Selengkapnya ></a>
@@ -172,7 +183,7 @@
                 <div class="card-card">
                   <div class="judul-berita-2">
                     <a href="#">
-                      <p>{!! substr($beritaterbaru[2]->content, 0, 50) !!} ...</p>
+                      <h4>{!! substr($beritaterbaru[2]->content, 0, 100) !!} </h4>
                     </a>
                   </div>
                   <div class="content-berita">
@@ -191,9 +202,9 @@
 
 </section>
 <section>
-  <div class="subhead">
+  {{-- <div class="subhead">
     <p>Berita</p>
-  </div>
+  </div> --}}
   <div class="head">
     <h3>Semua Berita</h3>
   </div>
@@ -203,14 +214,19 @@
             <div class="w-100 p-3">
                 <div class="card">
                     <div class="card-card">
-                        <div class="unggulan">
-                            <img src="{{Storage::disk('s3')->temporaryUrl($b->images, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
+                        <div class=" row">
+                          <div class="col-md-6">
+                            <img class="height-card" src="{{Storage::disk('s3')->temporaryUrl($b->images, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
+                          </div>
+                          <div class="col-md-6">
                             <div class="head-unggulan">
                                 <h4>{{ucwords(substr($b->title, 0, 35))}} ...</h4>
                                 <div class="content-berita">
-                                    {!! substr($b->content, 0, 50) !!} ...
+                                  {{-- {{$b->content}} --}}
+                                    {!! substr($b->content, 0, ) !!}
                                 </div>
                             </div>
+                          </div>
                         </div>
                         <div class="click-berita">
                             <a href="#">{{\App\Helpers\Fungsi::hari_indo($b->created_at)}}</a>
@@ -311,7 +327,8 @@
         dots: true,
         dotsEach: 3,
         autoplay: true,
-        autoplayTimeout: 3000,
+        autoplayTimeout: 5000,
+        loop: true,
         responsiveClass: true,
         responsive: {
           0: {

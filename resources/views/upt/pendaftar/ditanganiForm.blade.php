@@ -28,7 +28,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="nomorregistrasi">Nomor Registrasi <small class="text-danger">*</small></label>
-                                                <input type="text" name="nomor_registrasi" id="nomorregistrasi" value="{{$pendaftar->nomor_registrasi}}" class="form-control" placeholder="Masukkan Nomor Registrasi" required >
+                                                <input type="text" name="nomor_registrasi" id="nomorregistrasi" value="{{$pendaftar->nomor_registrasi}}" class="form-control" placeholder="Masukkan Nomor Registrasi" readonly >
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -40,7 +40,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="nik">NIK <small class="text-danger">*</small></label>
-                                                <input type="text" minlength="16" class="form-control" maxlength="16" pattern="[0-9]{0,16}" value="{{(int)$pendaftar->nik}}" name="nik" id="nik" onkeypress='validate(event)' placeholder="NIK" required >
+                                                <input type="text" minlength="16" class="form-control" maxlength="16" pattern="[0-9]{0,16}" value="{{$pendaftar->nik}}" name="nik" id="nik" onkeypress='validate(event)' placeholder="NIK" required >
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -80,7 +80,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group d-flex flex-column">
                                               <label for="handphone">No. Handphone <small class="text-danger">*</small></label>
-                                              <input type="text" onkeypress='validate(event)' pattern="[0][0-9]{9,}" value="{{$pendaftar->no_hp}}" title="Harus Diawali Angka 0 dan Minimum 9 angka" name="no_hp" id="handphone" class="form-control"
+                                              <input type="text" onkeypress='validate(event)' pattern="[0][0-9]\d{8,}" value="{{$pendaftar->no_hp}}" title="Harus Diawali Angka 0 dan Minimum 9 angka" name="no_hp" id="handphone" class="form-control"
                                               placeholder="Masukkan Nomor Handphone" required >
                                             </div>
                                         </div>
@@ -191,7 +191,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group d-flex flex-column">
                                                 <label for="telepon">Telepon <small class="text-danger">*</small></label>
-                                                <input type="text" pattern="[0][0-9]{9,}" name="telp_rekomendasi" title="Harus Diawali Angka 0 dan Minimum 9 angka" onkeypress='validate(event)' value="{{$pendaftar->telp_rekomendasi}}" [ng2TelInputOptions]="{initialCountry: 'eg'}" id="telepon" class="form-control" placeholder="Masukkan Nomor Telepon" required>
+                                                <input type="text" pattern="[0][0-9]\d{8,}" name="telp_rekomendasi" title="Harus Diawali Angka 0 dan Minimum 9 angka" onkeypress='validate(event)' value="{{$pendaftar->telp_rekomendasi}}" [ng2TelInputOptions]="{initialCountry: 'eg'}" id="telepon" class="form-control" placeholder="Masukkan Nomor Telepon" required>
                                             </div>
                                         </div>
                                         <div class="col-md-12">

@@ -40,13 +40,13 @@
                                         <input type="file" id="images" name="images" required data-show-remove="false" class="dropify" data-default-file="" />
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-12">
                                     <div class="form-group">
                                         <label for="deskripsi_berita">Deskripsi Berita</label>
-                                        <textarea name="content" id="deskripsiberita" cols="30" rows="10"></textarea>
+                                        <textarea name="content" id="deskripsiberita" cols="30" rows="20"></textarea>
                                     </div>
                                 </div>
-                                <div class="col-md-12 my-4">
+                                <div class="col-12 my-4">
                                     <div class="d-flex justify-content-center">
                                         <button type="submit" class="btn btn-success">Tambah</button>
                                         <a style="margin-left: 5px;" href="{{route('dinsos-berita')}}" class="btn btn-danger">Batal</a>

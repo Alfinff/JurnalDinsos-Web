@@ -14,7 +14,7 @@ class KepegawaianController extends Controller
 
     public function index(Request $request) {
         $upt = Upt::orderBy('nama', 'asc')->get();
-        $pegawai = User::with(['upt','profile'])->where('soft_delete', 0)->get();
+        $pegawai = User::with(['upt','profile', 'title'])->where('soft_delete', 0)->get();
         return view('dinsos.kepegawaian.index', compact('pegawai', 'upt'));
     }
 

@@ -23,15 +23,15 @@ Route::namespace('App\Http\Controllers')->group(function() {
 
     // landing page routes
     Route::prefix('halaman')->group(function() {
-        Route::get('/upt', 'IndexController@upt')->name('halaman-upt');
-        Route::get('/profil', 'IndexController@profil')->name('profil');
-        Route::get('/upt/{id}', 'IndexController@detailupt')->name('detailupt');
+        Route::get('/upt/{uuid?}', 'IndexController@upt')->name('halaman-upt');
         Route::get('/berita', 'IndexController@berita')->name('halaman-berita');
         Route::get('/berita/{id}', 'IndexController@detailberita')->name('detailberita');
         Route::get('/tentang', 'IndexController@tentang')->name('tentang');
-
         Route::get('/pendaftaran', 'PendaftaranController@index')->name('pendaftaran');
         Route::post('/pendaftaran', 'PendaftaranController@daftar');
+
+        Route::get('/profil', 'IndexController@profil')->name('profil');
+        Route::get('/lupa-password', 'IndexController@lupapass')->name('lupa-pass');
     });
 
     // butuh login auth
@@ -46,8 +46,8 @@ Route::namespace('App\Http\Controllers')->group(function() {
         Route::prefix('pegawai')->middleware('accesscheck:master_kepegawaian')->group(function() {
             Route::get('/', 'DINSOS\KepegawaianController@index')->name('dinsos-pegawai');
             Route::match(['GET', 'POST'], '/filter', 'DINSOS\KepegawaianController@filter')->name('dinsos-filter-pegawai');
-            Route::get('/aktif', 'DINSOS\KepegawaianController@pegawaiAktif')->name('dinsos-pegawai-aktif');
-            Route::get('/struktur', 'DINSOS\KepegawaianController@struktur')->name('dinsos-pegawai-struktur');
+            // Route::get('/aktif', 'DINSOS\KepegawaianController@pegawaiAktif')->name('dinsos-pegawai-aktif');
+            // Route::get('/struktur', 'DINSOS\KepegawaianController@struktur')->name('dinsos-pegawai-struktur');
         });
 
         Route::prefix('kegiatan')->middleware('accesscheck:kegiatan')->group(function() {
@@ -61,15 +61,19 @@ Route::namespace('App\Http\Controllers')->group(function() {
             Route::match(['GET', 'POST'], '/filter', 'DINSOS\DataUPTController@filter')->name('dinsos-filter-dataupt');
             Route::get('/data/{uuid}', 'DINSOS\DataUPTController@dataKlien');
             Route::get('/detail/{uuid}', 'DINSOS\DataUPTController@detail')->name('dinsos-dataupt-detail');
+            Route::get('/hapus/{uuid}', 'DINSOS\DataUPTController@hapus')->name('dinsos-dataupt-hapus');
+            Route::match(['GET', 'POST'], '/tambah', 'DINSOS\DataUPTController@tambah')->name('dinsos-dataupt-tambah');
+            Route::match(['GET', 'POST'], '/edit/{uuid}', 'DINSOS\DataUPTController@edit')->name('dinsos-dataupt-edit');
         });
 
         Route::prefix('pendaftar')->middleware('accesscheck:data_pendaftar')->group(function() {
             Route::get('/', 'DINSOS\DataPendaftarController@index')->name('dinsos-pegawai-pendaftar');
-            Route::match(['GET', 'POST'], '/filter', 'DINSOS\DataPendaftarController@filter')->name('dinsos-filter-pendaftar');
             Route::get('/data/{uptid?}', 'DINSOS\DataPendaftarController@dataPendaftar');
             Route::get('/daftarbantuan/{uuid}/{uptid}', 'DINSOS\DataPendaftarController@daftarBantuan')->name('dinsos-pendaftar-selesai-bantuan');
             Route::get('/databantuan/{uuid}/{uptid}', 'DINSOS\DataPendaftarController@dataBantuan');
             Route::get('/detail/{uuid}', 'DINSOS\DataPendaftarController@detail')->name('dinsos-pegawai-pendaftar-detail');
+            Route::get('/dataExport/{id?}', 'DINSOS\DataPendaftarController@dataPenerimaExport')->name('dinsos-exportdatapenerima');
+            Route::match(['GET', 'POST'], '/filter', 'DINSOS\DataPendaftarController@filter')->name('dinsos-filter-pendaftar');
         });
 
         Route::prefix('pengguna')->middleware('accesscheck:master_pengguna')->group(function() {
@@ -87,6 +91,25 @@ Route::namespace('App\Http\Controllers')->group(function() {
             Route::get('/hapus/{id}', 'DINSOS\BeritaController@hapus')->name('dinsos-berita-hapus');
             Route::match(['GET', 'POST'], '/tambah', 'DINSOS\BeritaController@tambah')->name('dinsos-berita-tambah');
             Route::match(['GET', 'POST'], '/edit/{id}', 'DINSOS\BeritaController@edit')->name('dinsos-berita-edit');
+        });
+
+        Route::prefix('setting')->group(function() {
+            Route::prefix('visimisi')->group(function() {
+                Route::get('/', 'DINSOS\SettingController@visimisi')->name('dinsos-setting-visimisi');
+                Route::match(['GET', 'POST'], '/edit/{uuid}', 'DINSOS\SettingController@editvisimisi')->name('dinsos-setting-visimisi-edit');
+            });
+            Route::prefix('video')->group(function() {
+                Route::get('/', 'DINSOS\VideoController@index')->name('dinsos-setting-video');
+                Route::post('/tambah', 'DINSOS\VideoController@tambah')->name('dinsos-setting-video-tambah');
+                Route::get('/hapus/{uuid}', 'DINSOS\VideoController@hapus')->name('dinsos-setting-video-hapus');
+            });
+
+            // dropdown crud setting
+            Route::prefix('jenisaduan')->group(function() {
+                Route::get('/', 'DINSOS\JenisAduanController@index')->name('dinsos-setting-jenisaduan');
+                Route::post('/tambah', 'DINSOS\JenisAduanController@tambah')->name('dinsos-setting-jenisaduan-tambah');
+                Route::get('/hapus/{uuid}', 'DINSOS\JenisAduanController@hapus')->name('dinsos-setting-jenisaduan-hapus');
+            });
         });
     });
 
@@ -119,6 +142,8 @@ Route::namespace('App\Http\Controllers')->group(function() {
                 Route::get('/hapus/{id_unit_kerja}', 'UPT\PimpinanController@hapusPimpinan')->name('hapus-pimpinan');
                 Route::post('/update', 'UPT\PimpinanController@updatePimpinan')->name('update-pimpinan');
             });
+
+            Route::get('/struktur', 'UPT\KepegawaianController@struktur')->name('upt-struktur');
         });
 
         Route::prefix('kegiatan')->middleware('accesscheck:kegiatan')->group(function() {
@@ -130,16 +155,34 @@ Route::namespace('App\Http\Controllers')->group(function() {
             Route::match(['GET', 'POST'], '/edit/{id}', 'UPT\KegiatanController@edit_kegiatan')->name('upt-edit-kegiatan');
         });
 
+        Route::prefix('pendaftar')->middleware('accesscheck:data_pendaftar')->group(function() {
+            Route::prefix('tertunda')->group(function() {
+                Route::get('/', 'UPT\PendaftarController@tertunda')->name('upt-pendaftar-tertunda');
+                Route::get('/data', 'UPT\PendaftarController@dataTertunda');
+                Route::post('/hubungi', 'UPT\PendaftarController@hubungi')->name('upt-pendaftar-tertunda-hubungi');
+                Route::match(['GET', 'POST'], '/detailedit/{uuid}', 'UPT\PendaftarController@dataTertundaDetailEdit')->name('upt-pendaftar-tertunda-detail');
+            });
+            Route::prefix('dihubungi')->group(function() {
+                Route::get('/', 'UPT\PendaftarController@dihubungi')->name('upt-pendaftar-dihubungi');
+                Route::get('/data', 'UPT\PendaftarController@dataDihubungi');
+                Route::match(['GET', 'POST'], '/tangani/{uuid}', 'UPT\PendaftarController@tanganiPendaftar')->name('upt-pendaftar-tertunda-tangani');
+            });
+        });
+
         Route::prefix('penerima')->middleware('accesscheck:penerima_bantuan')->group(function() {
             Route::get('/', 'UPT\PenerimaManfaatController@index')->name('upt-penerima-manfaat');
             Route::get('/data', 'UPT\PenerimaManfaatController@dataPenerima');
+            Route::get('/dataExport/{id?}', 'UPT\PenerimaManfaatController@dataPenerimaExport')->name('upt-exportdatapenerima');
+            Route::get('/setSelesai', 'UPT\PenerimaManfaatController@setSelesai')->name('upt-penerima-manfaat-set-selesai');
             Route::get('/hapus/{uuid}', 'UPT\PenerimaManfaatController@hapus')->name('upt-penerima-manfaat-delete');
+            Route::get('/detail/{uuid}', 'UPT\PenerimaManfaatController@dataPenerimaDetail')->name('upt-penerima-manfaat-detail');
+            Route::match(['GET', 'POST'], '/tambah', 'UPT\PenerimaManfaatController@tambah')->name('upt-pendaftar-tambah');
             Route::match(['GET', 'POST'], '/detailedit/{uuid}', 'UPT\PenerimaManfaatController@dataPenerimaDetailEdit')->name('edit-penerima-manfaat-detail');
 
             Route::prefix('selesai')->group(function() {
                 Route::get('/data', 'UPT\PenerimaManfaatController@dataSelesai');
                 Route::get('/daftarbantuan/{uuid}', 'UPT\PenerimaManfaatController@daftarBantuan')->name('upt-penerima-manfaat-selesai-bantuan');
-                Route::get('/aksi/{uuid}', 'UPT\PenerimaManfaatController@aksiSelesai')->name('upt-penerima-manfaat-selesai');
+                Route::post('/aksi', 'UPT\PenerimaManfaatController@aksiSelesai')->name('upt-penerima-manfaat-selesai');
             });
 
             Route::prefix('perkembangan')->group(function() {
@@ -156,17 +199,17 @@ Route::namespace('App\Http\Controllers')->group(function() {
             });
         });
 
-        Route::prefix('pendaftar')->middleware('accesscheck:data_pendaftar')->group(function() {
-            Route::prefix('tertunda')->group(function() {
-                Route::get('/', 'UPT\PendaftarController@tertunda')->name('upt-pendaftar-tertunda');
-                Route::get('/data', 'UPT\PendaftarController@dataTertunda');
-                Route::post('/hubungi', 'UPT\PendaftarController@hubungi')->name('upt-pendaftar-tertunda-hubungi');
-                Route::match(['GET', 'POST'], '/detailedit/{uuid}', 'UPT\PendaftarController@dataTertundaDetailEdit')->name('upt-pendaftar-tertunda-detail');
+        Route::prefix('setting')->group(function() {
+            // dropdown crud setting
+            Route::prefix('jeniskegiatan')->group(function() {
+                Route::get('/', 'UPT\JenisKegiatanController@index')->name('upt-setting-jeniskegiatan');
+                Route::post('/tambah', 'UPT\JenisKegiatanController@tambah')->name('upt-setting-jeniskegiatan-tambah');
+                Route::get('/hapus/{uuid}', 'UPT\JenisKegiatanController@hapus')->name('upt-setting-jeniskegiatan-hapus');
             });
-            Route::prefix('dihubungi')->group(function() {
-                Route::get('/', 'UPT\PendaftarController@dihubungi')->name('upt-pendaftar-dihubungi');
-                Route::get('/data', 'UPT\PendaftarController@dataDihubungi');
-                Route::match(['GET', 'POST'], '/tangani/{uuid}', 'UPT\PendaftarController@tanganiPendaftar')->name('upt-pendaftar-tertunda-tangani');
+            Route::prefix('permasalahan')->group(function() {
+                Route::get('/', 'UPT\PermasalahanController@index')->name('upt-setting-permasalahan');
+                Route::post('/tambah', 'UPT\PermasalahanController@tambah')->name('upt-setting-permasalahan-tambah');
+                Route::get('/hapus/{uuid}', 'UPT\PermasalahanController@hapus')->name('upt-setting-permasalahan-hapus');
             });
         });
     });

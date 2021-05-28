@@ -65,7 +65,9 @@ class DataPendaftarController extends Controller
             })
             ->editColumn('tindakan', function ($dataPenerima){
                 $actionBtn = '<div class="aksi-button">
-                    <div class="relative  d-flex justify-content-end">';
+                    <div class="relative  d-flex justify-content-end">
+                        <button class="btn btn-warning" onclick="exportexcelpenerimamanfaatindividu('.$dataPenerima->id.');"><i class = "fa fa-file-excel-o"></i></button>
+                    ';
                 if($dataPenerima->tindakan == 3) {
                     $actionBtn .='
                         <a href="'.route('dinsos-pendaftar-selesai-bantuan', array('uuid' => $dataPenerima->uuid,'uptid' => $dataPenerima->upt_id)).'" class="btn btn-secondary"><i class = "fa fa-hand-holding-medical"></i></a>';
@@ -73,7 +75,8 @@ class DataPendaftarController extends Controller
                     $actionBtn .='
                         <a   href = "'.route('dinsos-pegawai-pendaftar-detail', ['uuid' => $dataPenerima->uuid]).'" class = "mx-1 btn btn-primary"><i class = "fa fa-eye"></i>
                         </a>
-                    </div>';
+                    </div>
+                </div>';
                 return $actionBtn;
             })
             ->rawColumns(['tindakan','status'])
@@ -126,6 +129,61 @@ class DataPendaftarController extends Controller
         }
 
         return view('dinsos.dataPendaftar.detail', compact('pendaftar', 'provinsi', 'upt', 'jenis_aduan', 'jenis_kelamin', 'permasalahan', 'users'));
+    }
+
+    public function dataPenerimaExport(Request $request, $id=null)
+    {
+        $pendaftar = null;
+        $tindakan = null;
+        $wilayah = null;
+        if($id!=null) {
+            $pendaftar    = Pendaftaran::with('penanggungjawab', 'upt', 'jenisaduan', 'jeniskelamin', 'permasalahanya', 'pendampinya')->where('soft_delete', 0)->where('id', $id)->get();
+        } else {
+            $pendaftar    = Pendaftaran::with('penanggungjawab', 'upt', 'jenisaduan', 'jeniskelamin', 'permasalahanya', 'pendampinya')->where('soft_delete', 0)->get();
+        }
+
+        $data = array();
+        foreach($pendaftar as $pp => $val) {
+            $wilayah = null;
+            $wilayah = KodeWilayah::where('kec_id', $val['kec_id'])->first();
+            $tindakan = null;
+            if($val['tindakan'] = 0) {
+                $tindakan = 'Tertunda';
+            } else if($val['tindakan'] = 1) {
+                $tindakan = 'Dihubungi';
+            } else if($val['tindakan'] = 2) {
+                $tindakan = 'Penerima Manfaat';
+            } else if($val['tindakan'] = 3) {
+                $tindakan = 'Selesai';
+            } else {
+                $tindakan = '-';
+            }
+
+            $data[$pp]['nik'] = $val['nik'] ?? '';
+            $data[$pp]['nama_lengkap'] = $val['nama_lengkap'] ?? '';
+            $data[$pp]['tempat_lahir'] = $val['tempat_lahir'] ?? '';
+            $data[$pp]['tanggal_lahir'] = $val['tanggal_lahir'] ?? '';
+            $data[$pp]['umur'] = $val['umur'] ?? '';
+            $data[$pp]['jenis_kelamin'] = $val['jeniskelamin']->nama ?? '';
+            $data[$pp]['nomor_telepon'] = $val['no_hp'] ?? '';
+            $data[$pp]['provinsi'] = $wilayah->prov ?? '';
+            $data[$pp]['kabupaten'] = $wilayah->kab ?? '';
+            $data[$pp]['kecamatan'] = $wilayah->kec ?? '';
+            $data[$pp]['alamat'] = $val['alamat'] ?? '';
+            $data[$pp]['jenis_aduan'] = $val['jenisaduan']->nama ?? '';
+            $data[$pp]['upt'] = $val['upt']->nama ?? '';
+            $data[$pp]['status'] = $tindakan;
+            $data[$pp]['nama_rekomendasi'] = $val['nama_rekomendasi'] ?? '';
+            $data[$pp]['telp_rekomendasi'] = $val['telp_rekomendasi'] ?? '';
+            $data[$pp]['dibuat_tanggal'] = $val['created_at'] ?? '';
+            $data[$pp]['tanggal_masuk'] = $val['tanggal_masuk'] ?? '';
+            $data[$pp]['tanggal_keluar'] = $val['tanggal_keluar'] ?? '';
+            $data[$pp]['penanggung_jawab'] = $val['penanggungjawab']->username ?? '';
+            $data[$pp]['permasalahan'] = $val['permasalahanya']->nama ?? '';
+            $data[$pp]['pendamping'] = $val['pendampinya']->username ?? '';
+        }
+
+        return response()->json($data);
     }
 
 }

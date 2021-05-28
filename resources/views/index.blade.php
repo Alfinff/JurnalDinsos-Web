@@ -99,24 +99,24 @@
             </a>
           </div>
           <div class="text-login">
-            <h3>Silahkan Login dengan akun anda</h3>
+            <h3>Silahkan Login dengan akun anda.</h3>
           </div>
           <div class="container">
             <form action="{{url('postLogin')}}" class="login-form" method="POST">
                 @csrf
               <div class="form-group">
-                <label for="email" class="label-icon"><i class="fa fa-envelope"></i></label>
+                <label for="email" class="label-icon m-0"><i class="fa fa-envelope"></i></label>
                 <input type="email" name="email" id="email" placeholder="Email" value="{{old('email')}}" class="form-control">
               </div>
               <div class="form-group">
-                <label for="password" class="label-icon"><i class="fa fa-lock"></i></label>
+                <label for="password" class="label-icon m-0"><i class="fa fa-lock"></i></label>
                 <input type="password" name="password" id="password" placeholder="Password" class="form-control">
-                <label for="" class="label-icon-2"><i class="fa fa-eye"></i></label>
+                <label for="" onclick="openPassword()" class="label-icon-2 m-0"><i class="fa fa-eye"></i></label>
               </div>
-              <div class="d-flex justify-content-end mt-3 lupapass">
-                <a href="#">Lupa Password ?</a>
-              </div>
-              <div class="d-flex login-btn justify-content-center">
+              {{-- <div class="d-flex justify-content-end mt-3 lupapass">
+                <a href="{{route('lupa-pass')}}">Lupa Password ?</a>
+              </div> --}}
+              <div class="d-flex login-btn justify-content-center mt-3">
                 <input class="btn btn-primary w-50" vlue="Login" type="submit">
               </div>
             </form>
@@ -152,7 +152,7 @@
             <li><a href="{{ route('index') }}" class="menunya @if(request()->is('/') || request()->is('halaman/pendaftaran')) active @endif">Beranda</a></li>
             <li><a href="{{route('halaman-upt')}}" class="menunya @if(isset($url[1])) @if($url[1] == 'upt') active @endif @endif">UPT</a></li>
             <li><a href="{{route('halaman-berita')}}" class="menunya @if(isset($url[1])) @if($url[1] == 'berita') active @endif @endif">Berita</a></li>
-            <li><a href="#" class="menunya @if(isset($url[1])) @if($url[1] == 'tentang') active @endif @endif">Tentang</a></li>
+            <li><a href="{{route('tentang')}}" class="menunya @if(isset($url[1])) @if($url[1] == 'tentang') active @endif @endif">Tentang</a></li>
           </ul>
         </div>
         <div class="navbar-click">
@@ -212,7 +212,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqjtleFQGb3-KqRsq-Peg1NsatgWwgmlw&callback=initMap&libraries=&v=weekly" async></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTIjtHftBY-v57W-AQJD803ArZqnjv_pY&callback=initMap&libraries=&v=weekly" async></script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
@@ -241,6 +241,14 @@
       }
     </script>
     <script>
+      function openPassword() {
+        var x = document.getElementById("password");
+        if (x.type === "password") {
+          x.type = "text";
+        } else {
+          x.type = "password";
+        }
+      }
       var modal = document.getElementById('login-modal')
       function closeLogin() {
         modal.style.display = 'none'

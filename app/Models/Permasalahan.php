@@ -13,4 +13,9 @@ class Permasalahan extends Model
     protected $casts = [
         'uuid' => 'string'
     ];
+
+    public function editornya()
+    {
+        return $this->hasOne('App\Models\User', 'uuid', 'editor');
+    }
 }

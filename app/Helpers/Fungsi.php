@@ -24,6 +24,16 @@ use App\Models\UnitKerja;
 
 class Fungsi
 {
+    public static function generateNoRegis()
+    {
+        $micro_date = microtime();
+        $date_array = explode(" ",$micro_date);
+        $pisah0 = explode(".",$date_array[0]);
+        $tglnow = date('Y-m-d H:i:s');
+        $tahun = date('Y');
+        return $tahun.'/'.strtotime($tglnow).'/'.$pisah0[1];
+    }
+
     public static function getPendaftarTertunda($upt_id)
     {
         $pendaftar = Pendaftaran::

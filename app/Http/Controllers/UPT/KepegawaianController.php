@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 use Yajra\Datatables\Datatables;
 use App\Helpers\Fungsi;
 use App\Models\UnitKerja;
+use App\Models\Pimpinan;
+use App\Models\Upt;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UsersModule;
@@ -29,9 +31,9 @@ class KepegawaianController extends Controller
             ->addIndexColumn()
             ->editColumn('status', function ($data){
                 if($data->aktif == 1) {
-                    return '<a class="btn btn-success">Aktif</a>';
+                    return '<p class="badge badge-primary">Aktif</p>';
                 } else if($data->aktif == 0) {
-                    return '<a class="btn btn-warning">Non-Aktif</a>';
+                    return '<p class="badge badge-warning">Non-Aktif</p>';
                 } else {
 
                 }
@@ -208,11 +210,37 @@ class KepegawaianController extends Controller
         }
     }
 
-    // public function kepegawaian() {
-    //     return view('upt.kepegawaian.index');
-    // }
+    public function struktur() {
+        $detail = Upt::where('uuid', auth()->user()->upt_id)->where('soft_delete', 0)->first();
+        if(!$detail) {
+            return redirect()->back()->with(array(
+                'message'    => 'Data Tidak Ditemukan',
+                'alert-type' => 'error',
+                'style'      => 'hide'
+            ));
+        }
 
-    // public function pimpinan() {
-    //     return view('upt.kepegawaian.pimpinan');
-    // }
+        $rsData = UnitKerja::where('upt_id', auth()->user()->upt_id)->where('soft_delete', 0)->OrderBy('kode_unit_kerja', 'asc')->get();
+        $arrData = array();
+        $child3 = array();
+        $pimpinan = array();
+        foreach ($rsData as $rs => $r) {
+            if ($r->id_level_unit == 1) {
+                $arrData[$r->id_unit_kerja]['nama_unit_kerja'] = $r->nama_unit_kerja;
+                $arrData[$r->id_unit_kerja]['kode_unit_kerja'] = $r->kode_unit_kerja;
+            }
+            if ($r->id_level_unit == 2) {
+                $arrData[$r->id_induk]['level2'][$r->id_unit_kerja]['nama_unit_kerja'] = $r->nama_unit_kerja;
+                $arrData[$r->id_induk]['level2'][$r->id_unit_kerja]['kode_unit_kerja'] = $r->kode_unit_kerja;
+            }
+            if ($r->id_level_unit == 3) {
+                $child3[$r->id_induk][$r->id_unit_kerja]['nama_unit_kerja'] = $r->nama_unit_kerja;
+                $child3[$r->id_induk][$r->id_unit_kerja]['kode_unit_kerja'] = $r->kode_unit_kerja;
+            }
+            $pimpinan[$r->id_unit_kerja] = Pimpinan::with(['users','profile'])->where('id_unit_kerja', $r->id_unit_kerja)->first();
+        }
+
+        return view('upt.kepegawaian.struktur', compact('detail', 'arrData', 'child3', 'pimpinan'));
+    }
+
 }

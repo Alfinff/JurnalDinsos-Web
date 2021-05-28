@@ -13,6 +13,7 @@ use App\Models\Pendaftaran;
 use App\Models\User;
 use App\Helpers\UploadImage;
 use App\Helpers\UploadFile;
+use App\Helpers\Fungsi;
 
 class PendaftaranController extends Controller
 {
@@ -44,23 +45,26 @@ class PendaftaranController extends Controller
         } else {
             DB:: beginTransaction();
             try {
-                $data_in['nama_lengkap']     = $request->nama_lengkap;
-                $data_in['nik']              = $request->nik;
-                $data_in['tempat_lahir']     = $request->tempat_lahir;
-                $data_in['tanggal_lahir']    = date('Y-m-d', strtotime($request->tanggal_lahir));
-                $data_in['umur']             = $request->umur;
-                $data_in['jenis_kelamin']    = $request->jenis_kelamin;
-                $data_in['no_hp']            = $request->no_hp;
-                $data_in['prov_id']          = 35;
-                $data_in['kab_id']           = $request->kab_id;
-                $data_in['kec_id']           = $request->kec_id;
-                $data_in['alamat']           = $request->alamat;
-                $data_in['jenis_aduan']      = $request->jenis_aduan;
-                $data_in['upt_id']           = $request->upt_id;
-                $data_in['nama_rekomendasi'] = $request->nama_rekomendasi;
-                $data_in['telp_rekomendasi'] = $request->telp_rekomendasi;
-                $data_in['created_at']       = date('Y-m-d H:i:s');
-                $data_in['uuid']             = Str::uuid();
+                $noregis = Fungsi::generateNoRegis();
+                $pendaftaran = new Pendaftaran;
+                $pendaftaran->nomor_registrasi = $noregis;
+                $pendaftaran->nama_lengkap     = $request->nama_lengkap;
+                $pendaftaran->nik              = $request->nik;
+                $pendaftaran->tempat_lahir     = $request->tempat_lahir;
+                $pendaftaran->tanggal_lahir    = date('Y-m-d', strtotime($request->tanggal_lahir));
+                $pendaftaran->umur             = $request->umur;
+                $pendaftaran->jenis_kelamin    = $request->jenis_kelamin;
+                $pendaftaran->no_hp            = $request->no_hp;
+                $pendaftaran->prov_id          = 35;
+                $pendaftaran->kab_id           = $request->kab_id;
+                $pendaftaran->kec_id           = $request->kec_id;
+                $pendaftaran->alamat           = $request->alamat;
+                $pendaftaran->jenis_aduan      = $request->jenis_aduan;
+                $pendaftaran->upt_id           = $request->upt_id;
+                $pendaftaran->nama_rekomendasi = $request->nama_rekomendasi;
+                $pendaftaran->telp_rekomendasi = $request->telp_rekomendasi;
+                $pendaftaran->created_at       = date('Y-m-d H:i:s');
+                $pendaftaran->uuid             = Str::uuid();
 
                 // upload to s3 foto kondisi & surat pengantar
                 // UploadFile::setPath('pendaftaran/surat_pengantar');
@@ -88,11 +92,9 @@ class PendaftaranController extends Controller
                     'visibility' => 'public',
                 ]);
 
-                $data_in['foto_kondisi'] = $path_foto_kondisi;
-                $data_in['surat_pengantar'] = $path_surat_pengantar;
+                $pendaftaran->foto_kondisi = $path_foto_kondisi;
+                $pendaftaran->surat_pengantar = $path_surat_pengantar;
 
-                $pendaftaran = new Pendaftaran;
-                $pendaftaran->fill($data_in);
                 $pendaftaran->save();
 
                 // buat notifikasi upt

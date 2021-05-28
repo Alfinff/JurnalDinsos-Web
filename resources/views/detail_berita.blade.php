@@ -222,14 +222,15 @@
     opacity: .6;
   }
 </style>
+{{-- {{dd($berita)}} --}}
 <header>
    <div class="d-flex">
       <div class="info-header-2">
-         <img src="{{asset('assets/images/image 4.png')}}" alt="">
+         <img src="{{Storage::disk('s3')->temporaryUrl($berita->images, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
          <div class="overlay-header d-flex align-items-end text-white">
             <div class="header-news">
-               <h4 id="title">Pensosmas Jatim Lakukan Screening Assist pada Warga Terindikasi Penyalahguna Narkoba</h4>
-               <div>oleh BPPK</div>
+               <h4 id="title">{{$berita->title}}</h4>
+               <div>Oleh {{$berita->editorberita->username}}</div>
             </div>
          </div>
       </div>
@@ -238,36 +239,31 @@
 <section style="margin: 0;">
    <div class="container-news">
      <div class="row">
-       <div class="col-md-8">
+       <div class="col-md-12">
          <div class="card">
            <div class="card-card">
              <div class="stamp-section d-flex justify-content-between align-items-end">
-               <a href="{{URL::to('/berita')}}" class="btn btn-outline-primary btn-sm" style="box-shadow: unset !important;"><i class="fa fa-chevron-left" style="margin-right: 5px;" aria-hidden="true"></i> Kembali ke Halaman Berita</a>
-               <div class="time">Gresik - 11 April 2021 | 13.30</div>
+               <a href="{{route('halaman-berita')}}" class="btn btn-outline-primary btn-sm" style="box-shadow: unset !important;"><i class="fa fa-chevron-left" style="margin-right: 5px;" aria-hidden="true"></i> Kembali</a>
+               {{-- <div class="time">Gresik - 11 April 2021 | 13.30</div> --}}
+               <div class="time">{{\App\Helpers\Fungsi::hari_indo($berita->updated_at)}}</div>
              </div>
              <div class="content-berita-detail">
-                <p>Tri Juli Yansyah, relawan Penyuluh Sosial Masyarakat (Pensosmas) Jatim melakukan screening assist pada salah satu warga Desa Cerme Lor, Kec. Cerme, Kab. Gresik, Minggu (11/4/2021). Hal ini dilakukan Iyan, sapaan akrabnya, karena warga berinisial FK tersebut.</p>
-                <p>Gempa bumi 6,7 skala richter yang mengguncang Jatim, Sabtu (10/4/2021) dirasakan kuat di wilayah Malang dan Kab. Lumajang.</p>
-                <p>Gempa bumi 6,7 skala richter yang mengguncang Jatim, Sabtu (10/4/2021) dirasakan kuat di wilayah Malang dan Kab. Lumajang.</p>
-                <p>Gempa bumi 6,7 skala richter yang mengguncang Jatim, Sabtu (10/4/2021) dirasakan kuat di wilayah Malang dan Kab. Lumajang.</p>
-                <p>Gempa bumi 6,7 skala richter yang mengguncang Jatim, Sabtu (10/4/2021) dirasakan kuat di wilayah Malang dan Kab. Lumajang.</p>
-                <p>Gempa bumi 6,7 skala richter yang mengguncang Jatim, Sabtu (10/4/2021) dirasakan kuat di wilayah Malang dan Kab. Lumajang.</p>
-                <p>Gempa bumi 6,7 skala richter yang mengguncang Jatim, Sabtu (10/4/2021) dirasakan kuat di wilayah Malang dan Kab. Lumajang.</p>
-                <p>Gempa bumi 6,7 skala richter yang mengguncang Jatim, Sabtu (10/4/2021) dirasakan kuat di wilayah Malang dan Kab. Lumajang.</p>
+              {!! substr($berita->content, 0,) !!}
               </div>
               <div class="share-section d-flex flex-column align-items-center">
                 <div class="text">Bagikan artikel ini:</div>
+                <div></div>
                 <div>
                   <a class="social-link facebook" href="" id="fb-share" rel="nofollow" target="_blank" title="Share on Facebook"><i class="fa fa-facebook"></i> Share</a>
                   <a class="social-link twitter" href="" id="tweet" rel="nofollow" target="_blank" title="Tweet this Page"><i class="fa fa-twitter"></i> Tweet</a>
                   <a class="social-link email" href="" id="email-share" title="Email to a Friend"><i class="fa fa-envelope"></i></a>
                 </div>
               </div>
-              <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-width="100%" data-numposts="5"></div>
+              <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#{{$berita->id}}" data-width="100%" data-numposts="5"></div>
            </div>
          </div>
        </div>
-       <div class="col-md-4">
+       {{-- <div class="col-md-4">
           <div class="card" style="margin-bottom: 50px;">
             <div class="card-card">
               <div class="judul-berita">
@@ -328,7 +324,7 @@
               </div>
             </div>
           </div>
-       </div>
+       </div> --}}
      </div>
    </div>
 </section>

@@ -59,14 +59,22 @@
                         Pegawai
                         </a>
                     </li>
-                    {{-- <li class="sub_menu--item">
-                        <a href="{{route('upt-pimpinan')}}" class="sub_menu--link @if(isset($url[2])) @if($url[2] == 'pegawai') active @endif @endif">
+                    <li class="sub_menu--item">
+                        <a href="{{route('upt-pimpinan')}}" class="sub_menu--link @if(isset($url[2])) @if($url[2] == 'pimpinan') active @endif @endif">
+                            <svg width="24" class="iconside" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V19C4 19.55 4.45 20 5 20H19C19.55 20 20 19.55 20 19V18C20 15.34 14.67 14 12 14Z" fill="#8C8C8C"/>
+                            </svg>
+                        Pimpinan
+                        </a>
+                    </li>
+                    <li class="sub_menu--item">
+                        <a href="{{route('upt-struktur')}}" class="sub_menu--link @if(isset($url[2])) @if($url[2] == 'struktur') active @endif @endif">
                         <svg width="24" class="iconside" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M19 3H14.82C14.4 1.84 13.3 1 12 1C10.7 1 9.6 1.84 9.18 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM12 2.75C12.22 2.75 12.41 2.85 12.55 3C12.67 3.13 12.75 3.31 12.75 3.5C12.75 3.91 12.41 4.25 12 4.25C11.59 4.25 11.25 3.91 11.25 3.5C11.25 3.31 11.33 3.13 11.45 3C11.59 2.85 11.78 2.75 12 2.75ZM19 19H5V5H19V19ZM12 6C10.35 6 9 7.35 9 9C9 10.65 10.35 12 12 12C13.65 12 15 10.65 15 9C15 7.35 13.65 6 12 6ZM12 10C11.45 10 11 9.55 11 9C11 8.45 11.45 8 12 8C12.55 8 13 8.45 13 9C13 9.55 12.55 10 12 10ZM6 16.47V18H18V16.47C18 13.97 14.03 12.89 12 12.89C9.97 12.89 6 13.96 6 16.47ZM8.31 16C9 15.44 10.69 14.88 12 14.88C13.31 14.88 15.01 15.44 15.69 16H8.31Z" fill="#8C8C8C"/>
                         </svg>
-                        Pimpinan
+                        Struktur
                         </a>
-                    </li> --}}
+                    </li>
                     </ul>
                 </li>
                 @endif
@@ -80,19 +88,6 @@
                         <path class="iconside" d="M8 4H14V6H8V4ZM8 8H14V10H8V8ZM8 12H14V14H8V12ZM4 4H6V6H4V4ZM4 8H6V10H4V8ZM4 12H6V14H4V12ZM17.1 0H0.9C0.4 0 0 0.4 0 0.9V17.1C0 17.5 0.4 18 0.9 18H17.1C17.5 18 18 17.5 18 17.1V0.9C18 0.4 17.5 0 17.1 0ZM16 16H2V2H16V16Z" fill="#8C8C8C"/>
                     </svg>
                     <span class="menu--label">Kegiatan</span>
-                    </a>
-                </li>
-                @endif
-
-                @if(isset(auth()->user()->module->penerima_bantuan) && (auth()->user()->module->penerima_bantuan == 1))
-                <li class=" menu--item">
-                    <a href="{{route('upt-penerima-manfaat')}}" class="menu--link @if(isset($url[1])) @if($url[1] == 'penerima') active @endif @endif" title="Item 4">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path class="iconside" d="M17 15H19V17H17V15ZM17 11H19V13H17V11ZM17 7H19V9H17V7ZM13.74 7L15 7.84V7H13.74Z" fill="#8C8C8C"/>
-                        <path class="iconside" d="M10 3V4.51L12 5.84V5H21V19H17V21H23V3H10Z" fill="#8C8C8C"/>
-                        <path class="iconside" d="M8.17 5.7002L15 10.2502V21.0002H1V10.4802L8.17 5.7002ZM10 19.0002H13V11.1602L8.17 8.0902L3 11.3802V19.0002H6V13.0002H10V19.0002Z" fill="#8C8C8C"/>
-                    </svg>
-                    <span class="menu--label">Penerima Manfaat</span>
                     </a>
                 </li>
                 @endif
@@ -125,6 +120,46 @@
                     </ul>
                 </li>
                 @endif
+
+                @if(isset(auth()->user()->module->penerima_bantuan) && (auth()->user()->module->penerima_bantuan == 1))
+                <li class=" menu--item">
+                    <a href="{{route('upt-penerima-manfaat')}}" class="menu--link @if(isset($url[1])) @if($url[1] == 'penerima') active @endif @endif" title="Item 4">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="iconside" d="M17 15H19V17H17V15ZM17 11H19V13H17V11ZM17 7H19V9H17V7ZM13.74 7L15 7.84V7H13.74Z" fill="#8C8C8C"/>
+                        <path class="iconside" d="M10 3V4.51L12 5.84V5H21V19H17V21H23V3H10Z" fill="#8C8C8C"/>
+                        <path class="iconside" d="M8.17 5.7002L15 10.2502V21.0002H1V10.4802L8.17 5.7002ZM10 19.0002H13V11.1602L8.17 8.0902L3 11.3802V19.0002H6V13.0002H10V19.0002Z" fill="#8C8C8C"/>
+                    </svg>
+                    <span class="menu--label">Penerima Manfaat</span>
+                    </a>
+                </li>
+                @endif
+
+                <li class="menu--item menu--item__has_sub_menu @if(isset($url[1])) @if($url[1] == 'setting') menu--subitens__opened @else @endif @endif">
+                    <label class="menu--link" title="Item 2">
+                        <svg width="24" class="iconside" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19.9999 15.31L22.5999 12.71C22.9899 12.32 22.9899 11.69 22.5999 11.3L19.9999 8.69V5C19.9999 4.45 19.5499 4 18.9999 4H15.3099L12.7099 1.4C12.3199 1.01 11.6899 1.01 11.2999 1.4L8.68992 4H4.99992C4.44992 4 3.99992 4.45 3.99992 5V8.69L1.39992 11.29C1.00992 11.68 1.00992 12.31 1.39992 12.7L3.99992 15.3V19C3.99992 19.55 4.44992 20 4.99992 20H8.68992L11.2899 22.6C11.6799 22.99 12.3099 22.99 12.6999 22.6L15.2999 20H18.9999C19.5499 20 19.9999 19.55 19.9999 19V15.31ZM11.9999 18C8.68992 18 5.99992 15.31 5.99992 12C5.99992 8.69 8.68992 6 11.9999 6C15.3099 6 17.9999 8.69 17.9999 12C17.9999 15.31 15.3099 18 11.9999 18Z" fill="#8c8c8c"/>
+                        </svg>
+                        <span class="menu--label">Setting</span>
+                    </label>
+                    <ul class="sub_menu">
+                        <li class="sub_menu--item">
+                            <a href="{{route('upt-setting-jeniskegiatan')}}" class="sub_menu--link @if(isset($url[2])) @if($url[2] == 'jeniskegiatan') active @else @endif @endif">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3 13H5V11H3V13ZM3 17H5V15H3V17ZM3 9H5V7H3V9ZM7 13H21V11H7V13ZM7 17H21V15H7V17ZM7 7V9H21V7H7ZM3 13H5V11H3V13ZM3 17H5V15H3V17ZM3 9H5V7H3V9ZM7 13H21V11H7V13ZM7 17H21V15H7V17ZM7 7V9H21V7H7Z" fill="#8c8c8c"/>
+                                </svg>
+                            Jenis Kegiatan
+                            </a>
+                        </li>
+                        <li class="sub_menu--item">
+                            <a href="{{route('upt-setting-permasalahan')}}" class="sub_menu--link @if(isset($url[2])) @if($url[2] == 'permasalahan') active @else @endif @endif">
+                                <svg width="24" height="24" class="iconside" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20 2H4C2.9 2 2.01 2.9 2.01 4L2 22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H5.17L4.58 16.59L4 17.17V4H20V16ZM6 12H8V14H6V12ZM6 9H8V11H6V9ZM6 6H8V8H6V6ZM10 12H15V14H10V12ZM10 9H18V11H10V9ZM10 6H18V8H10V6Z" fill="#8c8c8c"/>
+                                </svg>
+                            Permasalahan
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
             <hr style="border: 1px solid #E9E9E9;">
             <ul id="js-menu" class="menu" style="position: relative">

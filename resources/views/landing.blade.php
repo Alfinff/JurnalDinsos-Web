@@ -4,6 +4,12 @@
 <script src="https://use.fontawesome.com/448f6b23f4.js"></script>
 @endsection
 @section('content')
+<style>
+  .judul-berita a {
+    color: inherit;
+    text-decoration: none;
+  }
+</style>
 <header>
         <div class="d-flex">
           <div class="info-header-1">
@@ -15,7 +21,7 @@
           </div>
         </div>
       </header>
-<section>
+{{-- <section>
         <div class="subhead">
           <p>Agenda</p>
         </div>
@@ -101,7 +107,7 @@
             </div>
           </div>
         </div>
-      </section>
+      </section> --}}
       <section>
         <div class="subhead">
           <p>Berita</p>
@@ -113,23 +119,25 @@
           <div class="row">
             <div class="col-md-4">
               <div class="img-berita">
-                <img src="{{asset('assets/images/news1.png')}}" alt="">
+                <img src="{{Storage::disk('s3')->temporaryUrl($beritaterbaru[0]->images, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
               </div>
               <div class="container-card">
                 <div class="card-berita">
                   <div class="card-body-berita">
                     <div class="info-berita">
-                      <p>BPJS</p>
-                      <p>22 November 2020</p>
+                      <p>{{ucwords($beritaterbaru[0]->editorberita->username)}}</p>
+                      <p>{{\App\Helpers\Fungsi::hari_indo($beritaterbaru[0]->created_at)}}</p>
                     </div>
                     <div class="judul-berita">
-                      <h3>Jaga Alam, Tagana Kota Pasuruan dan</h3>
+                        <a href="{{route('detailberita', ['id' => $beritaterbaru[0]->id])}}">
+                            <h3>{{ucwords(substr($beritaterbaru[0]->title, 0, ))}}</h3>
+                        </a>
                     </div>
                     <div class="content-berita">
-                      <p>Pantai utara Kelurahan Panggungrejo, Kecamatan Panggungrejo, Kota Pasuruan menjadi lokasi pilihan relawan Tagana...</p>
+                      <p>{{ strip_tags((substr($beritaterbaru[0]->content, 0, 100))) }} ...</p>
                     </div>
                     <div class="lihat">
-                      <a href="#">
+                      <a href="{{route('detailberita', ['id' => $beritaterbaru[0]->id])}}">
                         <p>Baca Selengkapnya <small>></small></p>
                       </a>
                     </div>
@@ -139,23 +147,25 @@
             </div>
             <div class="col-md-4">
               <div class="img-berita">
-                <img src="{{asset('assets/images/news2.png')}}" alt="">
+                <img src="{{Storage::disk('s3')->temporaryUrl($beritaterbaru[1]->images, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
               </div>
               <div class="container-card">
                 <div class="card-berita">
                   <div class="card-body-berita">
                     <div class="info-berita">
-                      <p>BPJS</p>
-                      <p>26 November 2020</p>
+                      <p>{{ucwords($beritaterbaru[1]->editorberita->username)}}</p>
+                      <p>{{\App\Helpers\Fungsi::hari_indo($beritaterbaru[1]->created_at)}}</p>
                     </div>
                     <div class="judul-berita">
-                      <h3>Bersinergi Lintas Sektor, Tagana Dinsos...</h3>
+                        <a href="{{route('detailberita', ['id' => $beritaterbaru[1]->id])}}">
+                            <h3>{{ucwords(substr($beritaterbaru[1]->title, 0, ))}}</h3>
+                        </a>
                     </div>
                     <div class="content-berita">
-                      <p>Selama dua hari, Selasa dan Rabu (24-25/11/2020), Tagana Dinsos Kabupaten Trenggalek bersama jeja...</p>
+                      <p>{{ strip_tags((substr($beritaterbaru[1]->content, 0, 100))) }} ...</p>
                     </div>
                     <div class="lihat">
-                      <a href="#">
+                      <a href="{{route('detailberita', ['id' => $beritaterbaru[1]->id])}}">
                         <p>Baca Selengkapnya <small>></small></p>
                       </a>
                     </div>
@@ -165,23 +175,25 @@
             </div>
             <div class="col-md-4">
               <div class="img-berita">
-                <img src="{{asset('assets/images/news3.png')}}" alt="">
+                <img src="{{Storage::disk('s3')->temporaryUrl($beritaterbaru[2]->images, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
               </div>
               <div class="container-card">
                 <div class="card-berita">
                   <div class="card-body-berita">
                     <div class="info-berita">
-                      <p>BPJS</p>
-                      <p>26 November 2020</p>
+                      <p>{{ucwords($beritaterbaru[2]->editorberita->username)}}</p>
+                      <p>{{\App\Helpers\Fungsi::hari_indo($beritaterbaru[2]->created_at)}}</p>
                     </div>
                     <div class="judul-berita">
-                      <h3>Kemensos Berharap Program Tanam Sejuta...</h3>
+                        <a href="{{route('detailberita', ['id' => $beritaterbaru[2]->id])}}">
+                            <h3>{{ucwords(substr($beritaterbaru[2]->title, 0, ))}}</h3>
+                        </a>
                     </div>
                     <div class="content-berita">
-                      <p>Di hari kedua kegiatan penguatan informasi penanggulangan bencana, Selasa (24/11/2020), Dinas Sosial...</p>
+                      <p>{{ strip_tags((substr($beritaterbaru[2]->content, 0, 100))) }} ...</p>
                     </div>
                     <div class="lihat">
-                      <a href="#">
+                      <a href="{{route('detailberita', ['id' => $beritaterbaru[2]->id])}}">
                         <p>Baca Selengkapnya <small>></small></p>
                       </a>
                     </div>
@@ -192,7 +204,7 @@
           </div>
           <div class="row justify-content-center all-berita">
             <div class="d-flex justify-content-center">
-              <a href="#" class="btn btn-primary">Semua Berita</a>
+              <a href="{{route('halaman-berita')}}" class="btn btn-primary">Semua Berita</a>
             </div>
           </div>
         </div>
@@ -205,22 +217,17 @@
           <h3>Video Dinas Sosial</h3>
         </div>
         <div class="container">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="card">
-                <div class="card-video">
-                  <iframe src="https://www.youtube.com/embed/t6ZvwhZ3EE4" frameborder="0"></iframe>
-                </div>
-              </div>
+            <div class="row">
+                @foreach ($video as $v)
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-video">
+                                <iframe src="{{$v->link}}" frameborder="0"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
-            <div class="col-md-6">
-              <div class="card">
-                <div class="card-video">
-                  <iframe src="https://www.youtube.com/embed/GbbCxHHyyFI" frameborder="0"></iframe>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
       <section>
@@ -269,5 +276,5 @@
 
         }
       </script>
-  
+
       @endsection

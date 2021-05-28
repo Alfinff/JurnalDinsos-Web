@@ -53,7 +53,7 @@
                       <select name="type" id="jeniskegiatan" class="form-select">
                         <option value="" selected disabled>Pilih Kegiatan</option>
                         @foreach($kegiatanTipe as $type)
-                          <option value="{{$type->id}}" @if($kegiatan->type == $type->id) selected @endif>{{$type->nama}}</option>
+                          <option value="{{$type->id}}" @if($kegiatan->type == $type->id) selected @endif>{{ucwords($type->nama)}}</option>
                         @endforeach
                       </select>
                     </div>
@@ -67,8 +67,24 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label for="budget">Budget <small class="text-danger">*</small></label>
-                      <input type="text" name="budget" id="budget"  value="{{$kegiatan->budget}}" placeholder="Cth: 1000000"
+                      <input type="number" min="0" name="budget" id="budget"  value="{{(int)$kegiatan->budget}}" placeholder="Cth: 1000000"
                       class="form-control" required>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group file-area">
+                      <div class="d-flex flex-row-reverse justify-content-between">
+                          <label for="document">File Dokumen <small class="text-danger"></small></label>
+                          @if($kegiatan->filedokumen!=null)
+                            <a href="{{Storage::disk('s3')->temporaryUrl($kegiatan->filedokumen, \Carbon\Carbon::now()->addMinutes(3600))}}" target="_blank">
+                            Lihat
+                            </a>
+                          @endif
+                      </div>
+                      <input type="file" id="document" name="filedokumen" data-show-remove="false" class="dropify" data-default-file="{{old('filedokumen')}}" accept=""/>
+                      <div class="warn">
+                        <small class="text-danger">Jenis File yang diterima : .pdf dan word</small>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -82,17 +98,46 @@
                 </div>
                 <div class="col-md-12">
                   <div class="form-group file-area">
-                    <label for="dokumentasi">Dokumentasi Kegiatan <small class="text-danger">*</small></label>
+                    <div class="d-flex flex-row-reverse justify-content-between">
+                      <a href="{{Storage::disk('s3')->temporaryUrl($kegiatan->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" data-fancybox="images" data-caption="">
+                        Lihat
+                      </a>
+                      <label for="dokumentasi">Dokumentasi Kegiatan <small class="text-danger"></small></label>
+                    </div>
                     <input type="file" id="fotokondisi" name="dokumentasi" data-show-remove="false" class="dropify" data-default-file="{{Storage::disk('s3')->temporaryUrl($kegiatan->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" accept="image/*" />
                     <div class="warn">
                       <small class="text-danger">Jenis File yang diterima : .jpg dan .png saja</small>
                     </div>
                   </div>
                 </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <div class="d-flex flex-row-reverse justify-content-between">
+                            @if($kegiatan->video!=null)
+                                <a href="{{Storage::disk('s3')->temporaryUrl($kegiatan->video, \Carbon\Carbon::now()->addMinutes(3600))}}" target="_blank">
+                                Lihat
+                                </a>
+                            @endif
+                            <label for="video">Video</label>
+                        </div>
+                        <input type="file" name="video" id="video" class="form-control" value="{{old('video')}}" accept=".mp4">
+                        <small style="color: red;">Video harus .mp4, maksimal 20mb</small>
+                    </div>
+                </div>
+                <script>
+                    var uploadField = document.getElementById("video");
+
+                    uploadField.onchange = function() {
+                        if(this.files[0].size > 20000000){
+                            alert("Video Terlalu Besar!");
+                            this.value = "";
+                        };
+                    };
+                </script>
               </div>
               <div class="col-md-12 mt-5">
                 <center>
-                    <button class="btn btn-primary">Upload</button>
+                    <button class="btn btn-primary">Edit</button>
                     <a href="{{route('upt-kegiatan')}}" class="btn btn-danger">Kembali</a>
                 </center>
               </div>

@@ -27,32 +27,32 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="nomorregistrasi">Nomor Registrasi <small class="text-danger">*</small></label>
-                                                <input type="text" name="nomor_registrasi" id="nomorregistrasi" value="{{$pendaftar->nomor_registrasi}}" class="form-control" placeholder="Masukkan Nomor Registrasi" required>
+                                                <input type="text" name="nomor_registrasi" id="nomorregistrasi" value="{{$pendaftar->nomor_registrasi}}" class="form-control" placeholder="Masukkan Nomor Registrasi" required disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="nama">Nama Lengkap <small class="text-danger">*</small></label>
-                                                <input type="text" name="nama_lengkap" id="nama" value="{{$pendaftar->nama_lengkap}}" class="form-control" placeholder="Nama Lengkap" required>
+                                                <input type="text" name="nama_lengkap" id="nama" value="{{$pendaftar->nama_lengkap}}" class="form-control" placeholder="Nama Lengkap" required disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="nik">NIK <small class="text-danger">*</small></label>
-                                                <input type="text" minlength="16" class="form-control" maxlength="16" pattern="[0-9]{0,16}" value="{{(int)$pendaftar->nik}}" name="nik" id="nik" onkeypress='validate(event)' placeholder="NIK" required>
+                                                <input type="text" minlength="16" class="form-control" maxlength="16" pattern="[0-9]{0,16}" value="{{(int)$pendaftar->nik}}" name="nik" id="nik" onkeypress='validate(event)' placeholder="NIK" required disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="tempatlahir">Tempat Lahir <small class="text-danger">*</small></label>
                                                 <input type="text" value="{{$pendaftar->tempat_lahir}}" name="tempat_lahir" id="tempatlahir" placeholder="Tempat Lahir Pasien"
-                                                class="form-control" required>
+                                                class="form-control" required disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="tanggallahir">Tanggal Lahir <small class="text-danger">*</small></label>
-                                                <input type="date" value="{{date('Y-m-d', strtotime($pendaftar->tanggal_lahir))}}" name="tanggal_lahir" id="setTodaysDate" class="form-control" required>
+                                                <input type="date" value="{{date('Y-m-d', strtotime($pendaftar->tanggal_lahir))}}" name="tanggal_lahir" id="setTodaysDate" class="form-control" required disabled>
                                                 <script>
                                                     setTodaysDate.max = new Date().toISOString().split("T")[0];
                                                 </script>
@@ -62,13 +62,13 @@
                                             <div class="form-group">
                                                 <label for="umur">Umur <small class="text-danger">*</small></label>
                                                 <input type="number" value="{{$pendaftar->umur}}" name="umur" id="umur" placeholder="Masukkan Umur" class="form-control"
-                                                required>
+                                                required disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="jeniskelamin">Jenis Kelamin <small class="text-danger">*</small></label>
-                                                <select name="jenis_kelamin" id="jeniskelamin" class="form-select" required>
+                                                <select name="jenis_kelamin" id="jeniskelamin" class="form-select" required disabled>
                                                 <option value="" selected disabled>Pilih Jenis Kelamin</option>
                                                 @foreach($jenis_kelamin as $jk)
                                                     <option value="{{$jk->uuid}}" @if($pendaftar->jenis_kelamin == $jk->uuid) selected @endif>{{$jk->nama}}</option>
@@ -80,7 +80,7 @@
                                             <div class="form-group d-flex flex-column">
                                               <label for="handphone">No. Handphone <small class="text-danger">*</small></label>
                                               <input type="text" value="{{$pendaftar->no_hp}}" name="no_hp" id="handphone" class="form-control" title="Harus Diawali Angka 0 dan Minimum 9 angka" pattern="[0][0-9]{9,}"
-                                              placeholder="Masukkan Nomor Handphone" required>
+                                              placeholder="Masukkan Nomor Handphone" required disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -97,7 +97,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="kabupaten">Kota / Kabupaten <small class="text-danger">*</small></label>
-                                                <select name="kab_id" id="kabupaten" class="form-select" required>
+                                                <select name="kab_id" id="kabupaten" class="form-select" required disabled>
                                                     <option value="" selected>Pilih Kota/Kabupaten</option>
                                                 </select>
                                             </div>
@@ -106,15 +106,26 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="kecamatan">Kecamatan <small class="text-danger">*</small></label>
-                                                <select name="kec_id" id="kecamatan" class="form-select" required>
+                                                <select name="kec_id" id="kecamatan" class="form-select" required disabled>
                                                     <option value="" selected>Pilih Kecamatan</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
+                                                <label for="permasalahan">Upt <small class="text-danger">*</small></label>
+                                                <select name="permasalahan" id="permasalahan" class="form-select" required disabled>
+                                                    <option value="" selected disabled>Pilih Upt</option>
+                                                    @foreach ($upt as $u)
+                                                        <option value="{{$u->uuid}}" @if($u->uuid == $pendaftar->upt_id) selected @endif>{{$u->nama}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
                                                 <label for="alamatlengkap">Alamat Lengkap <small class="text-danger">*</small></label>
-                                                <textarea name="alamat" id="alamatlengkap" cols="30" rows="4" class="form-control" placeholder="Masukkan Alamat Lengkap" required>{{$pendaftar->alamat}}</textarea>
+                                                <textarea name="alamat" id="alamatlengkap" cols="30" rows="4" class="form-control" placeholder="Masukkan Alamat Lengkap" required disabled>{{$pendaftar->alamat}}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -124,19 +135,19 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="tanggalmasuk">Tanggal Masuk <small class="text-danger">*</small></label>
-                                                <input type="date" name="tanggal_masuk" value="{{date('Y-m-d', strtotime($pendaftar->tanggal_masuk))}}" id="tanggalmasuk" class="form-control" required>
+                                                <input type="date" name="tanggal_masuk" value="{{date('Y-m-d', strtotime($pendaftar->tanggal_masuk))}}" id="tanggalmasuk" class="form-control" required disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="tanggalkeluar">Tanggal Keluar <small class="text-danger">*</small></label>
-                                                <input type="date" value="{{date('Y-m-d', strtotime($pendaftar->tanggal_keluar))}}" name="tanggal_keluar" id="tanggalkeluar" class="form-control" required>
+                                                <input type="date" value="{{date('Y-m-d', strtotime($pendaftar->tanggal_keluar))}}" name="tanggal_keluar" id="tanggalkeluar" class="form-control" required disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="permasalahan">Permasalahan <small class="text-danger">*</small></label>
-                                                <select name="permasalahan" id="permasalahan" class="form-select" required>
+                                                <select name="permasalahan" id="permasalahan" class="form-select" required disabled>
                                                     <option value="" selected disabled>Pilih Permasalahan</option>
                                                     @foreach ($permasalahan as $item)
                                                         <option value="{{$item->uuid}}" @if($item->uuid == $pendaftar->permasalahan) selected @endif>{{$item->nama}}</option>
@@ -186,19 +197,19 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="rekomendasi">Rekomendasi Pendaftar <small class="text-danger">*</small></label>
-                                                <input type="text" required name="nama_rekomendasi" id="rekomendasi" class="form-control" value="{{$pendaftar->nama_rekomendasi}}" placeholder="Masukkan Nama Perekomendasian">
+                                                <input type="text" required name="nama_rekomendasi" id="rekomendasi" class="form-control" value="{{$pendaftar->nama_rekomendasi}}" placeholder="Masukkan Nama Perekomendasian" disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group d-flex flex-column">
                                                 <label for="telepon">Telepon <small class="text-danger">*</small></label>
-                                                <input type="text" pattern="[0][0-9]{9,}" name="telp_rekomendasi" onkeypress='validate(event)' title="Harus Diawali Angka 0 dan Minimum 9 angka" value="{{$pendaftar->telp_rekomendasi}}" [ng2TelInputOptions]="{initialCountry: 'eg'}" id="telepon" class="form-control" placeholder="Masukkan Nomor Telepon" required>
+                                                <input type="text" pattern="[0][0-9]{9,}" name="telp_rekomendasi" onkeypress='validate(event)' title="Harus Diawali Angka 0 dan Minimum 9 angka" value="{{$pendaftar->telp_rekomendasi}}" [ng2TelInputOptions]="{initialCountry: 'eg'}" id="telepon" class="form-control" placeholder="Masukkan Nomor Telepon" required disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="pendamping">Petugas Pendamping <small class="text-danger">*</small></label>
-                                                <select name="pendamping" id="jenisaduan" class="form-select" required>
+                                                <select name="pendamping" id="jenisaduan" class="form-select" required disabled>
                                                     <option value="" selected disabled>Pilih Pendamping</option>
                                                     @foreach ($users as $u)
                                                         <option value="{{$u->uuid}}" @if($pendaftar->pendamping == $u->uuid) selected @endif>{{ucwords($u->username)}}</option>
@@ -209,7 +220,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="jenisaduan">Jenis Aduan <small class="text-danger">*</small></label>
-                                                <select name="jenis_aduan" id="jenisaduan" class="form-select" required>
+                                                <select name="jenis_aduan" id="jenisaduan" class="form-select" required disabled>
                                                     <option value="" selected disabled>Pilih Jenis Aduan</option>
                                                     @foreach ($jenis_aduan as $j)
                                                         <option value="{{$j->uuid}}" @if($pendaftar->jenis_aduan == $j->uuid) selected @endif>{{$j->nama}}</option>
@@ -221,7 +232,7 @@
                                 </div>
                                 <div class="col-md-12 my-3">
                                     <div class="d-flex justify-content-center actionnya">
-                                        <a href="{{route('dinsos-pegawai-pendaftar')}}" class="btn btn-danger">Batal</a>
+                                        <a href="{{route('dinsos-pegawai-pendaftar')}}" class="btn btn-danger">Kembali</a>
                                     </div>
                                 </div>
                             </div>

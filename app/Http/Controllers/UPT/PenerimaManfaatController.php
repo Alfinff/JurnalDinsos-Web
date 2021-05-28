@@ -10,11 +10,13 @@ use Yajra\Datatables\Datatables;
 use App\Models\Pendaftaran;
 use App\Models\PendaftaranBantuan;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\PendaftarNotification;
 use Illuminate\Support\Carbon;
 use App\Models\KodeWilayah;
 use App\Models\JenisAduan;
 use App\Models\JenisKelamin;
 use App\Models\Permasalahan;
+use App\Models\KondisiTerakhir;
 use App\Models\Upt;
 use App\Models\User;
 use App\Helpers\Fungsi;
@@ -47,13 +49,16 @@ class PenerimaManfaatController extends Controller
                 return ucwords($data->tempat_lahir) .', '.date('d/m/Y', strtotime($data->tanggal_masuk));
             })
             ->addColumn('action', function($dataPenerima){
+                // <a onclick="return confirm(`Anda Yakin Mengubah Status Data Ini?`)" href="'.route('upt-penerima-manfaat-selesai', ['uuid' => $dataPenerima->uuid]).'" class="btn btn-info text-white"><i class = "fa fa-check"></i></a>
                 $actionBtn = '<div class="aksi-button">
                     <div class="relative">
                         <a href  = "#" class                = "mx-1 btn btn-success" style = "width: 46px" onclick = "more('.$dataPenerima->id.')">
-                        <i class = "fa fa-ellipsis-v" style = "color: #fff;" title    = "More"></i>
+                            <i class = "fa fa-ellipsis-v" style = "color: #fff;" title    = "More"></i>
                         </a>
                         <div class="dropdown tes" id="dropdowns'.$dataPenerima->id.'">
-                            <a onclick="return confirm(`Anda Yakin Mengubah Status Data Ini?`)" href="'.route('upt-penerima-manfaat-selesai', ['uuid' => $dataPenerima->uuid]).'" class="btn btn-info text-white"><i class = "fa fa-check"></i></a>
+                            <button class="btn btn-success" type="button" onclick="setselesai('.$dataPenerima->id.')" data-toggle="modal" data-target="#set_selesai">
+                                <i class = "fa fa-check"></i>
+                            </button>
                             <a href="'.route('upt-penerima-perkembangan', ['uuid' => $dataPenerima->uuid]).'" class="btn btn-primary"><i class = "fa fa-history"></i></a>
                             <a href="'.route('upt-penerima-tambah-bantuan', ['uuid' => $dataPenerima->uuid]).'" class="btn btn-secondary"><i class = "fa fa-hand-holding-medical"></i></a>
                         </div>
@@ -69,6 +74,16 @@ class PenerimaManfaatController extends Controller
             })
             ->rawColumns(['tindakanstatus', 'action'])
             ->make(true);
+    }
+
+    public function setSelesai(Request $request)
+    {
+        $id = $request->input('iddata');
+        $data    = Pendaftaran::where('id', $id)->first();
+        if(!$data) {
+            return 0;
+        }
+        return view('upt.penerimaManfaat.setSelesai', compact('data'));
     }
 
     public function dataSelesai() {
@@ -90,10 +105,12 @@ class PenerimaManfaatController extends Controller
                 return ucwords($data->tempat_lahir) .', '.date('d/m/Y', strtotime($data->tanggal_masuk));
             })
             ->addColumn('action', function($dataPenerima){
+                // <a href="'.route('upt-exportdatapenerima', ['id' => $dataPenerima->id]).'" class="btn btn-secondary"><i class = "fa fa-file-excel-o"></i></a>
                 $actionBtn = '<div class="aksi-button">
                     <div class="relative">
+                        <button class="btn btn-warning" onclick="exportexcelpenerimamanfaatindividu('.$dataPenerima->id.');"><i class = "fa fa-file-excel-o"></i></button>
                         <a href="'.route('upt-penerima-manfaat-selesai-bantuan', ['uuid' => $dataPenerima->uuid]).'" class="btn btn-secondary"><i class = "fa fa-hand-holding-medical"></i></a>
-                        <a   href = "'.route('edit-penerima-manfaat-detail', ['uuid' => $dataPenerima->uuid]).'" class = "mx-1 btn btn-primary"><i class = "fa fa-eye"></i>
+                        <a   href = "'.route('upt-penerima-manfaat-detail', ['uuid' => $dataPenerima->uuid]).'" class = "mx-1 btn btn-primary"><i class = "fa fa-eye"></i>
                         </a>
                     </div>';
                 return $actionBtn;
@@ -102,13 +119,104 @@ class PenerimaManfaatController extends Controller
             ->make(true);
     }
 
+    public function dataPenerimaExport(Request $request, $id=null)
+    {
+        $pendaftar = null;
+        $tindakan = null;
+        $wilayah = null;
+        if($id!=null) {
+            $pendaftar    = Pendaftaran::with('penanggungjawab', 'upt', 'jenisaduan', 'jeniskelamin', 'permasalahanya', 'pendampinya')->where('id', $id)->where('upt_id', auth()->user()->upt_id)->where('soft_delete', 0)->get();
+        //     $wilayah = KodeWilayah::where('kec_id', $pendaftar->kec_id)->first();
+        //     if($pendaftar->tindakan = 0) {
+        //         $tindakan = 'Tertunda';
+        //     } else if($pendaftar->tindakan = 1) {
+        //         $tindakan = 'Dihubungi';
+        //     } else if($pendaftar->tindakan = 2) {
+        //         $tindakan = 'Penerima Manfaat';
+        //     } else if($pendaftar->tindakan = 3) {
+        //         $tindakan = 'Selesai';
+        //     } else {
+        //         $tindakan = '-';
+        //     }
+
+        //     $data = array();
+        //     $data['nik'] = $pendaftar->nik ?? '';
+        //     $data['nama_lengkap'] = $pendaftar->nama_lengkap ?? '';
+        //     $data['tempat_lahir'] = $pendaftar->tempat_lahir ?? '';
+        //     $data['tanggal_lahir'] = $pendaftar->tanggal_lahir ?? '';
+        //     $data['umur'] = $pendaftar->umur ?? '';
+        //     $data['jenis_kelamin'] = $pendaftar->jeniskelamin->nama ?? '';
+        //     $data['nomor_telepon'] = $pendaftar->no_hp ?? '';
+        //     $data['provinsi'] = $wilayah->prov ?? '';
+        //     $data['kabupaten'] = $wilayah->kab ?? '';
+        //     $data['kecamatan'] = $wilayah->kec ?? '';
+        //     $data['alamat'] = $pendaftar->alamat ?? '';
+        //     $data['jenis_aduan'] = $pendaftar->jenisaduan->nama ?? '';
+        //     $data['upt'] = $pendaftar->upt->nama ?? '';
+        //     $data['status'] = $tindakan;
+        //     $data['nama_rekomendasi'] = $pendaftar->nama_rekomendasi ?? '';
+        //     $data['telp_rekomendasi'] = $pendaftar->telp_rekomendasi ?? '';
+        //     $data['dibuat_tanggal'] = $pendaftar->created_at ?? '';
+        //     $data['tanggal_masuk'] = $pendaftar->tanggal_masuk ?? '';
+        //     $data['tanggal_keluar'] = $pendaftar->tanggal_keluar ?? '';
+        //     $data['penanggung_jawab'] = $pendaftar->penanggungjawab->username ?? '';
+        //     $data['permasalahan'] = $pendaftar->permasalahanya->nama ?? '';
+        //     $data['pendamping'] = $pendaftar->pendampinya->username ?? '';
+        } else {
+            $pendaftar    = Pendaftaran::with('penanggungjawab', 'upt', 'jenisaduan', 'jeniskelamin', 'permasalahanya', 'pendampinya')->where('upt_id', auth()->user()->upt_id)->where('soft_delete', 0)->get();
+        }
+
+            $data = array();
+            foreach($pendaftar as $pp => $val) {
+                $wilayah = null;
+                $wilayah = KodeWilayah::where('kec_id', $val['kec_id'])->first();
+                $tindakan = null;
+                if($val['tindakan'] = 0) {
+                    $tindakan = 'Tertunda';
+                } else if($val['tindakan'] = 1) {
+                    $tindakan = 'Dihubungi';
+                } else if($val['tindakan'] = 2) {
+                    $tindakan = 'Penerima Manfaat';
+                } else if($val['tindakan'] = 3) {
+                    $tindakan = 'Selesai';
+                } else {
+                    $tindakan = '-';
+                }
+
+                $data[$pp]['nik'] = $val['nik'] ?? '';
+                $data[$pp]['nama_lengkap'] = $val['nama_lengkap'] ?? '';
+                $data[$pp]['tempat_lahir'] = $val['tempat_lahir'] ?? '';
+                $data[$pp]['tanggal_lahir'] = $val['tanggal_lahir'] ?? '';
+                $data[$pp]['umur'] = $val['umur'] ?? '';
+                $data[$pp]['jenis_kelamin'] = $val['jeniskelamin']->nama ?? '';
+                $data[$pp]['nomor_telepon'] = $val['no_hp'] ?? '';
+                $data[$pp]['provinsi'] = $wilayah->prov ?? '';
+                $data[$pp]['kabupaten'] = $wilayah->kab ?? '';
+                $data[$pp]['kecamatan'] = $wilayah->kec ?? '';
+                $data[$pp]['alamat'] = $val['alamat'] ?? '';
+                $data[$pp]['jenis_aduan'] = $val['jenisaduan']->nama ?? '';
+                $data[$pp]['upt'] = $val['upt']->nama ?? '';
+                $data[$pp]['status'] = $tindakan;
+                $data[$pp]['nama_rekomendasi'] = $val['nama_rekomendasi'] ?? '';
+                $data[$pp]['telp_rekomendasi'] = $val['telp_rekomendasi'] ?? '';
+                $data[$pp]['dibuat_tanggal'] = $val['created_at'] ?? '';
+                $data[$pp]['tanggal_masuk'] = $val['tanggal_masuk'] ?? '';
+                $data[$pp]['tanggal_keluar'] = $val['tanggal_keluar'] ?? '';
+                $data[$pp]['penanggung_jawab'] = $val['penanggungjawab']->username ?? '';
+                $data[$pp]['permasalahan'] = $val['permasalahanya']->nama ?? '';
+                $data[$pp]['pendamping'] = $val['pendampinya']->username ?? '';
+            }
+        // }
+        return response()->json($data);
+    }
+
     public function daftarBantuan(Request $request, $uuid) {
         $users = Fungsi::getPegawai(auth()->user()->upt_id);
         $provinsi     = KodeWilayah::select(['prov_id', 'prov'])->distinct()->get();
         $jenis_aduan  = JenisAduan::get();
         $jenis_kelamin  = JenisKelamin::get();
         $upt          = Upt::get();
-        $permasalahan = Permasalahan::get();
+        $permasalahan = Permasalahan::where('upt_id', auth()->user()->upt_id)->orderBy('nama', 'asc')->get();
         $pendaftar    = Pendaftaran::where('uuid', $uuid)->first();
         if(!$pendaftar) {
             return redirect()->route('upt-penerima-manfaat')->with(array(
@@ -125,8 +233,8 @@ class PenerimaManfaatController extends Controller
         $jenis_aduan  = JenisAduan::get();
         $jenis_kelamin  = JenisKelamin::get();
         $upt          = Upt::get();
-        $permasalahan = Permasalahan::get();
-        $pendaftar    = Pendaftaran::where('uuid', $uuid)->first();
+        $permasalahan = Permasalahan::where('upt_id', auth()->user()->upt_id)->orderBy('nama', 'asc')->get();
+        $pendaftar    = Pendaftaran::with(['kondisiterakhir'])->where('uuid', $uuid)->first();
         if(!$pendaftar) {
             return redirect()->route('upt-penerima-manfaat')->with(array(
                 'message'    => 'Data Pendaftar Tidak Ditemukan',
@@ -157,7 +265,7 @@ class PenerimaManfaatController extends Controller
                 $pendaftar['nama_rekomendasi'] = $request->nama_rekomendasi;
                 $pendaftar['telp_rekomendasi'] = $request->telp_rekomendasi;
                 $pendaftar['pendamping']       = $request->pendamping;
-                $pendaftar['nomor_registrasi'] = $request->nomor_registrasi;
+                // $pendaftar['nomor_registrasi'] = $request->nomor_registrasi;
                 $pendaftar['tanggal_masuk']    = date('Y-m-d', strtotime($request->tanggal_masuk));
                 $pendaftar['tanggal_keluar']   = date('Y-m-d', strtotime($request->tanggal_keluar));
                 $pendaftar['permasalahan']     = $request->permasalahan;
@@ -192,7 +300,26 @@ class PenerimaManfaatController extends Controller
         }
     }
 
-    public function aksiSelesai(Request $request, $uuid) {
+    public function dataPenerimaDetail(Request $request, $uuid) {
+        $users = Fungsi::getPegawai(auth()->user()->upt_id);
+        $provinsi     = KodeWilayah::select(['prov_id', 'prov'])->distinct()->get();
+        $jenis_aduan  = JenisAduan::get();
+        $jenis_kelamin  = JenisKelamin::get();
+        $upt          = Upt::get();
+        $permasalahan = Permasalahan::where('upt_id', auth()->user()->upt_id)->orderBy('nama', 'asc')->get();
+        $pendaftar    = Pendaftaran::with(['kondisiterakhir'])->where('uuid', $uuid)->first();
+        if(!$pendaftar) {
+            return redirect()->route('upt-penerima-manfaat')->with(array(
+                'message'    => 'Data Pendaftar Tidak Ditemukan',
+                'alert-type' => 'error'
+            ));
+        }
+
+        return view('upt.penerimaManfaat.detail', compact('pendaftar', 'provinsi', 'upt', 'jenis_aduan', 'jenis_kelamin', 'permasalahan', 'users'));
+    }
+
+    public function aksiSelesai(Request $request) {
+        $uuid = $request->uuid;
         $pendaftar   = Pendaftaran::where('uuid', $uuid)->first();
         if(!$pendaftar) {
             return redirect()->route('upt-penerima-manfaat')->with(array(
@@ -206,15 +333,27 @@ class PenerimaManfaatController extends Controller
             $pendaftar['tindakan'] = 3;
             $pendaftar->update();
 
+            $inputkonsidi = new KondisiTerakhir;
+            $inputkonsidi->id = Str::uuid();
+            $inputkonsidi->soft_delete = 0;
+            $inputkonsidi->pendaftar_id = $uuid;
+            UploadImage::setPath('pendaftaran/kondisi_terakhir');
+            UploadImage::setImage($request->file("kondisi_terakhir")->getContent());
+            UploadImage::setExt($request->file("kondisi_terakhir")->extension());
+            $path_kondisi_terakhir = UploadImage::uploadImage();
+            $inputkonsidi->photo = $path_kondisi_terakhir;
+            $inputkonsidi->save();
+
             DB:: commit();
             return redirect()->route('upt-penerima-manfaat')->with(array(
                 'message'    => 'Berhasil Menyelesaikan',
                 'alert-type' => 'success',
             ));
         } catch (\Throwable $th) {
+            // $th->getMessage()
             DB:: rollback();
             return redirect()->back()->with(array(
-                'message'    => 'Terdapat Kesalahan',
+                'message'    => $th->getMessage(),
                 'alert-type' => 'error'
             ));
         }
@@ -398,6 +537,101 @@ class PenerimaManfaatController extends Controller
                 'message'    => 'Terdapat Kesalahan',
                 'alert-type' => 'error'
             ));
+        }
+    }
+
+    public function tambah(Request $request)
+    {
+        $users = Fungsi::getPegawai(auth()->user()->upt_id);
+        $provinsi    = KodeWilayah::select(['prov_id', 'prov'])->distinct()->get();
+        $jenis_aduan = JenisAduan::orderBy('nama', 'asc')->get();
+        $jenis_kelamin = JenisKelamin::orderBy('nama', 'asc')->get();
+        $permasalahan = Permasalahan::orderBy('nama', 'asc')->get();
+        $upt         = Upt::get();
+
+        if($_SERVER['REQUEST_METHOD'] == 'GET') {
+            return view('upt.penerimaManfaat.tambah', compact('provinsi', 'jenis_aduan', 'jenis_kelamin', 'upt', 'permasalahan','users'));
+        } else if($_SERVER['REQUEST_METHOD'] == 'POST') {
+            DB:: beginTransaction();
+            try {
+                $noregis = Fungsi::generateNoRegis();
+                $pendaftaran = new Pendaftaran;
+                $pendaftaran->nama_lengkap     = $request->nama_lengkap ?? null;
+                $pendaftaran->nik              = $request->nik ?? null;
+                $pendaftaran->tempat_lahir     = $request->tempat_lahir ?? null;
+                $pendaftaran->tanggal_lahir    = $request->tanggal_lahir ?? null;
+                $pendaftaran->umur             = $request->umur ?? null;
+                $pendaftaran->jenis_kelamin    = $request->jenis_kelamin;
+                $pendaftaran->no_hp            = $request->no_hp ?? null;
+                $pendaftaran->prov_id          = 35;
+                $pendaftaran->kab_id           = $request->kab_id;
+                $pendaftaran->kec_id           = $request->kec_id;
+                $pendaftaran->alamat           = $request->alamat ?? null;
+                $pendaftaran->jenis_aduan      = $request->jenis_aduan;
+                $pendaftaran->upt_id           = auth()->user()->upt_id;
+                $pendaftaran->nama_rekomendasi = $request->nama_rekomendasi ?? null;
+                $pendaftaran->telp_rekomendasi = $request->telp_rekomendasi ?? null;
+                $pendaftaran->permasalahan     = $request->permasalahan;
+                $pendaftaran->pendamping       = $request->pendamping;
+                if($request->tanggal_masuk!=null) {
+                    $pendaftaran->tanggal_masuk    = date('Y-m-d', strtotime($request->tanggal_masuk));
+                }
+                if($request->tanggal_keluar!=null) {
+                    $pendaftaran->tanggal_keluar   = date('Y-m-d', strtotime($request->tanggal_keluar));
+                }
+                $pendaftaran->uuid             = Str::uuid();
+                $pendaftaran->tindakan         = 2;
+                $pendaftaran->nomor_registrasi = $noregis;
+                $pendaftaran->pj_id            = $request->idpenanggungjawab ?? null;
+
+                if(file_exists($_FILES['foto_kondisi']['tmp_name']) || is_uploaded_file($_FILES['foto_kondisi']['tmp_name'])) {
+                    UploadImage::setPath('pendaftaran/foto_kondisi');
+                    UploadImage::setImage($request->file("foto_kondisi")->getContent());
+                    UploadImage::setExt($request->file("foto_kondisi")->extension());
+                    $path_foto_kondisi = UploadImage::uploadImage();
+                    $pendaftaran->foto_kondisi = $path_foto_kondisi;
+                }
+                if(file_exists($_FILES['surat_pengantar']['tmp_name']) || is_uploaded_file($_FILES['surat_pengantar']['tmp_name'])) {
+                    UploadFile::setPath('pendaftaran/surat_pengantar');
+                    UploadFile::setFile($request->file("surat_pengantar")->getContent());
+                    UploadFile::setExt($request->file("surat_pengantar")->extension());
+                    $path_surat_pengantar = UploadFile::uploadFile();
+                    $pendaftaran->surat_pengantar = $path_surat_pengantar;
+                }
+
+                $pendaftaran->save();
+
+                // buat notifikasi upt
+                $to    = User::where('upt_id', auth()->user()->upt_id)->get();
+                $judul = 'Pendaftar Baru!';
+                $pesan = 'Ada pendaftar yang baru dengan nama ' . ucwords($request->nama_lengkap ?? null) . '. Silahkan di Cek!';
+                $url   = '/upt/pendaftar/tertunda';
+                foreach($to as $t) {
+                    $t->notify(new PendaftarNotification($judul, $pesan, $url));
+                }
+
+                // buat notifikasi dinsos
+                $toDinsos    = User::whereHas('role', function ($q) {
+                            $q->where('role', 'dinsos');
+                        })->get();
+                $urlDinsos   = '/dinsos/pendaftar';
+                foreach($toDinsos as $t) {
+                    $t->notify(new PendaftarNotification($judul, $pesan, $urlDinsos));
+                }
+
+                DB:: commit();
+                return redirect()->route('upt-penerima-manfaat')->with(array(
+                    'message'    => 'Data Sudah Terdaftar',
+                    'alert-type' => 'success'
+                ));
+            } catch (\Throwable $th) {
+                // $th->getMessage()
+                DB:: rollback();
+                return redirect()->back()->with(array(
+                    'message'    => 'Terdapat Kesalahan',
+                    'alert-type' => 'error'
+                ))->withInput();
+            }
         }
     }
 

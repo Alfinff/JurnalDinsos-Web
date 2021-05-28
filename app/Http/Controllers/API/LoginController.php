@@ -53,10 +53,10 @@ class LoginController extends Controller
                     return response()->json($data);
                 }
             } catch (\Throwable $th) {
-                // $th->getMessage()
-                $data['msg'] = 'Terdapat Kesalahan';
-                $data['success'] = false;
-                return response()->json($data);
+                // $th->getMessage();
+                $d['msg'] = "Terdapat Kesalahan";
+                $d['success'] = false;
+                return response()->json($d);
             }
         }
     }
@@ -80,9 +80,10 @@ class LoginController extends Controller
                 return response()->json($data);
             }
         } catch (\Throwable $th) {
-            $data['msg'] = 'Terdapat Kesalahan';
-            $data['success'] = false;
-            return response()->json($data);
+            // $th->getMessage();
+            $d['msg'] = "Terdapat Kesalahan";
+            $d['success'] = false;
+            return response()->json($d);
         }
     }
 }

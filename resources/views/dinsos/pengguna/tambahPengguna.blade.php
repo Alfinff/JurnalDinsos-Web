@@ -1,6 +1,6 @@
 @extends('layout.template')
 @section('content')
-	<div class="col-md-10 bg-col">
+	<div class="col-lg-10 bg-col" style="min-height: 100vh">
 		<div class="row my-3">
 			<div class="col-md-12">
 				<div class="card">

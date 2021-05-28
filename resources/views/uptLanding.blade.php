@@ -19,8 +19,8 @@
         <div class="info-header-2">
             <img src="{{asset('assets/images/uptprofile.png')}}" height="400" alt="">
             <h2>Profil UPT</h2>
-            <p>Beberapa UPT yang ada di Provinsi Jawa Timur.</p>
-            <input type="text" name="search" id="search" placeholder="Cari UPT">
+            <p class="text-center">Beberapa UPT yang ada di Provinsi Jawa Timur.</p>
+            {{-- <input type="text" name="search" id="search" placeholder="Cari UPT"> --}}
         </div>
     </div>
 </header>
@@ -33,186 +33,21 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="judulcard-upt">
-                            <h3>UPT Perlindungan dan Pelayanan Sosial Asuhan Balita Sidoarjo</h3>
-                        </div>
-                        <div class="lihat-upt">
-                            <a href="#">Lihat Profil ></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="judulcard-upt">
-                            <h3>UPT Perlindungan dan Pelayanan Sosial Asuhan Anak Trenggalek</h3>
-                        </div>
-                        <div class="lihat-upt">
-                            <a href="#">Lihat Profil ></a>
+            @foreach ($upt as $u)
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="judulcard-upt">
+                                <h3>{{ucwords($u->nama)}}</h3>
+                                <p>{{ucwords($u->namawilayah->kab)}}</p>
+                            </div>
+                            <div class="lihat-upt">
+                                <a href="{{route('halaman-upt', ['uuid' => $u->uuid])}}">Lihat Profil ></a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="judulcard-upt">
-                            <h3>UPT Perlindungan dan Pelayanan Sosial Asuhan Anak Situbondo</h3>
-                        </div>
-                        <div class="lihat-upt">
-                            <a href="#">Lihat Profil ></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="judulcard-upt">
-                            <h3>UPT Perlindungan dan Pelayanan Sosial Asuhan Anak Sumenep</h3>
-                        </div>
-                        <div class="lihat-upt">
-                            <a href="#">Lihat Profil ></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="judulcard-upt">
-                            <h3>UPT Perlindungan dan Pelayanan Sosial Asuhan Anak Nganjuk</h3>
-                        </div>
-                        <div class="lihat-upt">
-                            <a href="#">Lihat Profil ></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="judulcard-upt">
-                            <h3>UPT Perlindungan dan Pelayanan Sosial Petirahan Anak Batu</h3>
-                        </div>
-                        <div class="lihat-upt">
-                            <a href="#">Lihat Profil ></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="judulcard-upt">
-                            <h3>UPT Pelayanan Sosial Bina Remaja Jombang</h3>
-                        </div>
-                        <div class="lihat-upt">
-                            <a href="#">Lihat Profil ></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="judulcard-upt">
-                            <h3>UPT Pelayanan Sosial Bina Remaja Blitar</h3>
-                        </div>
-                        <div class="lihat-upt">
-                            <a href="#">Lihat Profil ></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="judulcard-upt">
-                            <h3>UPT Pelayanan Sosial Bina Remaja Bojonegoro</h3>
-                        </div>
-                        <div class="lihat-upt">
-                            <a href="#">Lihat Profil ></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="judulcard-upt">
-                            <h3>UPT Pelayanan Sosial Bina Remaja Pamekasan</h3>
-                        </div>
-                        <div class="lihat-upt">
-                            <a href="#">Lihat Profil ></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="judulcard-upt">
-                            <h3>UPT Pelayanan Sosial Tresna Werdha Pasuruan</h3>
-                        </div>
-                        <div class="lihat-upt">
-                            <a href="#">Lihat Profil ></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="judulcard-upt">
-                            <h3>UPT Pelayanan Sosial Tresna Werdha Jombang</h3>
-                        </div>
-                        <div class="lihat-upt">
-                            <a href="#">Lihat Profil ></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="judulcard-upt">
-                            <h3>UPT Pelayanan Sosial Tresna Werdha Blitar</h3>
-                        </div>
-                        <div class="lihat-upt">
-                            <a href="#">Lihat Profil ></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="judulcard-upt">
-                            <h3>UPT Pelayanan Sosial Tresna Werdha Magetan</h3>
-                        </div>
-                        <div class="lihat-upt">
-                            <a href="#">Lihat Profil ></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="judulcard-upt">
-                            <h3>UPT Pelayanan Sosial Tresna Werdha Jember</h3>
-                        </div>
-                        <div class="lihat-upt">
-                            <a href="#">Lihat Profil ></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
