@@ -95,15 +95,28 @@ class ChartUptController extends Controller
     public function jumlahjenisaduan() {
         $upt_id = $this->upt_id;
         try {
-            $countklien = Pendaftaran::where('upt_id', $upt_id)->where('soft_delete', 0)->count();
-            $jenisaduan = DB::select("SELECT j.nama, COUNT(*) AS jumlah FROM ms_pendaftaran p JOIN ms_jenis_aduan j ON j.uuid = p.jenis_aduan WHERE p.upt_id = '$upt_id' AND soft_delete = 0 GROUP BY jenis_aduan");
-            $datajenisaduan = array();
-            foreach($jenisaduan as $jj => $val) {
-                $datajenisaduan[$jj]['nama'] = $val->nama ?? '';
-                $datajenisaduan[$jj]['jumlah'] = $val->jumlah;
-                $datajenisaduan[$jj]['persen'] = round(($val->jumlah / $countklien) * 100, 2);
+            // $countklien = Pendaftaran::where('upt_id', $upt_id)->where('soft_delete', 0)->count();
+            // $jenisaduan = DB::select("SELECT j.nama, COUNT(*) AS jumlah FROM ms_pendaftaran p JOIN ms_jenis_aduan j ON j.uuid = p.jenis_aduan WHERE p.upt_id = '$upt_id' AND soft_delete = 0 GROUP BY jenis_aduan");
+            // $datajenisaduan = array();
+            // foreach($jenisaduan as $jj => $val) {
+            //     $datajenisaduan[$jj]['nama'] = $val->nama ?? '';
+            //     $datajenisaduan[$jj]['jumlah'] = $val->jumlah;
+            //     $datajenisaduan[$jj]['persen'] = round(($val->jumlah / $countklien) * 100, 2);
+            // }
+            $jenisaduan = array();
+            $jenisaduan = jenisAduan::all();
+            foreach($jenisaduan as $pp => $val) {
+                $data['data'][$pp]['nama'] = $val->nama ?? '';
+                $data['data'][$pp]['jumlah']['lakilaki'] = Pendaftaran::where('upt_id', $upt_id)->whereHas('jeniskelamin', function($query){
+                    $query->where('nama', 'like', '%'.'laki'.'%');
+                    $query->orWhere('nama', 'like', '%'.'pria'.'%');
+                })->where('jenis_aduan', $val->uuid)->where('soft_delete', 0)->count();
+                $data['data'][$pp]['jumlah']['perempuan'] = Pendaftaran::where('upt_id', $upt_id)->whereHas('jeniskelamin', function($query){
+                    $query->where('nama', 'like', '%'.'perempuan'.'%');
+                    $query->orWhere('nama', 'like', '%'.'wanita'.'%');
+                })->where('jenis_aduan', $val->uuid)->where('soft_delete', 0)->count();
+                $data['data'][$pp]['jumlah']['semua'] = Pendaftaran::where('upt_id', $upt_id)->where('jenis_aduan', $val->uuid)->where('soft_delete', 0)->count();
             }
-            $data['data'] = $datajenisaduan;
             $data['msg'] = "Data Jenis Aduan";
             $data['success'] = true;
             return response()->json($data);
