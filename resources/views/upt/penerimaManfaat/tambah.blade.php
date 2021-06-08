@@ -3,6 +3,13 @@
     <link rel="stylesheet" href="{{asset('assets/css/dropify.css')}}">
 @endsection
 @section('content')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<style>
+    .js-example-basic-single{
+        border: none !important;
+    }
+</style>
     <div class="col-lg-10 bg-col">
         <div class="row">
             <div class="col-md-12 my-3">
@@ -60,8 +67,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="jeniskelamin">Jenis Kelamin <small class="text-danger">*</small></label>
-                                                <select name="jenis_kelamin" id="jeniskelamin" class="form-select" required >
+                                                <label for="jeniskelamin">Jenis Kelamin <small class="text-danger"></small></label>
+                                                <select name="jenis_kelamin" id="jeniskelamin" class="form-select" >
                                                 <option value="" selected disabled>Pilih Jenis Kelamin</option>
                                                 @foreach($jenis_kelamin as $jk)
                                                     <option value="{{$jk->uuid}}" @if(old('jenis_kelamin') == $jk->uuid) selected @endif>{{$jk->nama}}</option>
@@ -89,8 +96,8 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="kabupaten">Kota / Kabupaten <small class="text-danger">*</small></label>
-                                                <select name="kab_id" id="kabupaten" class="form-select" required >
+                                                <label for="kabupaten">Kota / Kabupaten <small class="text-danger"></small></label>
+                                                <select name="kab_id" id="kabupaten" class="js-example-basic-single w-100 form-select" >
                                                     <option value="" selected>Pilih Kota/Kabupaten</option>
                                                 </select>
                                             </div>
@@ -98,8 +105,8 @@
 
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="kecamatan">Kecamatan <small class="text-danger">*</small></label>
-                                                <select name="kec_id" id="kecamatan" class="form-select" required >
+                                                <label for="kecamatan">Kecamatan <small class="text-danger"></small></label>
+                                                <select name="kec_id" id="kecamatan" class="js-example-basic-single w-100 form-select" >
                                                     <option value="" selected>Pilih Kecamatan</option>
                                                 </select>
                                             </div>
@@ -112,7 +119,7 @@
                                         </div>
                                         <div class="col-md-12">
                                             <label for="penanggungjawab">Penanggung Jawab</label>
-                                            <select name="idpenanggungjawab" id="penanggungjawab" required class="form-select">
+                                            <select name="idpenanggungjawab" id="penanggungjawab" class="form-select">
                                                 <option value="" selected disabled>Pilih Penanggung Jawab</option>
                                                 @foreach($users as $u)
                                                     <option value="{{$u->uuid}}" >{{ucwords($u->username)}}</option>
@@ -137,8 +144,8 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="permasalahan">Permasalahan <small class="text-danger">*</small></label>
-                                                <select name="permasalahan" id="permasalahan" class="form-select" required >
+                                                <label for="permasalahan">Permasalahan <small class="text-danger"></small></label>
+                                                <select name="permasalahan" id="permasalahan" class="form-select">
                                                     <option value="" selected disabled>Pilih Permasalahan</option>
                                                     @foreach ($permasalahan as $item)
                                                         <option value="{{$item->uuid}}" @if($item->uuid == old('permasalahan')) selected @endif>{{$item->nama}}</option>
@@ -149,9 +156,9 @@
                                         <div class="col-md-12">
                                             <div class="form-group file-area">
                                                 <div class="d-flex justify-content-between">
-                                                    <label for="foto_kondisi">Foto Kondisi <small class="text-danger">*</small></label>
+                                                    <label for="foto_kondisi">Foto Kondisi <small class="text-danger"></small></label>
                                                 </div>
-                                                <input type="file" id="foto_kondisi" name="foto_kondisi" data-show-remove="false" accept="image/*" class="dropify" data-default-file="" required/>
+                                                <input type="file" id="foto_kondisi" name="foto_kondisi" data-show-remove="false" accept="image/*" class="dropify" data-default-file=""/>
                                                 <div class="warn">
                                                     <p class="text-muted">Jenis File yang diterima : .jpg dan .png saja</p>
                                                 </div>
@@ -193,8 +200,8 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="pendamping">Petugas Pendamping <small class="text-danger">*</small></label>
-                                                <select name="pendamping" id="jenisaduan" class="form-select" required >
+                                                <label for="pendamping">Petugas Pendamping <small class="text-danger"></small></label>
+                                                <select name="pendamping" id="jenisaduan" class="form-select" >
                                                     <option value="" selected disabled>Pilih Pendamping</option>
                                                     @foreach ($users as $u)
                                                         <option value="{{$u->uuid}}" @if(old('pendamping') == $u->uuid) selected @endif>{{ucwords($u->username)}}</option>
@@ -204,8 +211,8 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="jenisaduan">Jenis Aduan <small class="text-danger">*</small></label>
-                                                <select name="jenis_aduan" id="jenisaduan" class="form-select" required >
+                                                <label for="jenisaduan">Jenis Aduan <small class="text-danger"></small></label>
+                                                <select name="jenis_aduan" id="jenisaduan" class="form-select" >
                                                     <option value="" selected disabled>Pilih Jenis Aduan</option>
                                                     @foreach ($jenis_aduan as $j)
                                                         <option value="{{$j->uuid}}" @if(old('jenis_aduan') == $j->uuid) selected @endif>{{$j->nama}}</option>
@@ -235,6 +242,7 @@
 <script src="{{asset('assets/js/dropify.js')}}"></script>
 <script>
     $(document).ready(function(){
+        $('.js-example-basic-single').select2();
         $('.dropify').dropify({
             messages: {
                 'default': 'Drag and drop a file here or click',
@@ -243,11 +251,6 @@
                 'error':   'Ooops, something wrong happended.'
             }
         });
-
-    })
-</script>
-<script>
-    $(document).ready(function() {
         $.ajax({
             url: "{{url('api/kabupaten')}}/35",
             method: "GET",

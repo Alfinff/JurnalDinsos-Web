@@ -6,7 +6,7 @@
     <link rel="icon" href="{{asset('assets/images/logo-dinsos.ico')}}">
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous"> -->
     @yield('head')
-    
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
@@ -73,8 +73,22 @@
           }
       @media (min-width: 1400px) {
         .container, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
-          max-width: 1500px; 
-        } 
+          max-width: 1500px;
+        }
+      }
+      .dropdown.dropdown-navbar {
+        display: none;
+        position: static !important;
+        top: auto !important;
+        right: auto !important;
+        padding: unset !important;
+        z-index: auto !important;
+        background: unset !important;
+        border-radius: unset !important;
+      }
+      .navbars .dropdown-menu {
+        top: 75px;
+        right: 40px;
       }
     </style>
   </head>
@@ -85,7 +99,7 @@
         <div class="bg1">
           <img src="{{asset('assets/images/icon-login.png')}}" alt="">
           <h3>Selamat Datang</h3>
-          <p>Silahan Masukkan Email dan Password untuk masuk ke Website</p>
+          <p>Silahkan Masukkan Email dan Password untuk masuk ke Website</p>
         </div>
       </div>
       <div class="right-side-login bg2">
@@ -155,6 +169,18 @@
             <li><a href="{{route('tentang')}}" class="menunya @if(isset($url[1])) @if($url[1] == 'tentang') active @endif @endif">Tentang</a></li>
           </ul>
         </div>
+        <div class="dropdown dropdown-navbar">
+          <div class="navbar-click dropdown-toggler">
+              <a class="btn" id="btnmenu">Menu</a>
+          </div>
+          <div class="dropdown-menu">
+            <a onclick="openModal()" class="dropdown-item" id="">Masuk</a>
+            <a href="{{ route('index') }}" class="dropdown-item @if(request()->is('/') || request()->is('halaman/pendaftaran')) active @endif">Beranda</a>
+            <a href="{{route('halaman-upt')}}" class="dropdown-item @if(isset($url[1])) @if($url[1] == 'upt') active @endif @endif">UPT</a>
+            <a href="{{route('halaman-berita')}}" class="dropdown-item @if(isset($url[1])) @if($url[1] == 'berita') active @endif @endif">Berita</a>
+            <a href="{{route('tentang')}}" class="dropdown-item @if(isset($url[1])) @if($url[1] == 'tentang') active @endif @endif">Tentang</a>
+          </div>
+        </div>
         <div class="navbar-click">
           {{--@if(auth()->check())
             @php
@@ -197,10 +223,18 @@
           <div class="medsos column-footer col-md-3">
             <p class="judulfooter">Media Sosial</p>
             <div class="medsos-div">
-              <img src="{{asset('assets/images/mdi_facebook.png')}}" alt="">
-              <img src="{{asset('assets/images/mdi_instagram.png')}}" alt="">
-              <img src="{{asset('assets/images/mdi_twitter.png')}}" alt="">  
-              <img src="{{asset('assets/images/mdi_youtube.png')}}" alt="">  
+              <a href="https://www.facebook.com/dinsosjatim/" target="_blank">
+                <img src="{{asset('assets/images/mdi_facebook.png')}}" alt="">
+              </a>
+              <a href="https://www.instagram.com/dinsosjatim/" target="_blank">
+                <img src="{{asset('assets/images/mdi_instagram.png')}}" alt="">
+              </a>
+              <a href="https://twitter.com/dinsos_jatim" target="_blank">
+                <img src="{{asset('assets/images/mdi_twitter.png')}}" alt="">
+              </a>
+              {{-- <a href="#" target="_blank">
+                <img src="{{asset('assets/images/mdi_youtube.png')}}" alt="">
+              </a> --}}
             </div>
           </div>
         </div>
@@ -213,15 +247,20 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTIjtHftBY-v57W-AQJD803ArZqnjv_pY&callback=initMap&libraries=&v=weekly" async></script>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     <script>
+      $(".dropdown-toggler").click(function (e) {
+        e.preventDefault();
+        $(".dropdown-menu").toggleClass("show");
+      });
       function openModal() {
         modal.style.display = 'flex'
       }
       const navbar = document.getElementById('navbars')
       const btn = document.getElementById('btnmasuk')
+      const btnMenu = document.getElementById('btnmenu')
       const list = document.getElementsByClassName('menunya')
       window.onscroll = () => {
         if (this.scrollY > 80) {
@@ -230,14 +269,16 @@
           }
           navbar.classList.add("fixeds")
           btn.classList.add("btnfixed")
+          btnMenu.classList.add("btnfixed")
         } else {
           for(i = 0; i < list.length; i++) {
             list[i].classList.remove('menuchange')
           }
           navbar.classList.remove("fixeds")
           btn.classList.remove("btnfixed")
+          btnMenu.classList.remove("btnfixed")
         }
-        // this.scrollY > 80 ?  : ; 
+        // this.scrollY > 80 ?  : ;
       }
     </script>
     <script>
@@ -255,7 +296,7 @@
       }
     </script>
     @if(Session::has('message'))
-      <script> 
+      <script>
       toastr.options = {
         "debug": false,
         "positionClass": "toast-top-right",
@@ -266,7 +307,7 @@
         // "extendedTimeOut": 1000,
         // "tapToDismiss": true
       }
-      @if(Session::has('style') == NULL)  
+      @if(Session::has('style') == NULL)
         document.getElementById('login-modal').style.display = 'flex'
       @endif
       var type = "{{ Session::get('alert-type', 'info') }}";

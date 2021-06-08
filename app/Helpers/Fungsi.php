@@ -40,7 +40,7 @@ class Fungsi
                     where('soft_delete', 0)
                     ->where('upt_id', $upt_id)
                     ->where('tindakan', 0)
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('tanggal_masuk', 'desc')
                     ->get();
 
         return $pendaftar;
@@ -53,7 +53,7 @@ class Fungsi
                     ->where('soft_delete', 0)
                     ->where('upt_id', $upt_id)
                     ->where('tindakan', 1)
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('tanggal_masuk', 'desc')
                     ->get();
 
         return $pendaftar;
@@ -66,7 +66,7 @@ class Fungsi
                     ->where('soft_delete', 0)
                     ->where('upt_id', $upt_id)
                     ->where('tindakan', 2)
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('tanggal_masuk', 'desc')
                     ->get();
 
         return $pendaftar;
@@ -79,7 +79,7 @@ class Fungsi
                     ->where('soft_delete', 0)
                     ->where('upt_id', $upt_id)
                     ->where('tindakan', 3)
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('tanggal_masuk', 'desc')
                     ->get();
 
         return $pendaftar;
@@ -102,7 +102,7 @@ class Fungsi
         $pendaftar = Pendaftaran::
                     with(['upt', 'jenisaduan'])
                     ->where('soft_delete', 0)
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('tanggal_masuk', 'desc')
                     ->get();
 
         return $pendaftar;
@@ -125,7 +125,7 @@ class Fungsi
                     with(['upt', 'jenisaduan'])
                     ->where('upt_id', $uptid)
                     ->where('soft_delete', 0)
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('tanggal_masuk', 'desc')
                     ->get();
 
         return $pendaftar;

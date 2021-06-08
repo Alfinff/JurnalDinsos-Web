@@ -19,22 +19,13 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::namespace('App\Http\Controllers\API')->group(function() {
+    // web api kode wilayah
     Route::get('provinsi', 'KodeWilayahController@get_provinsi');
     Route::get('kabupaten/{prov_id}', 'KodeWilayahController@get_kabupaten');
     Route::get('kecamatan/{kab_id}', 'KodeWilayahController@get_kecamatan');
     Route::get('kelurahan/{kec_id}', 'KodeWilayahController@get_kelurahan');
     Route::post('/login', 'LoginController@login');
     Route::get('/checktoken', 'LoginController@checkToken')->middleware('protect-api');
-
-        // Dashboard / Chart Dinsos
-        Route::prefix('chart')->group(function() {
-            Route::get('/jumlahklien', 'ChartController@jumlahklien');
-            Route::get('/jumlahupt', 'ChartController@jumlahupt');
-            Route::get('/chartjeniskelamin', 'ChartController@chartjeniskelamin');
-            Route::get('/pengeluaranupt', 'ChartController@pengeluaranupt');
-            Route::get('/jumlahjenisaduan', 'ChartController@jumlahjenisaduan');
-            Route::get('/chartklienmasuk', 'ChartController@chartklienmasuk');
-        });
 
     // API Pendaftaran
     Route::prefix('wilayah')->group(function() {
@@ -68,5 +59,32 @@ Route::namespace('App\Http\Controllers\API')->group(function() {
 
     Route::get('/visimisi', 'VisiMisiController@get');
     Route::get('/video/{uuid?}', 'VideoController@get');
+
+    Route::post('/search/{uuid?}', 'SearchController@search');
+
+    Route::prefix('chart')->group(function() {
+        // Dashboard / Chart Dinsos
+        Route::prefix('dinsos')->middleware('checktokenapi:dinsos')->group(function() {
+            Route::get('/jenisaduan/{upt_id?}', 'ChartController@jenisaduan');
+            Route::get('/jumlahklien', 'ChartController@jumlahklien');
+            Route::get('/jumlahupt', 'ChartController@jumlahupt');
+            Route::get('/chartjeniskelamin/{upt_id?}', 'ChartController@chartjeniskelamin');
+            Route::get('/pengeluaranupt', 'ChartController@pengeluaranupt');
+            Route::get('/jumlahjenisaduan', 'ChartController@jumlahjenisaduan');
+            Route::get('/chartklienmasuk', 'ChartController@chartklienmasuk');
+            Route::get('/kepegawaian', 'KepegawaianController@getPegawaiSemua');
+        });
+
+        // UPT
+        Route::prefix('upt')->middleware('checktokenapi:upt_pegawai')->group(function() {
+            Route::get('/jumlahklien', 'ChartUptController@jumlahklien');
+            Route::get('/jumlahupt', 'ChartUptController@jumlahupt');
+            Route::get('/chartjeniskelamin', 'ChartUptController@chartjeniskelamin');
+            Route::get('/pengeluaranupt', 'ChartUptController@pengeluaranupt');
+            Route::get('/jumlahjenisaduan', 'ChartUptController@jumlahjenisaduan');
+            Route::get('/chartklienmasuk', 'ChartUptController@chartklienmasuk');
+            Route::get('/kepegawaian/{upt_id}', 'KepegawaianController@getPegawaiUpt');
+        });
+    });
 });
 

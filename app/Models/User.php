@@ -65,6 +65,11 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Role', 'role', 'id');
     }
 
+    public function rolenya()
+    {
+        return $this->belongsTo('App\Models\Role', 'role', 'id');
+    }
+
     public function module()
     {
         return $this->hasOne('App\Models\UsersModule', 'users_id', 'uuid');

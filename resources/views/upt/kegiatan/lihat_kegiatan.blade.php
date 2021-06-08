@@ -21,9 +21,11 @@
 						{{-- <hr> --}}
 						<div class="row">
 							<div class="col-md-6 detailimg">
-                                <a href="{{Storage::disk('s3')->temporaryUrl($kegiatan->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" data-fancybox="images" data-caption="">
-								    <img class="shadow-sm" src="{{Storage::disk('s3')->temporaryUrl($kegiatan->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
-                                </a>
+                                @if(isset($kegiatan->photo) && ($kegiatan->photo!=null))
+                                    <a href="{{Storage::disk('s3')->temporaryUrl($kegiatan->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" data-fancybox="images" data-caption="">
+                                        <img class="shadow-sm" src="{{Storage::disk('s3')->temporaryUrl($kegiatan->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
+                                    </a>
+                                @endif
 							</div>
 							<div class="col-md-6">
 								<div class="judulkegiatan">

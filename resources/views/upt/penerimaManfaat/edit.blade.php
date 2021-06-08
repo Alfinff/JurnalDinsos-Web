@@ -83,8 +83,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="jeniskelamin">Jenis Kelamin <small class="text-danger">*</small></label>
-                                                <select name="jenis_kelamin" id="jeniskelamin" class="form-select" required >
+                                                <label for="jeniskelamin">Jenis Kelamin <small class="text-danger"></small></label>
+                                                <select name="jenis_kelamin" id="jeniskelamin" class="form-select" >
                                                 <option value="" selected disabled>Pilih Jenis Kelamin</option>
                                                 @foreach($jenis_kelamin as $jk)
                                                     <option value="{{$jk->uuid}}" @if($pendaftar->jenis_kelamin == $jk->uuid) selected @endif>{{$jk->nama}}</option>
@@ -112,8 +112,8 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="kabupaten">Kota / Kabupaten <small class="text-danger">*</small></label>
-                                                <select name="kab_id" id="kabupaten" class="form-select" required >
+                                                <label for="kabupaten">Kota / Kabupaten <small class="text-danger"></small></label>
+                                                <select name="kab_id" id="kabupaten" class="form-select" >
                                                     <option value="" selected>Pilih Kota/Kabupaten</option>
                                                 </select>
                                             </div>
@@ -121,8 +121,8 @@
 
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="kecamatan">Kecamatan <small class="text-danger">*</small></label>
-                                                <select name="kec_id" id="kecamatan" class="form-select" required >
+                                                <label for="kecamatan">Kecamatan <small class="text-danger"></small></label>
+                                                <select name="kec_id" id="kecamatan" class="form-select" >
                                                     <option value="" selected>Pilih Kecamatan</option>
                                                 </select>
                                             </div>
@@ -151,8 +151,8 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="permasalahan">Permasalahan <small class="text-danger">*</small></label>
-                                                <select name="permasalahan" id="permasalahan" class="form-select" required >
+                                                <label for="permasalahan">Permasalahan <small class="text-danger"></small></label>
+                                                <select name="permasalahan" id="permasalahan" class="form-select" >
                                                     <option value="" selected disabled>Pilih Permasalahan</option>
                                                     @foreach ($permasalahan as $item)
                                                         <option value="{{$item->uuid}}" @if($item->uuid == $pendaftar->permasalahan) selected @endif>{{$item->nama}}</option>
@@ -217,8 +217,8 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="pendamping">Petugas Pendamping <small class="text-danger">*</small></label>
-                                                <select name="pendamping" id="jenisaduan" class="form-select" required >
+                                                <label for="pendamping">Petugas Pendamping <small class="text-danger"></small></label>
+                                                <select name="pendamping" id="jenisaduan" class="form-select" >
                                                     <option value="" selected disabled>Pilih Pendamping</option>
                                                     @foreach ($users as $u)
                                                         <option value="{{$u->uuid}}" @if($pendaftar->pendamping == $u->uuid) selected @endif>{{ucwords($u->username)}}</option>
@@ -228,8 +228,8 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label for="jenisaduan">Jenis Aduan <small class="text-danger">*</small></label>
-                                                <select name="jenis_aduan" id="jenisaduan" class="form-select" required >
+                                                <label for="jenisaduan">Jenis Aduan <small class="text-danger"></small></label>
+                                                <select name="jenis_aduan" id="jenisaduan" class="form-select">
                                                     <option value="" selected disabled>Pilih Jenis Aduan</option>
                                                     @foreach ($jenis_aduan as $j)
                                                         <option value="{{$j->uuid}}" @if($pendaftar->jenis_aduan == $j->uuid) selected @endif>{{$j->nama}}</option>

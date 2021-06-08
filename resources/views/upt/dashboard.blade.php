@@ -1,5 +1,6 @@
 @extends('layout.template')
 @section('content')
+{{-- {{dd($lakiperempuan)}} --}}
 <div class="col-lg-10" style="background-color: #fbfbfb;">
   <div class="mx-2">
     <div class="row my-3">
@@ -90,12 +91,12 @@
               <div class="jenis-legend">
                 <img style="widht: 32px; height: 32px;" src="{{asset('assets/images/man.png')}}" alt="">
                 <p>Laki-Laki</p>
-                <h3 id="red">{{$lakilaki}} orang</h3>
+                <h3 id="red">{{$lakiperempuan[1]->jumlah}} orang</h3>
               </div>
               <div class="jenis-legend">
                 <img style="widht: 32px; height: 32px;" src="{{asset('assets/images/woman.png')}}" alt="">
                 <p>Perempuan</p>
-                <h3 id="blue">{{$perempuan}} orang</h3>
+                <h3 id="blue">{{$lakiperempuan[0]->jumlah}} orang</h3>
               </div>
             </div>
           </div>
@@ -116,10 +117,10 @@
                 <div class="col-sm-6">
                   <div class="item">
                     <div class="name">
-                      {{$dd['nama']}}
+                      {{$dd->nama}}
                     </div>
                     <div class="count">
-                      {{ $dd['jumlah']}} Aduan
+                      {{ $dd->jumlah}} Aduan
                     </div>
                   </div>
                 </div>
@@ -163,26 +164,26 @@
           },
           colors: ["#5766da", "#999999"],
           series: [
-              // {
-              //     name: 'Tahun Kemarin',
-              //     data: [
-              //         @foreach($klienmasuk_tahunini as $k)
-              //             {{$k->jumlah}},
-              //         @endforeach
-              //     ]
-              // },
               {
-                  name: 'Bulan Ini',
+                  name: 'Klien Masuk',
                   data: [
-                      @foreach($klienmasuk_tahunini as $k)
-                          {{$k->jumlah}},
+                      @foreach($klienmasuk as $k)
+                          {{$k['jumlah']}},
+                      @endforeach
+                  ]
+              },
+              {
+                  name: 'Klien Keluar',
+                  data: [
+                      @foreach($klienkeluar as $tt)
+                          {{$tt['jumlah']}},
                       @endforeach
                   ]
               }
           ],
           xaxis: {
             categories: [
-              @foreach($bulan_tahunini as $b => $val)
+              @foreach($bulan as $b => $val)
                   '{{$val}}',
               @endforeach
             ],
@@ -225,12 +226,12 @@
             }
           }]
       }
-  
+
       var chart = new ApexCharts(
         document.querySelector("#chartklien"),
         options
       );
-  
+
       chart.render();
       </script>
     </div>
@@ -248,7 +249,10 @@
         width: 2,
         colors: ['transparent']
     },
-    series: [{{$lakilaki}}, {{$perempuan}}],
+    series: [
+        {{$lakiperempuan[1]->jumlah}},
+        {{$lakiperempuan[0]->jumlah}}
+    ],
     legend: {
         show: false,
         position: 'bottom',
@@ -287,9 +291,11 @@
         width: 2,
         colors: ['transparent']
     },
-    series: [@foreach($datajenisaduan as $dd)
-              {{ $dd['jumlah']}},
-            @endforeach],
+    series: [
+        @foreach($datajenisaduan as $dd)
+            {{ $dd->jumlah}},
+        @endforeach
+    ],
     legend: {
         show: false,
         position: 'bottom',
@@ -300,10 +306,12 @@
         offsetX: 0,
         offsetY: 6
     },
-    labels: [@foreach($datajenisaduan as $aa)
-              "{{ $aa['nama'] }}",
-            @endforeach],
-    colors: ["#34495E", "#FF5733"],
+    labels: [
+        @foreach($datajenisaduan as $aa)
+            "{{ $aa->nama }}",
+        @endforeach
+    ],
+    colors: ["#FF5733", "#0d6efd", "#ffc107", "#6c757d", "#dc3545", "#198754"],
     responsive: [{
         breakpoint: 600,
         options: {

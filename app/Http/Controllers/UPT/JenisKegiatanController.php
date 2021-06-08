@@ -40,6 +40,37 @@ class JenisKegiatanController extends Controller
         }
     }
 
+    public function edit(Request $request, $uuid)
+    {
+        $jeniskegiatan = KegiatanTipe::where('uuid', $uuid)->first();
+        if(!$jeniskegiatan) {
+            return redirect()->route('upt-setting-jeniskegiatan')->with(array(
+                'message'    => 'Data Jenis Kegiatan Tidak Ditemukan',
+                'alert-type' => 'error'
+            ));
+        }
+
+        DB:: beginTransaction();
+        try {
+            $jeniskegiatan->nama     = $request->nama;
+            $jeniskegiatan->editor   = auth()->user()->uuid;
+            $jeniskegiatan->upt_id   = auth()->user()->upt_id;
+            $jeniskegiatan->save();
+
+            DB:: commit();
+            return redirect()->route('upt-setting-jeniskegiatan')->with(array(
+                'message'    => 'Sukses Edit Jenis Kegiatan',
+                'alert-type' => 'success',
+            ));
+        } catch (\Throwable $th) {
+            DB:: rollback();
+            return redirect()->back()->with(array(
+                'message'    => 'Terdapat Kesalahan',
+                'alert-type' => 'error'
+            ))->withInput();
+        }
+    }
+
     public function hapus($uuid)
     {
         $jeniskegiatan = KegiatanTipe::where('uuid', $uuid)->first();

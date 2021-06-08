@@ -91,12 +91,20 @@
 
                     req.send();
                 }
-                </script>
-
-            <div style="width: auto;position: absolute;right: 5px;top: 5px;">
+            </script>
+            <div class="m-5" style="width: auto;position: absolute;right: 5px;top: 5px;">
                 <a href="{{route('upt-pendaftar-tambah')}}" class="btn btn-primary">Tambah Data</a>
             </div>
             <hr>
+            <div class="row col-md-5 align-items-center position-relative my-4">
+                Import Data Excel
+                <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="file" name="file" class="form-control" required>
+                    <br>
+                    <button class="btn btn-success">Import</button>
+                </form>
+            </div>
             <table id="upt-Penerima-Bantuan" class="table table-bordered dt-responsive table" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                 <thead style="background-color: #F5F5F5;padding: 1rem .5rem !important;">
                     <tr>
@@ -177,13 +185,14 @@
             $('#upt-Penerima-Bantuan').DataTable({
                 processing: true,
                 // serverSide: true,
+                searching: true,
                 ajax: '{{URL::to('/upt/penerima/data')}}',
                 columns:[
-                    {data:'nama_lengkap', name:'Nama'},
-                    {data:'tanggal_masuk', name:'Tanggal Masuk'},
-                    {data:'ttl', name:'TTL'},
-                    {data:'alamat', name:'Alamat'},
-                    {data:'tindakanstatus', name:'Status'},
+                    {data:'nama_lengkap', name:'Nama', orderable: true, searchable: true},
+                    {data:'tanggal_masuk', name:'Tanggal Masuk', orderable: true, searchable: true},
+                    {data:'ttl', name:'TTL', orderable: true, searchable: true},
+                    {data:'alamat', name:'Alamat', orderable: true, searchable: true},
+                    {data:'tindakanstatus', name:'Status', orderable: true, searchable: true},
                     {data:'action', name:'Aksi'},
                 ],
                 "columnDefs":[{

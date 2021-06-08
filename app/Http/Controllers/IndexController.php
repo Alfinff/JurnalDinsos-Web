@@ -8,6 +8,7 @@ use App\Models\Berita;
 use App\Models\Upt;
 use App\Models\UnitKerja;
 use App\Models\Pimpinan;
+use App\Models\Pendaftaran;
 use App\Models\VisiMisi;
 use App\Models\Video;
 use Auth;
@@ -23,7 +24,7 @@ class IndexController extends Controller
 
     public function upt(Request $request, $uuid=null) {
         if($uuid!=null) {
-            $detail = Upt::with(['namawilayah'])->where('uuid', $uuid)->where('soft_delete', 0)->first();
+            $detail = Upt::with(['jenis','namawilayah'])->where('uuid', $uuid)->where('soft_delete', 0)->first();
             if(!$detail) {
                 return redirect()->route('halaman-upt')->with(array(
                     'message'    => 'Data UPT Tidak Ditemukan',
@@ -50,8 +51,9 @@ class IndexController extends Controller
                 }
                 $pimpinan[$r->id_unit_kerja] = Pimpinan::with(['users','profile'])->where('id_unit_kerja', $r->id_unit_kerja)->first();
             }
+            $count = Pendaftaran::where('upt_id', $uuid)->where('soft_delete', 0)->get()->count();
 
-            return view('detailProfilUpt', compact('detail', 'arrData', 'child3', 'pimpinan'));
+            return view('detailProfilUpt', compact('detail', 'arrData', 'child3', 'pimpinan','count'));
         } else {
             $upt = Upt::with(['namawilayah'])->get();
             return view('uptLanding', compact('upt'));

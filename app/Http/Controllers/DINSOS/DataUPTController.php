@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Helpers\Fungsi;
 use App\Models\Role;
+use App\Models\JenisUpt;
 use App\Models\Upt;
 use App\Helpers\UploadImage;
 
@@ -74,8 +75,9 @@ class DataUPTController extends Controller
     }
 
     public function tambah(Request $request) {
+        $jenisupt = JenisUpt::where('soft_delete', 0)->orderBy('nama')->get();
         if($_SERVER['REQUEST_METHOD'] == 'GET') {
-            return view('dinsos.dataUpt.tambah');
+            return view('dinsos.dataUpt.tambah', compact('jenisupt'));
         } else if($_SERVER['REQUEST_METHOD'] == 'POST') {
             DB:: beginTransaction();
             try {
@@ -83,6 +85,13 @@ class DataUPTController extends Controller
                 $upt['nama'] = $request->nama_upt;
                 $upt['alamat']    = $request->alamat_lengkap;
                 $upt['wilayah']   = $request->wilayah;
+                $upt['jenis_upt']   = $request->jenisupt;
+                if(isset($request->deskripsi) && ($request->deskripsi!=null)) {
+                    $upt['deskripsi']   = $request->deskripsi;
+                }
+                if(isset($request->maps) && ($request->maps!=null)) {
+                    $upt['maps']   = $request->maps;
+                }
                 $upt['soft_delete']    = 0;
                 $upt['uuid']     = Str::uuid();
                 if(file_exists($_FILES['logo_upt']['tmp_name']) || is_uploaded_file($_FILES['logo_upt']['tmp_name'])) {
@@ -118,14 +127,22 @@ class DataUPTController extends Controller
             ));
         }
 
+        $jenisupt = JenisUpt::where('soft_delete', 0)->orderBy('nama')->get();
         if($_SERVER['REQUEST_METHOD'] == 'GET') {
-            return view('dinsos.dataUpt.edit', compact('upt'));
+            return view('dinsos.dataUpt.edit', compact('upt', 'jenisupt'));
         } else if($_SERVER['REQUEST_METHOD'] == 'POST') {
             DB:: beginTransaction();
             try {
                 $upt->nama = $request->nama_upt;
                 $upt->alamat    = $request->alamat_lengkap;
                 $upt->wilayah   = $request->wilayah;
+                $upt->jenis_upt   = $request->jenisupt;
+                if(isset($request->deskripsi) && ($request->deskripsi!=null)) {
+                    $upt->deskripsi   = $request->deskripsi;
+                }
+                if(isset($request->maps) && ($request->maps!=null)) {
+                    $upt->maps   = $request->maps;
+                }
                 if(file_exists($_FILES['logo_upt']['tmp_name']) || is_uploaded_file($_FILES['logo_upt']['tmp_name'])) {
                     UploadImage::setPath('upt');
                     UploadImage::setImage($request->file("logo_upt")->getContent());
@@ -141,10 +158,10 @@ class DataUPTController extends Controller
                     'alert-type' => 'success',
                 ));
             } catch (\Throwable $th) {
-                DB:: rollback();
                 // $th->getMessage()
+                DB:: rollback();
                 return redirect()->back()->with(array(
-                    'message'    => $th->getMessage(),
+                    'message'    => "Terdapat Kesalahan",
                     'alert-type' => 'error'
                 ));
             }

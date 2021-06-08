@@ -52,6 +52,7 @@ class PendaftaranController extends Controller
             $pendaftaran->telp_rekomendasi = $request->telp_rekomendasi;
             $pendaftaran->created_at       = date('Y-m-d H:i:s');
             $pendaftaran->uuid             = Str::uuid();
+            $pendaftaran->is_pengaduan     = 1;
 
             // $data_in['foto_kondisi']     = Str::uuid().".".
             //     $request->file("foto_kondisi")->extension();

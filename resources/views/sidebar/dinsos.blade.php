@@ -76,7 +76,7 @@
                 </li>
                 @endif
 
-                @if(isset(auth()->user()->module->data_upt) && (auth()->user()->module->data_upt == 1))
+                {{-- @if(isset(auth()->user()->module->data_upt) && (auth()->user()->module->data_upt == 1))
                 <li class="menu--item">
                     <a href="{{route('dinsos-dataupt')}}" class="menu--link @if(isset($url[1])) @if($url[1] == 'dataupt') active @else @endif @endif" title="Item 4">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -86,6 +86,42 @@
                     </svg>
                     <span class="menu--label">Data UPT</span>
                     </a>
+                </li>
+                @endif --}}
+                @if(isset(auth()->user()->module->data_upt) && (auth()->user()->module->data_upt == 1))
+                <li class="menu--item menu--item__has_sub_menu @if(isset($url[1])) @if(($url[1] == 'dataupt') || ($url[1] == 'jenisupt')) menu--subitens__opened @else @endif @endif">
+                    <label class="menu--link" title="Item 2">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="iconside" d="M17 15H19V17H17V15ZM17 11H19V13H17V11ZM17 7H19V9H17V7ZM13.74 7L15 7.84V7H13.74Z" fill="#8C8C8C"/>
+                        <path class="iconside" d="M10 3V4.51L12 5.84V5H21V19H17V21H23V3H10Z" fill="#8C8C8C"/>
+                        <path class="iconside" d="M8.17 5.7002L15 10.2502V21.0002H1V10.4802L8.17 5.7002ZM10 19.0002H13V11.1602L8.17 8.0902L3 11.3802V19.0002H6V13.0002H10V19.0002Z" fill="#8C8C8C"/>
+                    </svg>
+
+                    <span class="menu--label">Data Upt</span>
+                    </label>
+                    <ul class="sub_menu">
+                        <li class="sub_menu--item">
+                            <a href="{{route('dinsos-dataupt')}}" class="sub_menu--link @if(isset($url[1])) @if($url[1] == 'dataupt') active @else @endif @endif">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path class="iconside" d="M17 15H19V17H17V15ZM17 11H19V13H17V11ZM17 7H19V9H17V7ZM13.74 7L15 7.84V7H13.74Z" fill="#8C8C8C"/>
+                                <path class="iconside" d="M10 3V4.51L12 5.84V5H21V19H17V21H23V3H10Z" fill="#8C8C8C"/>
+                                <path class="iconside" d="M8.17 5.7002L15 10.2502V21.0002H1V10.4802L8.17 5.7002ZM10 19.0002H13V11.1602L8.17 8.0902L3 11.3802V19.0002H6V13.0002H10V19.0002Z" fill="#8C8C8C"/>
+                            </svg>
+                            Semua Upt
+                            </a>
+                        </li>
+                        <li class="sub_menu--item">
+                            <a href="{{route('dinsos-jenisupt')}}" class="sub_menu--link @if(isset($url[1])) @if($url[1] == 'jenisupt') active @else @endif @endif">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path class="iconside" d="M17 15H19V17H17V15ZM17 11H19V13H17V11ZM17 7H19V9H17V7ZM13.74 7L15 7.84V7H13.74Z" fill="#8C8C8C"/>
+                                <path class="iconside" d="M10 3V4.51L12 5.84V5H21V19H17V21H23V3H10Z" fill="#8C8C8C"/>
+                                <path class="iconside" d="M8.17 5.7002L15 10.2502V21.0002H1V10.4802L8.17 5.7002ZM10 19.0002H13V11.1602L8.17 8.0902L3 11.3802V19.0002H6V13.0002H10V19.0002Z" fill="#8C8C8C"/>
+                            </svg>
+                            Jenis Upt
+                            </a>
+                        </li>
+
+                    </ul>
                 </li>
                 @endif
 

@@ -13,7 +13,7 @@ class KegiatanUPTController extends Controller
 {
 
     public function index() {
-        $upt = Upt::orderBy('nama', 'asc')->get();
+        $upt = Upt::orderBy('nama', 'asc')->where('soft_delete', 0)->get();
         $kegiatan = Kegiatan::where('soft_delete', 0)->get();
         return view('dinsos.kegiatanUpt.index', compact('kegiatan', 'upt'));
     }

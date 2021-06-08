@@ -65,6 +65,7 @@ class PendaftaranController extends Controller
                 $pendaftaran->telp_rekomendasi = $request->telp_rekomendasi;
                 $pendaftaran->created_at       = date('Y-m-d H:i:s');
                 $pendaftaran->uuid             = Str::uuid();
+                $pendaftaran->is_pengaduan     = 1;
 
                 // upload to s3 foto kondisi & surat pengantar
                 // UploadFile::setPath('pendaftaran/surat_pengantar');

@@ -134,7 +134,6 @@ class DataPendaftarController extends Controller
     public function dataPenerimaExport(Request $request, $id=null)
     {
         $pendaftar = null;
-        $tindakan = null;
         $wilayah = null;
         if($id!=null) {
             $pendaftar    = Pendaftaran::with('penanggungjawab', 'upt', 'jenisaduan', 'jeniskelamin', 'permasalahanya', 'pendampinya')->where('soft_delete', 0)->where('id', $id)->get();
@@ -145,8 +144,8 @@ class DataPendaftarController extends Controller
         $data = array();
         foreach($pendaftar as $pp => $val) {
             $wilayah = null;
-            $wilayah = KodeWilayah::where('kec_id', $val['kec_id'])->first();
             $tindakan = null;
+            $wilayah = KodeWilayah::where('kec_id', $val['kec_id'])->first();
             if($val['tindakan'] = 0) {
                 $tindakan = 'Tertunda';
             } else if($val['tindakan'] = 1) {

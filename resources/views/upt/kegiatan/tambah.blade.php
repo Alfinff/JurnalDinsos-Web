@@ -49,8 +49,8 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="jeniskegiatan">Jenis Kegiatan <small class="text-danger">*</small></label>
-                      <select name="type" id="jeniskegiatan" class="form-select" required>
+                      <label for="jeniskegiatan">Jenis Kegiatan <small class="text-danger"></small></label>
+                      <select name="type" id="jeniskegiatan" class="form-select" >
                         <option value="" selected disabled>Pilih Kegiatan</option>
                         @foreach($kegiatanTipe as $type)
                           <option value="{{$type->id}}" @if(old('type') == $type->id) selected @endif>{{ucwords($type->nama)}}</option>
@@ -60,15 +60,15 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="jumlahpeserta">Jumlah Peserta <small class="text-danger">*</small></label>
-                      <input type="number" name="number_of_p" min="0" value="{{old('number_of_p')}}" id="jumlahpeserta" class="form-control" placeholder="Cth: 12" required>
+                      <label for="jumlahpeserta">Jumlah Peserta <small class="text-danger"></small></label>
+                      <input type="number" name="number_of_p" min="0" value="{{old('number_of_p')}}" id="jumlahpeserta" class="form-control" placeholder="Cth: 12" >
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="budget">Budget <small class="text-danger">*</small></label>
+                      <label for="budget">Budget <small class="text-danger"></small></label>
                       <input type="number" min="0" name="budget" id="budget" value="{{old('budget')}}" placeholder="Cth: 1000000"
-                      class="form-control" required>
+                      class="form-control">
                     </div>
                   </div>
                   <div class="col-md-12">
@@ -91,8 +91,8 @@
                 </div>
                 <div class="col-md-12">
                   <div class="form-group file-area">
-                    <label for="dokumentasi">Dokumentasi Kegiatan <small class="text-danger">*</small></label>
-                    <input type="file" id="fotokondisi" name="dokumentasi" data-show-remove="false" class="dropify" data-default-file="{{old('dokumentasi')}}" accept="image/*" required/>
+                    <label for="dokumentasi">Dokumentasi Kegiatan <small class="text-danger"></small></label>
+                    <input type="file" id="fotokondisi" name="dokumentasi" data-show-remove="false" class="dropify" data-default-file="{{old('dokumentasi')}}" accept="image/*" />
                     <div class="warn">
                       <small class="text-danger">Jenis File yang diterima : .jpg dan .png saja</small>
                     </div>

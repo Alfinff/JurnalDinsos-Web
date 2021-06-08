@@ -16,6 +16,11 @@ class Upt extends Model
         'uuid',
     ];
 
+    public function jenis()
+    {
+        return $this->belongsTo('App\Models\JenisUpt', 'jenis_upt','uuid');
+    }
+
     public function pegawai()
     {
         return $this->hasMany('App\Models\User', 'upt_id','uuid');

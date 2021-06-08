@@ -58,9 +58,13 @@
               <div class="card">
                   <div class="card-card">
                       <div class="photocard">
-                            <a href="{{Storage::disk('s3')->temporaryUrl($k->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" data-fancybox="images" data-caption="">
-                                <img src="{{Storage::disk('s3')->temporaryUrl($k->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
-                            </a>
+                            @if(isset($k->photo) && ($k->photo!=null))
+                                <a href="{{Storage::disk('s3')->temporaryUrl($k->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" data-fancybox="images" data-caption="">
+                                    <img src="{{Storage::disk('s3')->temporaryUrl($k->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
+                                </a>
+                            @else
+                                <img src="" alt="">
+                            @endif
                       </div>
                       <div class="judulcards">
                           <h3>{{$k->title}}</h3>

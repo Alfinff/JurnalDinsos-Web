@@ -1,5 +1,12 @@
 @extends('layout.template')
 @section('content')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<style>
+    .js-example-basic-single{
+        border: none !important;
+    }
+</style>
 	<div class="col-lg-10 bg-col" style="min-height: 100vh">
 		<div class="row my-3">
 			<div class="col-md-12">
@@ -112,8 +119,8 @@
 									<div class="col-md-6 d-none" id="pilihan_upt_top">
 										<div class="form-group">
 											<label for="upt_id">Nama UPT</label>
-											<select name="upt_id" id="upt_id" class="form-select">
-												<option value="" selected disabled>Pilih UPT</option>
+											<select name="upt_id" id="upt_id" class="js-example-basic-single w-100 form-control">
+                                                    <option value="" selected disabled>Pilih UPT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
                                                 @foreach ($upt as $u)
                                                     <option value="{{$u->uuid}}" @if($pengguna->upt_id == $u->uuid) selected="selected" @endif>{{$u->nama}}</option>
                                                 @endforeach
@@ -137,6 +144,7 @@
 @endsection
 @section('jquery')
 	<script>
+        $('.js-example-basic-single').select2();
         $(document).ready(function () {
 			if(document.getElementById('tipe').value) {
 				document.getElementById('akses_modul').classList.remove('d-none')

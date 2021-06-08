@@ -39,7 +39,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label for="nik">NIK <small class="text-danger">*</small></label>
-                                                <input type="text" minlength="16" class="form-control" maxlength="16" pattern="[0-9]{0,16}" value="{{(int)$pendaftar->nik}}" name="nik" id="nik" onkeypress='validate(event)' placeholder="NIK" required disabled>
+                                                <input type="text" minlength="16" class="form-control" maxlength="16" pattern="[0-9]{0,16}" value="{{$pendaftar->nik ?? null}}" name="nik" id="nik" onkeypress='validate(event)' placeholder="NIK" required disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -52,7 +52,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="tanggallahir">Tanggal Lahir <small class="text-danger">*</small></label>
-                                                <input type="date" value="{{date('Y-m-d', strtotime($pendaftar->tanggal_lahir))}}" name="tanggal_lahir" id="setTodaysDate" class="form-control" required disabled>
+                                                <input type="date" @if($pendaftar->tempat_lahir!=null) value="{{date('Y-m-d', strtotime($pendaftar->tanggal_lahir))}}" @endif name="tanggal_lahir" id="setTodaysDate" class="form-control" required disabled>
                                                 <script>
                                                     setTodaysDate.max = new Date().toISOString().split("T")[0];
                                                 </script>
@@ -135,13 +135,13 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="tanggalmasuk">Tanggal Masuk <small class="text-danger">*</small></label>
-                                                <input type="date" name="tanggal_masuk" value="{{date('Y-m-d', strtotime($pendaftar->tanggal_masuk))}}" id="tanggalmasuk" class="form-control" required disabled>
+                                                <input type="date" name="tanggal_masuk" @if($pendaftar->tanggal_masuk!=null) value="{{date('Y-m-d', strtotime($pendaftar->tanggal_masuk))}}" @endif id="tanggalmasuk" class="form-control" required disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="tanggalkeluar">Tanggal Keluar <small class="text-danger">*</small></label>
-                                                <input type="date" value="{{date('Y-m-d', strtotime($pendaftar->tanggal_keluar))}}" name="tanggal_keluar" id="tanggalkeluar" class="form-control" required disabled>
+                                                <input type="date" @if($pendaftar->tanggal_keluar!=null) value="{{date('Y-m-d', strtotime($pendaftar->tanggal_keluar))}}" @endif name="tanggal_keluar" id="tanggalkeluar" class="form-control" required disabled>
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -158,12 +158,14 @@
                                         <div class="col-md-12">
                                             <div class="form-group file-area">
                                                 <div class="d-flex flex-row-reverse justify-content-between">
-                                                    <a href="{{route('images-getter', ['module' => 'pendaftaran', 'filename' => $pendaftar->foto_kondisi])}}" data-fancybox="images" data-caption="">
-                                                        Lihat
-                                                    </a>
+                                                    @if(isset($pendaftar->foto_kondisi) && ($pendaftar->foto_kondisi!=null))
+                                                        <a href="{{Storage::disk('s3')->temporaryUrl($pendaftar->foto_kondisi, \Carbon\Carbon::now()->addMinutes(3600))}}" data-fancybox="images" data-caption="">
+                                                            Lihat
+                                                        </a>
+                                                    @endif
                                                     <label for="foto_kondisi">Foto Kondisi <small class="text-danger">*</small></label>
                                                 </div>
-                                                <input type="file" id="foto_kondisi" name="foto_kondisi" data-show-remove="false" accept="image/*" class="dropify" data-default-file="{{route('images-getter', ['module' => 'pendaftaran', 'filename' => $pendaftar->foto_kondisi])}}"/>
+                                                <input type="file" id="foto_kondisi" name="foto_kondisi" data-show-remove="false" accept="image/*" class="dropify" data-default-file=""/>
                                                 <div class="warn">
                                                     <p class="text-muted">Jenis File yang diterima : .jpg dan .png saja</p>
                                                 </div>
@@ -172,9 +174,11 @@
                                         <div class="col-md-12">
                                             <div class="form-group file-area">
                                                 <div class="d-flex flex-row-reverse justify-content-between">
-                                                    <a href="{{route('images-getter', ['module' => 'pendaftaran', 'filename' => $pendaftar->surat_pengantar])}}" target="_blank">
-                                                        Lihat
-                                                    </a>
+                                                    @if(isset($pendaftar->surat_pengantar) && ($pendaftar->surat_pengantar!=null))
+                                                        <a href="{{Storage::disk('s3')->temporaryUrl($pendaftar->surat_pengantar, \Carbon\Carbon::now()->addMinutes(3600))}}" target="_blank">
+                                                            Lihat
+                                                        </a>
+                                                    @endif
                                                     <label for="surat_pengantar">Surat Pengantar <small class="text-danger">*</small></label>
                                                 </div>
                                                 <div style="position: relative">

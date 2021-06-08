@@ -28,17 +28,16 @@
 <div class="col-lg-10 bg-col" style="min-height: 100vh">
   <div class="row">
     <div class="col-md-12 my-3">
-      <div class="card">
-        <div class="card-card">
-            <div class="d-flex justify-content-between mb-3">
-                <div class="head-juduls">
+        <div class="card">
+            <div class="card-card">
+                <div class="head-judul text-center">
                     <h5><i class="fa fa-users text-primary"></i> Data Pengguna</h5>
                 </div>
-                <a href="{{route('dinsos-pengguna-tambah')}}" class="btn btn-primary">Tambah Pengguna</a>
-            </div>
+                {{-- <div class="d-flex justify-content-end">
+                </div> --}}
             <form action="{{route('dinsos-filter-pengguna')}}" class="data-pengguna" method="post">
                 {!! csrf_field() !!}
-                <div class="row justify-content-between align-items-start">
+                <div class="row align-items-center position-relative my-4">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="daftarupt">Pilih UPT</label> <br>
@@ -50,9 +49,13 @@
                             </select>
                         </div>
                     </div>
-                <div style="width: auto; margin-left: 10px;" class="mt-3">
-                    <button class="btn btn-primary" style="">Filter</button>
-                </div>
+                    <div style="width: auto; margin-left: 10px;" class="mt-3">
+                        <button class="btn btn-primary" style="">Filter</button>
+                    </div>
+                    <div style="width: auto;position: absolute;right: 0;top: 0;">
+                        <a href="{{route('dinsos-pengguna-tambah')}}" class="btn btn-primary">Tambah Pengguna</a>
+                    </div>
+
                 </div>
             </form>
             <hr>
@@ -87,7 +90,7 @@
         $(function() {
             $('#dinsos-Pengguna').DataTable({
                 processing: true,
-                serverSide: true,
+                // serverSide: true,
                 ajax: '{{URL::to('/dinsos/pengguna/data')}}',
                 columns:[
                     {data:'username', name:'Nama'},

@@ -10,6 +10,7 @@ use Yajra\Datatables\Datatables;
 use App\Models\Pendaftaran;
 use App\Models\PendaftaranBantuan;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use App\Notifications\PendaftarNotification;
 use Illuminate\Support\Carbon;
 use App\Models\KodeWilayah;
@@ -22,6 +23,8 @@ use App\Models\User;
 use App\Helpers\Fungsi;
 use App\Helpers\UploadImage;
 use App\Helpers\UploadFile;
+use App\Imports\PendaftaranImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PenerimaManfaatController extends Controller
 {
@@ -30,9 +33,10 @@ class PenerimaManfaatController extends Controller
         return view('upt.penerimaManfaat.index');
     }
 
-    public function dataPenerima() {
+    public function dataPenerima(Request $request) {
         $pendaftar = Fungsi::getPendaftarPenerimaManfaat(auth()->user()->upt_id);
         return Datatables:: of($pendaftar)
+            ->addIndexColumn()
             ->addColumn('tindakanstatus', function ($data){
                 if($data->tindakan == 3) {
                     return '<p class="badge badge-primary">Done</p>';
@@ -46,7 +50,11 @@ class PenerimaManfaatController extends Controller
                 return Fungsi::hari_indo($data->tanggal_masuk);
             })
             ->editColumn('ttl', function ($data){
-                return ucwords($data->tempat_lahir) .', '.date('d/m/Y', strtotime($data->tanggal_masuk));
+                if(($data->tempat_lahir!=null)&&($data->tanggal_lahir!=null)) {
+                    return ucwords($data->tempat_lahir) .', '.date('d/m/Y', strtotime($data->tanggal_lahir));
+                } else if($data->tanggal_lahir!=null) {
+                    return date('d/m/Y', strtotime($data->tanggal_lahir));
+                }
             })
             ->addColumn('action', function($dataPenerima){
                 // <a onclick="return confirm(`Anda Yakin Mengubah Status Data Ini?`)" href="'.route('upt-penerima-manfaat-selesai', ['uuid' => $dataPenerima->uuid]).'" class="btn btn-info text-white"><i class = "fa fa-check"></i></a>
@@ -63,6 +71,7 @@ class PenerimaManfaatController extends Controller
                             <a href="'.route('upt-penerima-tambah-bantuan', ['uuid' => $dataPenerima->uuid]).'" class="btn btn-secondary"><i class = "fa fa-hand-holding-medical"></i></a>
                         </div>
                         </div>
+                        <button class="btn btn-warning" onclick="exportexcelpenerimamanfaatindividu('.$dataPenerima->id.');"><i class = "fa fa-file-excel-o"></i></button>
                         <a   href = "'.route('edit-penerima-manfaat-detail', ['uuid' => $dataPenerima->uuid]).'" class = "mx-1 btn btn-primary">
                         <img src  = "'.asset('assets/images/edit.svg').'" alt                                          = "">
                         </a>
@@ -208,6 +217,74 @@ class PenerimaManfaatController extends Controller
             }
         // }
         return response()->json($data);
+    }
+
+    public function import(Request $request)
+    {
+        // $rows = Excel::toArray(new PendaftaranImport, $request->file('file'));
+        // foreach($rows[0] as $id => $val) {
+            // $data[$id]['no'] = $val['no'];
+            // $data[$id]['tanggal'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($val['tanggal'])->format('Y-m-d H:i:s');
+            // $data[$id]['nama'] = $val['nama'];
+            // $explode = explode(',', $val['tempat_tanggal_lahir']);
+            // $tempat_lahir = $explode[0] ?? null;
+            // return $tempat_lahir;
+            // $data[$id]['tanggal_lahir'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($val['tanggal_lahir'])->format('Y-m-d H:i:s');
+        //     $data[$id]['alamat'] = $val['alamat'];
+        // }
+        // return response()->json(["rows"=>$data]);
+        DB:: beginTransaction();
+        try {
+            if(isset($request->file)){
+                $validator=Validator::make($request->all(),[
+                    'file' => 'required|max:50000|mimes:xlsx,doc,docx,ppt,pptx,ods,odt,odp,application/csv,application/excel,
+                    application/vnd.ms-excel, application/vnd.msexcel,
+                    text/csv, text/anytext, text/plain, text/x-c,
+                    text/comma-separated-values,
+                    inode/x-empty,
+                    application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                /*  'extension'  => strtolower($request->file->getClientOriginalExtension()),
+                    'extension'=>'required|in:doc,csv,xlsx,xls,docx,ppt,odt,ods,odp'*/
+                ]);
+
+                if ($validator->fails()) {
+                    return back()->with(array(
+                        // 'message'    => $validator->errors(),
+                        'message'    => 'Format File Salah',
+                        'alert-type' => 'error'
+                    ));
+                }
+
+                DB:: commit();
+                Excel::import(new PendaftaranImport,request()->file('file'));
+                return back()->with(array(
+                    'message'    => 'Data Berhasil Diimport',
+                    'alert-type' => 'success'
+                ));
+            } else {
+                DB:: rollback();
+                return back()->with(array(
+                    'message'    => 'File Tidak Boleh Kosong',
+                    'alert-type' => 'error'
+                ));
+            }
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            DB:: rollback();
+            $failures = $e->failures();
+            foreach ($failures as $failure) {
+                $failure->row(); // row that went wrong
+                $failure->attribute(); // either heading key (if using heading row concern) or column index
+                $failure->errors(); // Actual error messages from Laravel validator
+                $failure->values(); // The values of the row that has failed.
+            }
+
+            return $failures;
+
+            // return back()->with(array(
+            //     'message'    => 'Terdapat Kesalahan Pada Baris '.$failure->row,
+            //     'alert-type' => 'error'
+            // ));
+        }
     }
 
     public function daftarBantuan(Request $request, $uuid) {
@@ -573,6 +650,7 @@ class PenerimaManfaatController extends Controller
                 $pendaftaran->telp_rekomendasi = $request->telp_rekomendasi ?? null;
                 $pendaftaran->permasalahan     = $request->permasalahan;
                 $pendaftaran->pendamping       = $request->pendamping;
+                $pendaftaran->is_penjangkauan  = 1;
                 if($request->tanggal_masuk!=null) {
                     $pendaftaran->tanggal_masuk    = date('Y-m-d', strtotime($request->tanggal_masuk));
                 }

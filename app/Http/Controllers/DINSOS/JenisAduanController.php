@@ -39,6 +39,36 @@ class JenisAduanController extends Controller
         }
     }
 
+    public function edit(Request $request, $uuid)
+    {
+        $jenisaduan = JenisAduan::where('uuid', $uuid)->first();
+        if(!$jenisaduan) {
+            return redirect()->route('dinsos-setting-jenisaduan')->with(array(
+                'message'    => 'Data Jenis Aduan Tidak Ditemukan',
+                'alert-type' => 'error'
+            ));
+        }
+
+        DB:: beginTransaction();
+        try {
+            $jenisaduan->nama     = $request->nama;
+            $jenisaduan->editor   = auth()->user()->uuid;
+            $jenisaduan->save();
+
+            DB:: commit();
+            return redirect()->route('dinsos-setting-jenisaduan')->with(array(
+                'message'    => 'Sukses Edit Jenis Aduan',
+                'alert-type' => 'success',
+            ));
+        } catch (\Throwable $th) {
+            DB:: rollback();
+            return redirect()->back()->with(array(
+                'message'    => 'Terdapat Kesalahan',
+                'alert-type' => 'error'
+            ))->withInput();
+        }
+    }
+
     public function hapus($uuid)
     {
         $jenisaduan = JenisAduan::where('uuid', $uuid)->first();

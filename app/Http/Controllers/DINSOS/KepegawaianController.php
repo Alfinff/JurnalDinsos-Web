@@ -13,8 +13,13 @@ class KepegawaianController extends Controller
 {
 
     public function index(Request $request) {
-        $upt = Upt::orderBy('nama', 'asc')->get();
-        $pegawai = User::with(['upt','profile', 'title'])->where('soft_delete', 0)->get();
+        $upt = Upt::orderBy('nama', 'asc')->where('soft_delete', 0)->get();
+        $pegawai = User::with(['upt','profile', 'title'])
+                        ->whereHas('role', function($query){
+                            $query->where('role', 'like', '%'.'pegawai'.'%');
+                        })
+                        ->where('soft_delete', 0)
+                        ->get();
         return view('dinsos.kepegawaian.index', compact('pegawai', 'upt'));
     }
 
@@ -22,7 +27,13 @@ class KepegawaianController extends Controller
     {
         $idupt = $request->upt;
         $upt = Upt::where('uuid', $idupt)->first();
-        $pegawai = User::with(['upt','profile'])->where('upt_id', $idupt)->where('soft_delete', 0)->get();
+        $pegawai = User::with(['upt','profile'])
+                        ->whereHas('role', function($query){
+                            $query->where('role', 'like', '%'.'pegawai'.'%');
+                        })
+                        ->where('upt_id', $idupt)
+                        ->where('soft_delete', 0)
+                        ->get();
 
         if(!$upt) {
             return redirect()->route('dinsos-pegawai')->with(array(

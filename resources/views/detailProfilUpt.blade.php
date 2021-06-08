@@ -53,14 +53,14 @@
         <div class="row">
             <div class="col-md-6">
                 {{-- <div class="d-flex"> --}}
-                    <p><i class="fa fa-location"></i> Jl. W. Mongonsidi No.25, Sidoarjo Jawa Timur</p>
-                    <p><i class="fa fauser"></i> 190 Orang</p>
+                    <p><i class="fa fa-map-marker"></i> {{$detail->alamat}}</p>
+                    <p><i class="fa fa-user"></i> {{$count}} Orang</p>
                 {{-- </div> --}}
             </div>
             <div class="col-md-6">
                 {{-- <div class="d-flex"> --}}
-                    <p><i class="fa fa-phone"></i> 03123123</p>
-                    <p><i class="fa fa-phone"></i> Solay@gmail.com</p>
+                    <p><i class="fa fa-list-alt"></i> {{$detail->nama}}</p>
+                    <a target="new" href="{{$detail->maps}}"><i class="fa fa-location-arrow"></i> Lihat Lokasi</a>
                 {{-- </div> --}}
             </div>
         </div>
@@ -97,7 +97,7 @@
                                 <div class="judulcard-upt">
                                     <p class="text-muted text-center mt-3 mb-0">@if(isset($dtInduk['nama_unit_kerja'])){{$dtInduk['nama_unit_kerja']}}@endif</p>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -119,7 +119,7 @@
                                             <img class="img-nya" src="{{Storage::disk('s3')->temporaryUrl($pimpinan[$id_unit]->profile->foto, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
                                         @endif
                                     </div>
-                                    
+
                                     @if($pimpinan[$id_unit] != null)
                                         <h5 class="username">
                                             {{ucwords($pimpinan[$id_unit]->users->username)}}
@@ -152,7 +152,7 @@
                                         <img class="img-nya" src="{{Storage::disk('s3')->temporaryUrl($pimpinan[$idx]->profile->foto, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="">
                                     @endif
                                 </div>
-                                
+
                                 @if($pimpinan[$idx] != null)
                                     <h5 class="username">
                                         {{ucwords($pimpinan[$idx]->users->username)}}

@@ -26,19 +26,19 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label for="namaupt">Nama UPT</label>
-                      <input type="text" name="upt_name" id="namaupt" class="form-control" disabled value="{{auth()->user()->upt->nama }}">
+                      <input type="text" name="upt_name" id="namaupt" class="form-control" disabled value="{{auth()->user()->upt->nama ?? null }}">
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="tanggalmulai">Tanggal Mulai <small class="text-danger">*</small></label>
-                      <input type="date" name="start_date" value="{{date('Y-m-d', strtotime($kegiatan->start_date))}}" id="tanggalmulai" class="form-control">
+                      <input type="date" name="start_date" @if($kegiatan->end_date) value="{{date('Y-m-d', strtotime($kegiatan->start_date))}}" @endif id="tanggalmulai" class="form-control" required>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="tanggalselesai">Tanggal Selesai <small class="text-danger">*</small></label>
-                      <input type="date" name="end_date" value="{{date('Y-m-d', strtotime($kegiatan->end_date))}}" id="tanggalselesai" class="form-control">
+                      <input type="date" name="end_date" @if($kegiatan->end_date) value="{{date('Y-m-d', strtotime($kegiatan->end_date))}}" @endif id="tanggalselesai" class="form-control" required>
                     </div>
                   </div>
                   <div class="col-md-12">
@@ -49,7 +49,7 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="jeniskegiatan">Jenis Kegiatan <small class="text-danger">*</small></label>
+                      <label for="jeniskegiatan">Jenis Kegiatan <small class="text-danger"></small></label>
                       <select name="type" id="jeniskegiatan" class="form-select">
                         <option value="" selected disabled>Pilih Kegiatan</option>
                         @foreach($kegiatanTipe as $type)
@@ -60,22 +60,22 @@
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="jumlahpeserta">Jumlah Peserta <small class="text-danger">*</small></label>
-                      <input type="number" name="number_of_p" min="0" value="{{(int)$kegiatan->number_of_p}}" id="jumlahpeserta" class="form-control" placeholder="Cth: 12" required>
+                      <label for="jumlahpeserta">Jumlah Peserta <small class="text-danger"></small></label>
+                      <input type="number" name="number_of_p" min="0" value="{{$kegiatan->number_of_p}}" id="jumlahpeserta" class="form-control" placeholder="Cth: 12" >
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="budget">Budget <small class="text-danger">*</small></label>
-                      <input type="number" min="0" name="budget" id="budget"  value="{{(int)$kegiatan->budget}}" placeholder="Cth: 1000000"
-                      class="form-control" required>
+                      <label for="budget">Budget <small class="text-danger"></small></label>
+                      <input type="number" min="0" name="budget" id="budget"  value="{{$kegiatan->budget}}" placeholder="Cth: 1000000"
+                      class="form-control" >
                     </div>
                   </div>
                   <div class="col-md-12">
                     <div class="form-group file-area">
                       <div class="d-flex flex-row-reverse justify-content-between">
                           <label for="document">File Dokumen <small class="text-danger"></small></label>
-                          @if($kegiatan->filedokumen!=null)
+                          @if(isset($kegiatan->filedokumen) && ($kegiatan->filedokumen!=null))
                             <a href="{{Storage::disk('s3')->temporaryUrl($kegiatan->filedokumen, \Carbon\Carbon::now()->addMinutes(3600))}}" target="_blank">
                             Lihat
                             </a>
@@ -99,12 +99,14 @@
                 <div class="col-md-12">
                   <div class="form-group file-area">
                     <div class="d-flex flex-row-reverse justify-content-between">
-                      <a href="{{Storage::disk('s3')->temporaryUrl($kegiatan->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" data-fancybox="images" data-caption="">
-                        Lihat
-                      </a>
+                        @if(isset($kegiatan->photo) && ($kegiatan->photo!=null))
+                            <a href="{{Storage::disk('s3')->temporaryUrl($kegiatan->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" data-fancybox="images" data-caption="">
+                                Lihat
+                            </a>
+                        @endif
                       <label for="dokumentasi">Dokumentasi Kegiatan <small class="text-danger"></small></label>
                     </div>
-                    <input type="file" id="fotokondisi" name="dokumentasi" data-show-remove="false" class="dropify" data-default-file="{{Storage::disk('s3')->temporaryUrl($kegiatan->photo, \Carbon\Carbon::now()->addMinutes(3600))}}" accept="image/*" />
+                    <input type="file" id="fotokondisi" name="dokumentasi" data-show-remove="false" class="dropify" data-default-file="" accept="image/*" />
                     <div class="warn">
                       <small class="text-danger">Jenis File yang diterima : .jpg dan .png saja</small>
                     </div>
@@ -113,7 +115,7 @@
                 <div class="col-md-12">
                     <div class="form-group">
                         <div class="d-flex flex-row-reverse justify-content-between">
-                            @if($kegiatan->video!=null)
+                            @if(isset($kegiatan->video) && ($kegiatan->video!=null))
                                 <a href="{{Storage::disk('s3')->temporaryUrl($kegiatan->video, \Carbon\Carbon::now()->addMinutes(3600))}}" target="_blank">
                                 Lihat
                                 </a>

@@ -36,8 +36,15 @@ class LoginController extends Controller
                         return response()->json($data);
                     }
 
+                    $datauser = User::with(['role','upt'])->where('uuid', auth()->user()->uuid)->first();
+                    if(!$datauser) {
+                        $data['msg'] = 'Data Pengguna Tidak Ada';
+                        $data['success'] = false;
+                        return response()->json($data);
+                    }
+
                     $payload = [
-                        'pengguna' => auth()->user()->uuid,
+                        'pengguna' => $datauser,
                         'exp' => time() + (3600 * 24),
                         'ttl' => time() + (3600 * 24)
                     ];
@@ -66,7 +73,7 @@ class LoginController extends Controller
         try {
             if ($request->header('Authorization')) {
                 $decode = JWT::decode($request->header('Authorization'), env('JWT_SECRET_KEY'), ['HS256']);
-                $users = User::with(['upt', 'role'])->where('uuid', $decode->pengguna)->where('soft_delete', 0)->first();
+                $users = User::with(['upt', 'role'])->where('uuid', $decode->pengguna->uuid)->where('soft_delete', 0)->first();
 
                 if(((!$users) || (!$users->count()))) {
                     $data['msg'] = 'Data Tidak Ada / Kosong';
@@ -80,7 +87,7 @@ class LoginController extends Controller
                 return response()->json($data);
             }
         } catch (\Throwable $th) {
-            // $th->getMessage();
+            // $th->getMessage()
             $d['msg'] = "Terdapat Kesalahan";
             $d['success'] = false;
             return response()->json($d);

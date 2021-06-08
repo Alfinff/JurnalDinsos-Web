@@ -1,5 +1,7 @@
 @extends('layout.template')
 @section('content')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <div class="col-lg-10" style="background-color: #fbfbfb;">
   <div class="mx-2">
     <div class="row my-3">
@@ -86,22 +88,23 @@
             </div>
             <hr>
             <div id="chartpiejeniskelamin"></div>
-            <div class="d-flex justify-content-around">
+            <div class="d-flex justify-content-around" style="padding-top: 25px;">
               <div class="jenis-legend">
                 <img style="widht: 32px; height: 32px;" src="{{asset('assets/images/man.png')}}" alt="">
-                <p>Pria</p>
-                <h3 id="blue">{{$lakilaki}}%</h3>
+                <p>Laki-laki</p>
+                <h3 id="blue">{{$lakiperempuan[1]->jumlah}} orang</h3>
               </div>
               <div class="jenis-legend">
                 <img style="widht: 32px; height: 32px;" src="{{asset('assets/images/woman.png')}}" alt="">
-                <p>Wanita</p>
-                <h3 id="yellow">{{$perempuan}}%</h3>
+                <p>Perempuan</p>
+                <h3 id="yellow">{{$lakiperempuan[0]->jumlah}} orang</h3>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-6 col-md-4 mb-4">
+      <div class="col-md-6 mb-4">
+        {{-- {{dd($datajenisaduan)}} --}}
         <div class="card">
           <div class="card-card">
             <div class="d-flex title-card align-items-center justify-content-between">
@@ -110,15 +113,21 @@
             </div>
             <hr>
             <div id="chartjenisaduan"></div>
-            <div class="d-flex justify-content-around">
-              {{-- <div class="jenis-legend">
-                <p>Pria</p>
-                <h3 id="blue">{{$lakilaki}}%</h3>
+            <div class="chart-labels-wrapper" style="margin-top: 15px;">
+              <div class="row">
+                @foreach($datajenisaduan as $dd)
+                <div class="col-sm-6">
+                  <div class="item">
+                    <div class="name">
+                      {{$dd->nama}}
+                    </div>
+                    <div class="count">
+                      {{ $dd->jumlah}} Aduan
+                    </div>
+                  </div>
+                </div>
+                @endforeach
               </div>
-              <div class="jenis-legend">
-                <p>Wanita</p>
-                <h3 id="yellow">{{$perempuan}}%</h3>
-              </div> --}}
             </div>
           </div>
         </div>
@@ -126,8 +135,55 @@
       <div class="col-md-12 mb-4">
         <div class="card">
           <div class="card-card">
-            <h4 class="title-header">KLIEN MASUK</h4>
+            <h4 class="title-header">KLIEN MASUK & KELUAR</h4>
             <div id="chartklien"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 mb-4">
+        <div class="card">
+          <div class="card-card">
+            <div class="head-judul text-center">
+                <h5><i class="fa fa-users text-primary"></i> Jumlah Jenis Aduan Semua UPT</h5>
+            </div>
+            <form action="{{route('dinsos-home-jenisaduan')}}" class="data-pengguna" method="post">
+                {!! csrf_field() !!}
+                <div class="row align-items-center position-relative my-4">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="daftarupt">Pilih UPT</label> <br>
+                            <select class="js-example-basic-single w-100 form-control" name="upt" id="daftarupt" required>
+                                <option value="" selected disabled>Daftar UPT</option>
+                                @foreach ($upt as $u)
+                                    <option value="{{$u->uuid}}">{{$u->nama}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div style="width: auto; margin-left: 10px;" class="mt-3">
+                        <button class="btn btn-primary" style="">Filter</button>
+                    </div>
+                </div>
+            </form>
+            <hr>
+            <table class="table table-bordered dt-responsive table" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                <thead style="background-color: #F5F5F5;padding: 1rem .5rem !important;">
+                    <tr>
+                        <th>Jenis Aduan</th>
+                        <th>Jenis Kelamin</th>
+                        <th>Jumlah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($datajenisaduantable as $dd => $val)
+                        <tr>
+                            <td>{{$val->nama}}</td>
+                            <td>{{$val->jeniskelamin}}</td>
+                            <td>{{$val->jumlah}} orang</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -158,17 +214,25 @@
           colors: ["#5766da", "#999999"],
           series: [
               {
-                  name: 'Tahun Ini',
+                  name: 'Klien Masuk',
                   data: [
-                      @foreach($klienmasuk_tahunini as $k)
-                          {{$k->jumlah}},
+                      @foreach($klienmasuk as $k)
+                          {{$k['jumlah']}},
+                      @endforeach
+                  ]
+              },
+              {
+                  name: 'Klien Keluar',
+                  data: [
+                      @foreach($klienkeluar as $tt)
+                          {{$tt['jumlah']}},
                       @endforeach
                   ]
               }
           ],
           xaxis: {
             categories: [
-              @foreach($bulan_tahunini as $b => $val)
+              @foreach($bulan as $b => $val)
                   '{{$val}}',
               @endforeach
             ],
@@ -222,7 +286,13 @@
     </div>
   </div>
 </div>
-<script>
+@endsection
+@section('jquery')
+    <script>
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+    });
+
     var options = {
     chart: {
         height: 250,
@@ -233,7 +303,7 @@
         width: 2,
         colors: ['transparent']
     },
-    series: [{{$lakilaki}}, {{$perempuan}}],
+    series: [{{$lakiperempuan[1]->jumlah}}, {{$lakiperempuan[0]->jumlah}}],
     legend: {
         show: false,
         position: 'bottom',
@@ -278,7 +348,7 @@
         colors: ['transparent']
     },
     series: [@foreach($datajenisaduan as $dd)
-              {{ $dd['jumlah']}},
+              {{ $dd->jumlah}},
             @endforeach],
     legend: {
         show: false,
@@ -291,9 +361,9 @@
         offsetY: 6
     },
     labels: [@foreach($datajenisaduan as $aa)
-              "{{ $aa['nama'] }}",
+              "{{ $aa->nama }}",
             @endforeach],
-    colors: ["#34495E", "#FF5733"],
+    colors: ["#FF5733", "#0d6efd", "#ffc107", "#6c757d", "#dc3545", "#198754"],
     responsive: [{
         breakpoint: 600,
         options: {

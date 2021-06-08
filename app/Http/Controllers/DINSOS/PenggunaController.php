@@ -17,7 +17,7 @@ use App\Models\Upt;
 class PenggunaController extends Controller
 {
     public function index() {
-        $upt = Upt::orderBy('nama', 'asc')->get();
+        $upt = Upt::orderBy('nama', 'asc')->where('soft_delete', 0)->get();
         return view('dinsos.pengguna.index', compact('upt'));
     }
 

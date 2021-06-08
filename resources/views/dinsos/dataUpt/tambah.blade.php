@@ -3,6 +3,13 @@
 <link rel="stylesheet" href="{{asset('assets/css/dropify.css')}}">
 @endsection
 @section('content')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<style>
+    .js-example-basic-single{
+        border: none !important;
+    }
+</style>
     <div class="col-lg-10 bg-col">
         <div class="row">
             <div class="col-md-12 my-3">
@@ -31,8 +38,25 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label for="maps">Maps</label>
+                                                <input type="text" value="{{old('maps')}}" name="maps" id="maps" class="form-control" placeholder="https://goo.gl/maps/vSpPY6uKnXpwqs9d6">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label for="wilayah">Wilayah <small class="text-danger">*</small></label>
-                                                <select name="wilayah" required id="wilayahd" class="form-select">
+                                                <select name="wilayah" required id="wilayahd" class="js-example-basic-single w-100 form-select">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="jenisupt">Jenis Upt <small class="text-danger">*</small></label>
+                                                <select name="jenisupt" required id="jenisupt" class="js-example-basic-single w-100 form-select">
+                                                    <option value="" disabled selected>Pilih Jenis Upt</option>
+                                                    @foreach ($jenisupt as $jj)
+                                                        <option value="{{$jj->uuid}}">{{ucwords($jj->nama)}}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -44,8 +68,14 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="logo_upt">Logo UPT <small class="text-danger">*</small></label>
-                                                <input type="file" accept="image/*" class="dropify" name="logo_upt" id="logo_upt" required data-default-file="{{old('logo_upt')}}" data-show-remove="false">
+                                                <label for="alamat_lengkap">Deskripsi</label>
+                                                <textarea name="deskripsi" id="deskripsi" class="form-control" cols="30" rows="3" placeholder="Deskripsi Upt">{{old('deskripsi')}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="logo_upt">Logo UPT <small class="text-danger"></small></label>
+                                                <input type="file" accept="image/*" class="dropify" name="logo_upt" id="logo_upt" data-default-file="{{old('logo_upt')}}" data-show-remove="false">
                                                 <div class="warn">
                                                     <small class="text-danger">Jenis File yang diterima : .jpg dan .png saja</small>
                                                 </div>
@@ -55,6 +85,7 @@
                                             <div class="form-group">
                                                 <div class="d-flex justify-content-center">
                                                     <button class="btn btn-success">Tambah</button>
+                                                    <a style="margin-left: 5px;" href="{{route('dinsos-dataupt')}}" class="btn btn-danger">Batal</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -72,6 +103,7 @@
   <script src="{{asset('assets/js/dropify.js')}}"></script>
   <script>
     $(document).ready(function() {
+        $('.js-example-basic-single').select2();
         $('.dropify').dropify({
             messages: {
                 'default': 'Drag and drop a file here or click',

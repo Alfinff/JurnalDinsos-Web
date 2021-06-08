@@ -30,7 +30,11 @@ class Pendaftaran extends Model
         'surat_pengantar',
         'uuid',
         'tindakan',
-        'pj_id'
+        'pj_id',
+        'nomor_registrasi',
+        'tanggal_masuk',
+        'is_pengaduan',
+        'is_penjangkauan',
     ];
 
     public function penanggungjawab()

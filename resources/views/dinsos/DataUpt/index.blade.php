@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-end">
-                                    <a href="{{route('dinsos-dataupt-tambah')}}" class="btn btn-success" style="">+ Tambah</a>
+                                    <a href="{{route('dinsos-dataupt-tambah')}}" class="btn btn-primary" style="">+ Tambah</a>
                                 </div>
                             </div>
                         </form>
@@ -99,7 +99,7 @@
                                 @if($u->foto!=null)
                                     <img src="{{Storage::disk('s3')->temporaryUrl($u->foto ?? '' == null, \Carbon\Carbon::now()->addMinutes(3600))}}" alt="{{$u->nama}}">
                                 @else
-                                    <img src="https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg" alt="">
+                                    <img src="{{asset('assets/images/umahupt.png')}}" alt="">
                                     {{-- <img src="{{asset('assets/images/dataupt2.png')}}" alt=""> --}}
                                 @endif
                             </div>
@@ -107,11 +107,11 @@
                                 <h3>{{ucwords($u->nama)}}</h3>
                             </div>
                             <div class="row justify-content-between">
-                                <div class="location col-md-6">
+                                <div class="location col-md-7">
                                     <i class="fa fa-map-marker"></i>
-                                    <p>{{ucwords($u->namawilayah->kab)}}</p>
+                                    <p style="text-transform:capitalize">{{strtolower($u->namawilayah->kab)}}</p>
                                 </div>
-                                <div class="count-people col-md-6">
+                                <div class="count-people col-md-5">
                                     <i class="fa fa-user"></i>
                                     <p>{{count($u->pendaftaran)}} Orang</p>
                                 </div>
@@ -133,11 +133,17 @@
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
 
-            // $(document).click(function (e) {
-            //     e.preventDefault();
-            //     $(".dropdown-menu").removeClass("show");
-            // });
-            $('.dropdown-menu-toggle').dropdown();
+            $(".dropdown-menu-toggle").click(function () {
+                if ($(this).hasClass('open')) {
+                    $(this).removeClass("open");
+                    $(".show").removeClass("show");
+                } else {
+                    $(".show").removeClass("show");
+                    $(this).next(".dropdown-menu").addClass("show");
+                    $(this).addClass("open");
+                }
+            });
+
         });
     </script>
 @endsection
