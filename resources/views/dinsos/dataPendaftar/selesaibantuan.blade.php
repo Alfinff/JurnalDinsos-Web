@@ -43,12 +43,12 @@
                     <hr>
                 </div>
             <table id="dinsos-bantuan-selesai" class="table table-bordered dt-responsive table" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                <colgroup>
+                {{-- <colgroup>
                     <col span="1" style="width: 20%;">
                     <col span="1" style="width: 20%;">
                     <col span="1" style="width: 20%;">
                     <col span="1" style="width: 15%;">
-                </colgroup>
+                </colgroup> --}}
                 <thead style="background-color: #F5F5F5;padding: 1rem .5rem !important;">
                     <tr>
                         <th>Bukti</th>
@@ -89,7 +89,7 @@
             ],
             "columnDefs":[{
                 "defaultContent":"-",
-                "targets":"-all"
+                "targets":"_all"
             }],
             "order":[]
         });

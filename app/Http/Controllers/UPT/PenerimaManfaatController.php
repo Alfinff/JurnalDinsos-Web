@@ -235,6 +235,8 @@ class PenerimaManfaatController extends Controller
         // return response()->json(["rows"=>$data]);
         DB:: beginTransaction();
         try {
+            // hapus data awal
+            // Pendaftaran::where('upt_id', auth()->user()->upt_id)->where('soft_delete', 0)->update(array('soft_delete' => 1));
             if(isset($request->file)){
                 $validator=Validator::make($request->all(),[
                     'file' => 'required|max:50000|mimes:xlsx,doc,docx,ppt,pptx,ods,odt,odp,application/csv,application/excel,
@@ -270,20 +272,20 @@ class PenerimaManfaatController extends Controller
             }
         } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
             DB:: rollback();
-            $failures = $e->failures();
-            foreach ($failures as $failure) {
-                $failure->row(); // row that went wrong
-                $failure->attribute(); // either heading key (if using heading row concern) or column index
-                $failure->errors(); // Actual error messages from Laravel validator
-                $failure->values(); // The values of the row that has failed.
-            }
+            // $failures = $e->failures();
+            // foreach ($failures as $failure) {
+            //     $failure->row(); // row that went wrong
+            //     $failure->attribute(); // either heading key (if using heading row concern) or column index
+            //     $failure->errors(); // Actual error messages from Laravel validator
+            //     $failure->values(); // The values of the row that has failed.
+            // }
 
-            return $failures;
+            // return $failures;
 
-            // return back()->with(array(
-            //     'message'    => 'Terdapat Kesalahan Pada Baris '.$failure->row,
-            //     'alert-type' => 'error'
-            // ));
+            return back()->with(array(
+                'message'    => 'Terdapat Kesalahan Pada Baris '.$failure->row,
+                'alert-type' => 'error'
+            ));
         }
     }
 

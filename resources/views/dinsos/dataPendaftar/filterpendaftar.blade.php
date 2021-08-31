@@ -16,6 +16,39 @@
             </div>
           <div class="d-flex justify-content-end mb-3">
           </div>
+            <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+            <script>
+            function exportexcelpenerimamanfaat() {
+                url = "{{URL::to('dinsos/pendaftar/dataExport')}}";
+                var req = new XMLHttpRequest();
+                req.open("GET", url, true);
+
+                req.onload = function(e) {
+                    var wb = XLSX.utils.book_new();
+                    var data = JSON.parse(req.response);
+                    var ws = XLSX.utils.json_to_sheet(data);
+                    XLSX.utils.book_append_sheet(wb, ws, "Penerima Manfaat");
+                    XLSX.writeFile(wb, "PenerimaManfaat.xlsx");
+                }
+
+                req.send();
+            }
+            function exportexcelpenerimamanfaatindividu(id) {
+                url = "{{URL::to('dinsos/pendaftar/dataExport')}}/"+id;
+                var req = new XMLHttpRequest();
+                req.open("GET", url, true);
+
+                req.onload = function(e) {
+                    var wb = XLSX.utils.book_new();
+                    var data = JSON.parse(req.response);
+                    var ws = XLSX.utils.json_to_sheet(data);
+                    XLSX.utils.book_append_sheet(wb, ws, "Penerima Manfaat");
+                    XLSX.writeFile(wb, "PenerimaManfaatIndividu.xlsx");
+                }
+
+                req.send();
+            }
+            </script>
           <table id="dinsos-Data-Pendaftar" class="table table-bordered dt-responsive table" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
             <colgroup>
               <col span="1" style="width: 15%;">

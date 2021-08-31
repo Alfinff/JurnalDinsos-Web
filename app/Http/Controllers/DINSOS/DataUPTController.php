@@ -85,12 +85,19 @@ class DataUPTController extends Controller
                 $upt['nama'] = $request->nama_upt;
                 $upt['alamat']    = $request->alamat_lengkap;
                 $upt['wilayah']   = $request->wilayah;
+                $upt['wilayah']   = $request->wilayah;
                 $upt['jenis_upt']   = $request->jenisupt;
                 if(isset($request->deskripsi) && ($request->deskripsi!=null)) {
                     $upt['deskripsi']   = $request->deskripsi;
                 }
                 if(isset($request->maps) && ($request->maps!=null)) {
                     $upt['maps']   = $request->maps;
+                }
+                if(isset($request->lat) && ($request->lat!=null)) {
+                    $upt['lat']   = $request->lat;
+                }
+                if(isset($request->long) && ($request->long!=null)) {
+                    $upt['long']   = $request->long;
                 }
                 $upt['soft_delete']    = 0;
                 $upt['uuid']     = Str::uuid();
@@ -142,6 +149,12 @@ class DataUPTController extends Controller
                 }
                 if(isset($request->maps) && ($request->maps!=null)) {
                     $upt->maps   = $request->maps;
+                }
+                if(isset($request->lat) && ($request->lat!=null)) {
+                    $upt->lat   = $request->lat;
+                }
+                if(isset($request->long) && ($request->long!=null)) {
+                    $upt->long   = $request->long;
                 }
                 if(file_exists($_FILES['logo_upt']['tmp_name']) || is_uploaded_file($_FILES['logo_upt']['tmp_name'])) {
                     UploadImage::setPath('upt');

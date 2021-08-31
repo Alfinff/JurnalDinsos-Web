@@ -301,6 +301,18 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label for="lat">Latitude</label>
+                                                <input type="text" value="{{$upt->lat}}" name="lat" id="lat" class="form-control" placeholder="-7.970786225183632" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="long">Longitude</label>
+                                                <input type="text" value="{{$upt->long}}" name="long" id="long" class="form-control" placeholder="112.6380690073007" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label for="wilayah">Wilayah <small class="text-danger">*</small></label>
                                                 <select name="wilayah" disabled required id="wilayahd" class="js-example-basic-single w-100 form-select">
                                                 </select>
@@ -456,6 +468,8 @@
             $("#jenisupt").removeAttr('disabled');
             $("#deskripsiupt").removeAttr('disabled');
             $("#mapsupt").removeAttr('disabled');
+            $("#lat").removeAttr('disabled');
+            $("#long").removeAttr('disabled');
 		});
 
 		$("#cancelupt").click(function() {
@@ -472,6 +486,8 @@
             $("#jenisupt").attr('disabled','disabled');
             $("#deskripsiupt").attr('disabled','disabled');
             $("#mapsupt").attr('disabled','disabled');
+            $("#lat").attr('disabled','disabled');
+            $("#long").attr('disabled','disabled');
 		});
 	})
 </script>

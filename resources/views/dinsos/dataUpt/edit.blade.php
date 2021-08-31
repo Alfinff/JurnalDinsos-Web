@@ -44,6 +44,18 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label for="latitude">Latitude</label>
+                                                <input type="text" value="{{$upt->lat}}" name="lat" id="latitude" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="longitude">Longitude</label>
+                                                <input type="text" value="{{$upt->long}}" name="long" id="longitude" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label for="wilayah">Wilayah <small class="text-danger">*</small></label>
                                                 <select name="wilayah" required id="wilayahd" class="js-example-basic-single w-100 form-select">
                                                 </select>

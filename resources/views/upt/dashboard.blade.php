@@ -133,7 +133,7 @@
       <div class="col-12 mb-4">
         <div class="card">
           <div class="card-card">
-            <h4 class="title-header">KLIEN MASUK</h4>
+            <h4 class="title-header">KLIEN MASUK & KELUAR</h4>
             <div id="chartklien"></div>
           </div>
         </div>

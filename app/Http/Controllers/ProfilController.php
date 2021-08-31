@@ -62,8 +62,10 @@ class ProfilController extends Controller
                     $upt->wilayah = $request->wilayah;
                     $upt->alamat = $request->alamat_lengkap;
                     $upt->jenis_upt = $request->jenisupt;
-                    $upt->deskripsi   = $request->deskripsiupt;
-                    $upt->maps   = $request->mapsupt;
+                    $upt->deskripsi   = $request->deskripsiupt ?? '';
+                    $upt->maps   = $request->mapsupt ?? '';
+                    $upt->lat   = $request->lat ?? '';
+                    $upt->long   = $request->long ?? '';
 
                     if(file_exists($_FILES['photoupt']['tmp_name']) || is_uploaded_file($_FILES['photoupt']['tmp_name'])) {
                         UploadImage::setPath('upt');

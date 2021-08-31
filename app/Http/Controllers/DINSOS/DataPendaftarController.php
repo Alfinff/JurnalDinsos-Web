@@ -5,6 +5,7 @@ namespace App\Http\Controllers\DINSOS;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Str;
 use App\Helpers\Fungsi;
@@ -14,6 +15,7 @@ use App\Models\JenisKelamin;
 use App\Models\KodeWilayah;
 use App\Models\Permasalahan;
 use App\Models\Upt;
+use Carbon\Carbon;
 
 class DataPendaftarController extends Controller
 {
@@ -103,11 +105,15 @@ class DataPendaftarController extends Controller
         $bantuan = Fungsi::getPendaftarBantuan($uuid, $uptid);
         return Datatables:: of($bantuan)
             ->addColumn('fotobukti', function ($data){
-                $foto = '<a data-fancybox="images" href="'.Storage::disk('s3')->temporaryUrl($data->bukti, Carbon::now()->addMinutes(3600)).'"><img class="img-fluid" src="'.Storage::disk('s3')->temporaryUrl($data->bukti, Carbon::now()->addMinutes(3600)).'"></a>';
-                return $foto;
+                if($data->bukti!=null) {
+                    $foto = '<a data-fancybox="images" href="'.Storage::disk('s3')->temporaryUrl($data->bukti, Carbon::now()->addMinutes(3600)).'"><img class="img-fluid" src="'.Storage::disk('s3')->temporaryUrl($data->bukti, Carbon::now()->addMinutes(3600)).'"></a>';
+                    return $foto;
+                }
             })
             ->editColumn('tanggal_beri', function ($data){
-                return Fungsi::hari_indo($data->tanggal_beri);
+                if($data->tanggal_beri!=null) {
+                    return Fungsi::hari_indo($data->tanggal_beri);
+                }
             })
             ->rawColumns(['action', 'fotobukti'])
             ->make(true);

@@ -103,6 +103,7 @@
                     <input type="file" name="file" class="form-control" required>
                     <br>
                     <button class="btn btn-success">Import</button>
+                    <a href="{{URL::to('/format_import_excel.xlsx')}}" class="btn btn-primary">Download Format</a>
                 </form>
             </div>
             <table id="upt-Penerima-Bantuan" class="table table-bordered dt-responsive table" style="border-collapse: collapse; border-spacing: 0; width: 100%;">

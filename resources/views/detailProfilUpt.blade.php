@@ -65,6 +65,14 @@
             </div>
         </div>
     </div>
+    <br><br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p style="text-align: center;">{{$detail->deskripsi}}</p>
+            </div>
+        </div>
+    </div>
 </section>
 <section>
     <div class="subhead">

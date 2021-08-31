@@ -4,6 +4,8 @@ namespace App\Imports;
 
 use Illuminate\Support\Str;
 use App\Models\Pendaftaran;
+use App\Models\JenisKelamin;
+use App\Models\JenisAduan;
 use App\Helpers\Fungsi;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -17,11 +19,16 @@ class PendaftaranImport implements ToCollection, WithHeadingRow, WithValidation
     public function rules(): array
     {
         return [
-            'nama'          => ['nullable', 'string', 'max:255'],
-            // 'tanggal'       => ['nullable', 'dateformat:d/m/Y'],
-            'tempat_lahir'  => ['nullable', 'string', 'max:255'],
-            // 'tanggal_lahir' => ['nullable', 'dateformat:d/m/Y'],
-            'alamat'        => ['nullable', 'string', 'max:2000'],
+            // 'tanggal_masuk'       => ['nullable', 'dateformat:d/m/Y'],
+            'nama'            => ['nullable', 'string', 'max:255'],
+            'tempat_lahir'    => ['nullable', 'string', 'max:255'],
+            // 'tanggal_lahir'=> ['nullable', 'dateformat:d/m/Y'],
+            'alamat'          => ['nullable', 'string', 'max:2000'],
+            'umur'            => ['nullable', 'numeric'],
+            'no_hp'           => ['nullable', 'numeric'],
+            'nik'             => ['nullable', 'numeric', 'digits:16'],
+            'jenis_kelamin'   => ['nullable', 'string', 'max:255'],
+            'jenis_aduan'     => ['nullable', 'string', 'max:255'],
         ];
 
     }
@@ -29,11 +36,16 @@ class PendaftaranImport implements ToCollection, WithHeadingRow, WithValidation
     public function customValidationMessages()
     {
         return [
+            'tanggal_masuk' => 'Format Tanggal Masuk Salah',
             'nama'          => 'Format Nama Salah',
-            'tanggal'       => 'Format Tanggal Salah',
             'tempat_lahir'  => 'Format Tempat Lahir Salah',
             'tanggal_lahir' => 'Format Tanggal Lahir Salah',
             'alamat'        => 'Format Alamat Salah',
+            'umur'          => 'Format Umur Salah',
+            'no_hp'         => 'Format Nomor HP Salah',
+            'nik'           => 'Format NIK Salah',
+            'jenis_kelamin' => 'Format Jenis Kelamin Salah',
+            'jenis_aduan'   => 'Format Jenis Aduan Salah',
         ];
     }
 
@@ -51,8 +63,8 @@ class PendaftaranImport implements ToCollection, WithHeadingRow, WithValidation
         foreach ($rows as $row)
         {
             $tanggal = null;
-            if(isset($row['tanggal']) && ($row['tanggal'] != null)) {
-                $tanggal = $this->transformDate($row['tanggal']) ?? null;
+            if(isset($row['tanggal_masuk']) && ($row['tanggal_masuk'] != null)) {
+                $tanggal = $this->transformDate($row['tanggal_masuk']) ?? null;
                 $input['tanggal_masuk']    = $tanggal;
             }
 
@@ -62,9 +74,43 @@ class PendaftaranImport implements ToCollection, WithHeadingRow, WithValidation
                 $input['tanggal_lahir']    = $tanggal_lahir;
             }
 
+            $jenis_kelamin = null;
+            if(isset($row['jenis_kelamin']) && ($row['jenis_kelamin']  != null)) {
+                $laki = "laki-laki";
+                $pria = "pria";
+                $perempuan = "perempuan";
+                $wanita = "wanita";
+                if((strpos($row['jenis_kelamin'], $pria) !== false) || (strpos($row['jenis_kelamin'], $laki) !== false)) {
+                    $jenis_kelamin = $laki;
+                } else if ((strpos($row['jenis_kelamin'], $wanita) !== false) || (strpos($row['jenis_kelamin'], $perempuan) !== false)) {
+                    $jenis_kelamin = $perempuan;
+                }
+                $cek = JenisKelamin::where('nama', 'like', '%'.$jenis_kelamin.'%')->where('soft_delete', 0)->first();
+                
+                if(!$cek) {
+                    $jenis_kelamin = null;
+                } else {
+                    $jenis_kelamin = $cek->uuid;
+                }
+                $input['jenis_kelamin']    = $jenis_kelamin;
+            }
+
+            $jenis_aduan = null;
+            if(isset($row['jenis_aduan']) && ($row['jenis_aduan']  != null)) {
+                $cek = JenisAduan::where('nama', 'like', '%'.$row['jenis_aduan'].'%')->first();
+                if(!$cek) {
+                    $jenis_aduan = null;
+                } else {
+                    $jenis_aduan = $cek->uuid;
+                }
+                $input['jenis_aduan']    = $jenis_aduan;
+            }
+
                    $pendaftaran        = new Pendaftaran();
             $input['nik']              = $row['nik'] ?? null;
             $input['nama_lengkap']     = $row['nama'] ?? null;
+            $input['umur']             = $row['umur'] ?? null;
+            $input['no_hp']            = $row['no_hp'] ?? null;
             $input['tempat_lahir']     = $row['tempat_lahir'];
             $input['alamat']           = $row['alamat'] ?? null;
             $input['nomor_registrasi'] = Fungsi::generateNoRegis();

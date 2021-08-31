@@ -14,6 +14,12 @@ class Upt extends Model
         'alamat',
         'foto',
         'uuid',
+        'jenis_upt',
+        'wilayah',
+        'maps',
+        'lat',
+        'long',
+        'deskripsi',
     ];
 
     public function jenis()
