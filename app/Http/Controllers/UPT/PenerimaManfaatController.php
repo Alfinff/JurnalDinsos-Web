@@ -143,97 +143,6 @@ class PenerimaManfaatController extends Controller
             ->make(true);
     }
 
-    public function dataPenerimaExport(Request $request, $id=null)
-    {
-        $pendaftar = null;
-        $tindakan = null;
-        $wilayah = null;
-        if($id!=null) {
-            $pendaftar    = Pendaftaran::with('penanggungjawab', 'upt', 'jenisaduan', 'jeniskelamin', 'permasalahanya', 'pendampinya')->where('id', $id)->where('upt_id', auth()->user()->upt_id)->where('soft_delete', 0)->get();
-        //     $wilayah = KodeWilayah::where('kec_id', $pendaftar->kec_id)->first();
-        //     if($pendaftar->tindakan = 0) {
-        //         $tindakan = 'Tertunda';
-        //     } else if($pendaftar->tindakan = 1) {
-        //         $tindakan = 'Dihubungi';
-        //     } else if($pendaftar->tindakan = 2) {
-        //         $tindakan = 'Penerima Manfaat';
-        //     } else if($pendaftar->tindakan = 3) {
-        //         $tindakan = 'Selesai';
-        //     } else {
-        //         $tindakan = '-';
-        //     }
-
-        //     $data = array();
-        //     $data['nik'] = $pendaftar->nik ?? '';
-        //     $data['nama_lengkap'] = $pendaftar->nama_lengkap ?? '';
-        //     $data['tempat_lahir'] = $pendaftar->tempat_lahir ?? '';
-        //     $data['tanggal_lahir'] = $pendaftar->tanggal_lahir ?? '';
-        //     $data['umur'] = $pendaftar->umur ?? '';
-        //     $data['jenis_kelamin'] = $pendaftar->jeniskelamin->nama ?? '';
-        //     $data['nomor_telepon'] = $pendaftar->no_hp ?? '';
-        //     $data['provinsi'] = $wilayah->prov ?? '';
-        //     $data['kabupaten'] = $wilayah->kab ?? '';
-        //     $data['kecamatan'] = $wilayah->kec ?? '';
-        //     $data['alamat'] = $pendaftar->alamat ?? '';
-        //     $data['jenis_aduan'] = $pendaftar->jenisaduan->nama ?? '';
-        //     $data['upt'] = $pendaftar->upt->nama ?? '';
-        //     $data['status'] = $tindakan;
-        //     $data['nama_rekomendasi'] = $pendaftar->nama_rekomendasi ?? '';
-        //     $data['telp_rekomendasi'] = $pendaftar->telp_rekomendasi ?? '';
-        //     $data['dibuat_tanggal'] = $pendaftar->created_at ?? '';
-        //     $data['tanggal_masuk'] = $pendaftar->tanggal_masuk ?? '';
-        //     $data['tanggal_keluar'] = $pendaftar->tanggal_keluar ?? '';
-        //     $data['penanggung_jawab'] = $pendaftar->penanggungjawab->username ?? '';
-        //     $data['permasalahan'] = $pendaftar->permasalahanya->nama ?? '';
-        //     $data['pendamping'] = $pendaftar->pendampinya->username ?? '';
-        } else {
-            $pendaftar    = Pendaftaran::with('penanggungjawab', 'upt', 'jenisaduan', 'jeniskelamin', 'permasalahanya', 'pendampinya')->where('upt_id', auth()->user()->upt_id)->where('soft_delete', 0)->get();
-        }
-
-            $data = array();
-            foreach($pendaftar as $pp => $val) {
-                $wilayah = null;
-                $wilayah = KodeWilayah::where('kec_id', $val['kec_id'])->first();
-                $tindakan = null;
-                if($val['tindakan'] = 0) {
-                    $tindakan = 'Tertunda';
-                } else if($val['tindakan'] = 1) {
-                    $tindakan = 'Dihubungi';
-                } else if($val['tindakan'] = 2) {
-                    $tindakan = 'Penerima Manfaat';
-                } else if($val['tindakan'] = 3) {
-                    $tindakan = 'Selesai';
-                } else {
-                    $tindakan = '-';
-                }
-
-                $data[$pp]['nik'] = $val['nik'] ?? '';
-                $data[$pp]['nama_lengkap'] = $val['nama_lengkap'] ?? '';
-                $data[$pp]['tempat_lahir'] = $val['tempat_lahir'] ?? '';
-                $data[$pp]['tanggal_lahir'] = $val['tanggal_lahir'] ?? '';
-                $data[$pp]['umur'] = $val['umur'] ?? '';
-                $data[$pp]['jenis_kelamin'] = $val['jeniskelamin']->nama ?? '';
-                $data[$pp]['nomor_telepon'] = $val['no_hp'] ?? '';
-                $data[$pp]['provinsi'] = $wilayah->prov ?? '';
-                $data[$pp]['kabupaten'] = $wilayah->kab ?? '';
-                $data[$pp]['kecamatan'] = $wilayah->kec ?? '';
-                $data[$pp]['alamat'] = $val['alamat'] ?? '';
-                $data[$pp]['jenis_aduan'] = $val['jenisaduan']->nama ?? '';
-                $data[$pp]['upt'] = $val['upt']->nama ?? '';
-                $data[$pp]['status'] = $tindakan;
-                $data[$pp]['nama_rekomendasi'] = $val['nama_rekomendasi'] ?? '';
-                $data[$pp]['telp_rekomendasi'] = $val['telp_rekomendasi'] ?? '';
-                $data[$pp]['dibuat_tanggal'] = $val['created_at'] ?? '';
-                $data[$pp]['tanggal_masuk'] = $val['tanggal_masuk'] ?? '';
-                $data[$pp]['tanggal_keluar'] = $val['tanggal_keluar'] ?? '';
-                $data[$pp]['penanggung_jawab'] = $val['penanggungjawab']->username ?? '';
-                $data[$pp]['permasalahan'] = $val['permasalahanya']->nama ?? '';
-                $data[$pp]['pendamping'] = $val['pendampinya']->username ?? '';
-            }
-        // }
-        return response()->json($data);
-    }
-
     public function import(Request $request)
     {
         // $rows = Excel::toArray(new PendaftaranImport, $request->file('file'));
@@ -761,6 +670,45 @@ class PenerimaManfaatController extends Controller
                 ))->withInput();
             }
         }
+    }
+
+    public function dataBantuanDownload(Request $request, $id)
+    {
+        $pendaftar = null;
+        $pendaftar    = Pendaftaran::with(['jeniskelamin', 'upt', 'jenisaduan', 'jeniskelamin', 'permasalahanya'])->where('uuid', $id)->where('soft_delete', 0)->first();
+        if(!$pendaftar) {
+            return redirect()->route('upt-penerima-manfaat')->with(array(
+                'message'    => 'Data Pendaftar Tidak Ditemukan',
+                'alert-type' => 'error'
+            ));
+        }
+        $bantuan    = PendaftaranBantuan::where('pendaftar_id', $id)->where('soft_delete', 0)->get();
+        if(!count($bantuan)) {
+            return redirect()->route('upt-penerima-manfaat')->with(array(
+                'message'    => 'Data Bantuan Tidak Ditemukan',
+                'alert-type' => 'error'
+            ));
+        }
+
+        $data = array();
+        $no = 1;
+        foreach($bantuan as $pp => $val) {
+            $data[$pp]['no'] = $no;
+            if($val['tanggal_beri'] != null ) {
+                $data[$pp]['tanggal_beri'] = date('Y-m-d', strtotime($val['tanggal_beri']));
+            } else {
+                $data[$pp]['tanggal_beri'] = '';
+            }
+            $data[$pp]['bantuan'] = $val['bantuan'] ?? '';
+            if($val['bukti'] != null) {
+                $data[$pp]['bukti'] = Storage::disk('s3')->temporaryUrl($val['bukti'], Carbon::now()->addMinutes(3600));
+            } else {
+                $data[$pp]['bukti'] = '';
+            }
+            $no++;
+        }
+
+        return view('upt.penerimaManfaat.download.manfaat', compact('data', 'pendaftar'));
     }
 
 }

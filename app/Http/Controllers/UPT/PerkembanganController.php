@@ -12,6 +12,7 @@ use Yajra\Datatables\Datatables;
 use App\Helpers\Fungsi;
 use App\Helpers\UploadImage;
 use App\Helpers\UploadFile;
+use App\Models\Pendaftaran;
 use App\Models\PendaftaranPerkembangan;
 
 class PerkembanganController extends Controller
@@ -46,7 +47,7 @@ class PerkembanganController extends Controller
         $bulan_sekarang = Fungsi::bulan_indo(date('d-m-Y'));
 
         if($_SERVER['REQUEST_METHOD'] == 'GET') {
-            return view('upt.penerimaManfaat.perkembangan', compact('arrData', 'bulan_sekarang'));
+            return view('upt.penerimaManfaat.perkembangan', compact('uuid', 'arrData', 'bulan_sekarang'));
         } else if($_SERVER['REQUEST_METHOD'] == 'POST') {
             DB:: beginTransaction();
             try {
@@ -80,6 +81,40 @@ class PerkembanganController extends Controller
                 ))->withInput();
             }
         }
+    }
+    
+    public function dataPerkembanganDownload(Request $request, $id)
+    {
+        $pendaftar = null;
+        $pendaftar    = Pendaftaran::with(['jeniskelamin', 'upt', 'jenisaduan', 'jeniskelamin', 'permasalahanya'])->where('uuid', $id)->where('soft_delete', 0)->first();
+        if(!$pendaftar) {
+            return redirect()->route('upt-penerima-manfaat')->with(array(
+                'message'    => 'Data Pendaftar Tidak Ditemukan',
+                'alert-type' => 'error'
+            ));
+        }
+        $perkembangan    = PendaftaranPerkembangan::with(['pendaftar'])->where('pendaftar_id', $id)->where('soft_delete', 0)->get();
+        if(!count($perkembangan)) {
+            return redirect()->route('upt-penerima-manfaat')->with(array(
+                'message'    => 'Data Perkembangan Tidak Ditemukan',
+                'alert-type' => 'error'
+            ));
+        }
+
+        $data = array();
+        $no = 1;
+        foreach($perkembangan as $pp => $val) {
+            $data[$pp]['no'] = $no;
+            $data[$pp]['keterangan'] = $val['keterangan'] ?? '';
+            if($val['dokumentasi'] != null) {
+                $data[$pp]['dokumentasi'] = Storage::disk('s3')->temporaryUrl($val['dokumentasi'], Carbon::now()->addMinutes(3600));
+            } else {
+                $data[$pp]['dokumentasi'] = '';
+            }
+            $no++;
+        }
+
+        return view('upt.penerimaManfaat.download.perkembangan', compact('data', 'pendaftar'));
     }
 
 }

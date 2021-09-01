@@ -13,4 +13,9 @@ class PendaftaranPerkembangan extends Model
     protected $casts = [
         'id' => 'string'
     ];
+
+    public function pendaftar()
+    {
+        return $this->hasOne('App\Models\Pendaftaran', 'uuid','pendaftar_id');
+    }
 }

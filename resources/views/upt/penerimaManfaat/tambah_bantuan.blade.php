@@ -81,7 +81,7 @@
       <div class="col-md-12 my-3">
         <div class="card">
           <div class="card-card">
-            <button id="download" class="btn btn-warning" >Download Data Manfaat</button>
+            <a id="download" target="_blank" href="{{route('upt-download-data-manfaat', ['uuid' => $uuid])}}" class="btn btn-warning" >Download Data Manfaat</a>
             <hr>
             <table id="upt-tambah-bantuan" class="table table-bordered dt-responsive table" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                 <colgroup>
