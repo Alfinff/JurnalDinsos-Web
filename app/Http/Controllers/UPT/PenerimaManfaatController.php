@@ -37,11 +37,18 @@ class PenerimaManfaatController extends Controller
         $pendaftar = Fungsi::getPendaftarPenerimaManfaat(auth()->user()->upt_id);
         return Datatables:: of($pendaftar)
             ->addIndexColumn()
+            ->editColumn('no_reg', function ($data){
+                return $data->nomor_registrasi;
+            })
             ->addColumn('tindakanstatus', function ($data){
                 if($data->tindakan == 3) {
-                    return '<p class="badge badge-primary">Done</p>';
-                } elseif(($data->tindakan == 0) || ($data->tindakan == 1) || ($data->tindakan == 2)) {
-                    return '<p class="badge badge-info">On Process</p>';
+                    return '<p class="badge badge-primary">Selesai</p>';
+                } elseif($data->tindakan == 2) {
+                    return '<p class="badge badge-info">Ditangani</p>';
+                } elseif($data->tindakan == 1) {
+                    return '<p class="badge badge-info">Dihubungi</p>';
+                } elseif($data->tindakan == 0) {
+                    return '<p class="badge badge-info">Tertunda</p>';
                 } else {
                     return '-';
                 }
@@ -98,11 +105,18 @@ class PenerimaManfaatController extends Controller
     public function dataSelesai() {
         $pendaftar = Fungsi::getHistoryPendaftarPenerimaManfaat(auth()->user()->upt_id);
         return Datatables:: of($pendaftar)
+            ->editColumn('no_reg', function ($data){
+                return $data->nomor_registrasi;
+            })
             ->addColumn('tindakanstatus', function ($data){
                 if($data->tindakan == 3) {
-                    return '<p class="badge badge-primary">Done</p>';
-                } elseif(($data->tindakan == 0) || ($data->tindakan == 1) || ($data->tindakan == 2)) {
-                    return '<p class="badge badge-info">On Process</p>';
+                    return '<p class="badge badge-primary">Selesai</p>';
+                } elseif($data->tindakan == 2) {
+                    return '<p class="badge badge-info">Ditangani</p>';
+                } elseif($data->tindakan == 1) {
+                    return '<p class="badge badge-info">Dihubungi</p>';
+                } elseif($data->tindakan == 0) {
+                    return '<p class="badge badge-info">Tertunda</p>';
                 } else {
                     return '-';
                 }
@@ -117,6 +131,7 @@ class PenerimaManfaatController extends Controller
                 // <a href="'.route('upt-exportdatapenerima', ['id' => $dataPenerima->id]).'" class="btn btn-secondary"><i class = "fa fa-file-excel-o"></i></a>
                 $actionBtn = '<div class="aksi-button">
                     <div class="relative">
+                        <a href="'.route('upt-penerima-manfaat-selesai-undo', ['uuid' => $dataPenerima->uuid]).'" class="btn btn-secondary"><i class = "fa fa-undo"></i></a>
                         <button class="btn btn-warning" onclick="exportexcelpenerimamanfaatindividu('.$dataPenerima->id.');"><i class = "fa fa-file-excel-o"></i></button>
                         <a href="'.route('upt-penerima-manfaat-selesai-bantuan', ['uuid' => $dataPenerima->uuid]).'" class="btn btn-secondary"><i class = "fa fa-hand-holding-medical"></i></a>
                         <a   href = "'.route('upt-penerima-manfaat-detail', ['uuid' => $dataPenerima->uuid]).'" class = "mx-1 btn btn-primary"><i class = "fa fa-eye"></i>
@@ -421,11 +436,44 @@ class PenerimaManfaatController extends Controller
             UploadImage::setExt($request->file("kondisi_terakhir")->extension());
             $path_kondisi_terakhir = UploadImage::uploadImage();
             $inputkonsidi->photo = $path_kondisi_terakhir;
+            $inputkonsidi->keterangan = $request->keterangan;
             $inputkonsidi->save();
 
             DB:: commit();
             return redirect()->route('upt-penerima-manfaat')->with(array(
                 'message'    => 'Berhasil Menyelesaikan',
+                'alert-type' => 'success',
+            ));
+        } catch (\Throwable $th) {
+            // $th->getMessage()
+            DB:: rollback();
+            return redirect()->back()->with(array(
+                'message'    => $th->getMessage(),
+                'alert-type' => 'error'
+            ));
+        }
+    }
+
+    public function aksiSelesaiUndo(Request $request) {
+        $uuid = $request->uuid;
+        $pendaftar   = Pendaftaran::where('uuid', $uuid)->first();
+        if(!$pendaftar) {
+            return redirect()->route('upt-penerima-manfaat')->with(array(
+                'message'    => 'Data Pendaftar Tidak Ditemukan',
+                'alert-type' => 'error'
+            ));
+        }
+
+        DB:: beginTransaction();
+        try {
+            $pendaftar['tindakan'] = 2;
+            $pendaftar->update();
+
+            $hapuskonsidi = KondisiTerakhir::where('pendaftar_id', $uuid)->update(['soft_delete' => 1]);
+
+            DB:: commit();
+            return redirect()->route('upt-penerima-manfaat')->with(array(
+                'message'    => 'Berhasil Rollback Data Penerima Manfaat',
                 'alert-type' => 'success',
             ));
         } catch (\Throwable $th) {

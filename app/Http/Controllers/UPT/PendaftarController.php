@@ -33,6 +33,9 @@ class PendaftarController extends Controller
     public function dataTertunda() {
         $pendaftar = Fungsi::getPendaftarTertunda(auth()->user()->upt_id);
         return Datatables:: of($pendaftar)
+            ->editColumn('no_reg', function ($data){
+                return $data->nomor_registrasi;
+            })
             ->editColumn('jenis_aduan', function ($data){
                 foreach(JenisAduan::all() as $j) {
                     if($data->jenis_aduan == $j->uuid){
@@ -169,6 +172,9 @@ class PendaftarController extends Controller
     public function dataDihubungi() {
         $pendaftar = Fungsi::getPendaftarDihubungi(auth()->user()->upt_id);
         return Datatables:: of($pendaftar)
+            ->editColumn('no_reg', function ($data){
+                return $data->nomor_registrasi;
+            })
             ->editColumn('jenis_aduan', function ($data){
                 foreach(JenisAduan::all() as $j) {
                     if($data->jenis_aduan == $j->uuid){

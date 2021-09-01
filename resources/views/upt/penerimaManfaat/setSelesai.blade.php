@@ -27,6 +27,14 @@
 						</div>
 					</div>
 				</div>
+				<div class="col-md-12">
+					<div class="form-group row">
+						<label for="keterangan" class="col-sm-3 col-form-label">Keterangan</label>
+						<div class="col-sm-9">
+							<textarea name="keterangan" class="form-control" id="keterangan"></textarea>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

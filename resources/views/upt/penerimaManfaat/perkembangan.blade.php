@@ -99,6 +99,7 @@
                         <div class="head-judul text-center">
                             <h3>Riwayat Perkembangan</h3>
                         </div>
+                        <button id="download" class="btn btn-warning" >Download Data Perkembangan</button>
                         <hr>
                         <div class="accordion my-2" id="accordionTambah">
                           <h5>{{$bulan_sekarang}}</h5>

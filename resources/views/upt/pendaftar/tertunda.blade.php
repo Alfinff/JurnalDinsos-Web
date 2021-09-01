@@ -48,12 +48,13 @@
                  </colgroup> --}}
                 <thead>
                 <tr>
-                  <th style="width: 175px">Nama Lengkap</th>
-                  <th>Jenis Aduan</th>
-                  <th>NIK</th>
-                  <th style="width: 175px">Alamat</th>
-                  <th>Telepon</th>
-                  <th width="60px">Aksi</th>
+                    <th>No. Registrasi</th>
+                    <th style="width: 175px">Nama Lengkap</th>
+                    <th>Jenis Aduan</th>
+                    <th>NIK</th>
+                    <th style="width: 175px">Alamat</th>
+                    <th>Telepon</th>
+                    <th width="60px">Aksi</th>
                 </tr>
                 </thead>
               </table>
@@ -131,6 +132,7 @@ function closeModalEdit() {
                 processing: true,
                 ajax: '{{URL::to('/upt/pendaftar/tertunda/data')}}',
                 columns:[
+                    {data:'no_reg', name:'No. Registrasi', orderable:true, searchable:true},
                     {data:'nama_lengkap', name:'Nama Lengkap', orderable:true, searchable:true},
                     {data:'jenis_aduan', name:'Jenis Aduan', orderable:true, searchable:true},
                     {data:'nik', name:'NIK',orderable:true, searchable:true},

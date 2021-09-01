@@ -1,6 +1,6 @@
 @extends('layout.template')
 @section('content')
-<div   class = "col-md-10 bg-col">
+<div   class = "col-lg-10 bg-col">
 <div   class = "row">
 <div   class = "col-md-12 my-3">
 <div   class = "card">
@@ -24,6 +24,7 @@
                     </colgroup>
                     <thead>
                         <tr>
+                            <th>No. Registrasi</th>
                             <th>Nama Lengkap</th>
                             <th>Jenis Aduan</th>
                             <th>NIK</th>
@@ -236,6 +237,7 @@
                 processing: true,
                 ajax: '{{URL::to('/upt/pendaftar/dihubungi/data')}}',
                 columns:[
+                    {data:'no_reg', name:'No. Registrasi'},
                     {data:'nama_lengkap', name:'Nama Lengkap'},
                     {data:'jenis_aduan', name:'Jenis Aduan'},
                     {data:'nik', name:'NIK'},

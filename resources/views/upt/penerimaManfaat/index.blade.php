@@ -109,6 +109,7 @@
             <table id="upt-Penerima-Bantuan" class="table table-bordered dt-responsive table" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                 <thead style="background-color: #F5F5F5;padding: 1rem .5rem !important;">
                     <tr>
+                        <th>No. Registrasi</th>
                         <th>Nama</th>
                         <th>Tanggal Masuk</th>
                         <th>TTL</th>
@@ -132,14 +133,15 @@
               <hr>
             <table id="upt-History-Penerima-Bantuan" class="table table-bordered dt-responsive table" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
               <thead style="background-color: #F5F5F5;padding: 1rem .5rem !important;">
-                  <tr>
-                      <th>Nama</th>
-                      <th>Tanggal Masuk</th>
-                      <th>TTL</th>
-                      <th>Alamat</th>
-                      <th>Status</th>
-                      <th width="180px">Aksi</th>
-                  </tr>
+                    <tr>
+                        <th>No. Registrasi</th>
+                        <th>Nama</th>
+                        <th>Tanggal Masuk</th>
+                        <th>TTL</th>
+                        <th>Alamat</th>
+                        <th>Status</th>
+                        <th width="210px">Aksi</th>
+                    </tr>
               </thead>
             </table>
           </div>
@@ -189,6 +191,7 @@
                 searching: true,
                 ajax: '{{URL::to('/upt/penerima/data')}}',
                 columns:[
+                    {data:'no_reg', name:'No. Registrasi', orderable: true, searchable: true},
                     {data:'nama_lengkap', name:'Nama', orderable: true, searchable: true},
                     {data:'tanggal_masuk', name:'Tanggal Masuk', orderable: true, searchable: true},
                     {data:'ttl', name:'TTL', orderable: true, searchable: true},
@@ -210,6 +213,7 @@
                 // serverSide: true,
                 ajax: '{{URL::to('/upt/penerima/selesai/data')}}',
                 columns:[
+                    {data:'no_reg', name:'No. Registrasi'},
                     {data:'nama_lengkap', name:'Nama'},
                     {data:'tanggal_masuk', name:'Tanggal Masuk'},
                     {data:'ttl', name:'TTL'},

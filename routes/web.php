@@ -193,11 +193,13 @@ Route::namespace('App\Http\Controllers')->group(function() {
             Route::prefix('selesai')->group(function() {
                 Route::get('/data', 'UPT\PenerimaManfaatController@dataSelesai');
                 Route::get('/daftarbantuan/{uuid}', 'UPT\PenerimaManfaatController@daftarBantuan')->name('upt-penerima-manfaat-selesai-bantuan');
+                Route::get('/undo/{uuid}', 'UPT\PenerimaManfaatController@aksiSelesaiUndo')->name('upt-penerima-manfaat-selesai-undo');
                 Route::post('/aksi', 'UPT\PenerimaManfaatController@aksiSelesai')->name('upt-penerima-manfaat-selesai');
             });
 
             Route::prefix('perkembangan')->group(function() {
                 Route::match(['GET', 'POST'], '/semua/{uuid}', 'UPT\PerkembanganController@index')->name('upt-penerima-perkembangan');
+                // Route::get('/dataExport/{id?}', 'UPT\PenerimaManfaatController@dataPenerimaExport')->name('upt-exportdataperkembangan');
                 // Route::match(['GET', 'POST'], '/edit/{uuid}', 'UPT\PenerimaManfaatController@editBantuan')->name('upt-penerima-edit-perkembangan');
                 // Route::get('/hapus/{uuid}', 'UPT\PenerimaManfaatController@hapusBantuan')->name('upt-penerima-hapus-perkembangan');
             });
