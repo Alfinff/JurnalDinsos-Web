@@ -182,8 +182,17 @@ class PendaftarController extends Controller
                     }
                 }
             })
+            ->editColumn('namapj', function ($data){
+                if(isset($data->penanggungjawab->username)) {
+                    return ucwords($data->penanggungjawab->username);
+                } else {
+                    return '';
+                }
+            })
             ->addColumn('action', function($dataTertunda){
-                $actionBtn = '<a class="btn btn-primary" href="'.route('upt-pendaftar-tertunda-tangani', ['uuid' => $dataTertunda->uuid]).'">Tangani</a>';
+                $actionBtn = '<a class="btn btn-primary" href="'.route('upt-pendaftar-tertunda-tangani', ['uuid' => $dataTertunda->uuid]).'">Tangani</a>
+                <a  onclick="return confirm(`Anda Yakin Menghapus Data Ini?`)" href = "'.route('upt-pendaftar-tertunda-delete', ['uuid' => $dataTertunda->uuid]).'" class                                           = "mx-1 btn btn-danger"><img src  = "'.asset('assets/images/delete_outline.svg').'" alt = ""></a>
+                ';
                 return $actionBtn;
             })
             ->rawColumns(['action'])
@@ -268,6 +277,34 @@ class PendaftarController extends Controller
                     'alert-type' => 'error'
                 ))->withInput();
             }
+        }
+    }
+
+    public function hapus(Request $request, $uuid) {
+        $pendaftar   = Pendaftaran::where('uuid', $uuid)->first();
+        if(!$pendaftar) {
+            return redirect()->route('upt-pendaftar-dihubungi')->with(array(
+                'message'    => 'Data Pendaftar Tidak Ditemukan',
+                'alert-type' => 'error'
+            ));
+        }
+
+        DB:: beginTransaction();
+        try {
+            $pendaftar['soft_delete'] = 1;
+            $pendaftar->update();
+
+            DB:: commit();
+            return redirect()->route('upt-pendaftar-dihubungi')->with(array(
+                'message'    => 'Sukses Menghapus Data',
+                'alert-type' => 'success',
+            ));
+        } catch (\Throwable $th) {
+            DB:: rollback();
+            return redirect()->back()->with(array(
+                'message'    => 'Terdapat Kesalahan',
+                'alert-type' => 'error'
+            ));
         }
     }
 

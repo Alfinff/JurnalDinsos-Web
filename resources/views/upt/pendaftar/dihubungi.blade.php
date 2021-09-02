@@ -243,7 +243,7 @@
                     {data:'nik', name:'NIK'},
                     {data:'alamat', name:'Alamat'},
                     {data:'telp_rekomendasi', name:'Telepon'},
-                    {data:'penanggungjawab.username', name:'Penanggung Jawab'},
+                    {data:'namapj', name:'Penanggung Jawab'},
                     {data:'action', name:'Aksi'},
                 ],
                 "columnDefs":[{

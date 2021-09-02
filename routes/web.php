@@ -175,6 +175,7 @@ Route::namespace('App\Http\Controllers')->group(function() {
             Route::prefix('dihubungi')->group(function() {
                 Route::get('/', 'UPT\PendaftarController@dihubungi')->name('upt-pendaftar-dihubungi');
                 Route::get('/data', 'UPT\PendaftarController@dataDihubungi');
+                Route::get('/hapus/{uuid}', 'UPT\PendaftarController@hapus')->name('upt-pendaftar-tertunda-delete');
                 Route::match(['GET', 'POST'], '/tangani/{uuid}', 'UPT\PendaftarController@tanganiPendaftar')->name('upt-pendaftar-tertunda-tangani');
             });
         });

@@ -133,12 +133,18 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="d-flex flex-row-reverse justify-content-between">
+                                                @if($pendaftar->foto_kondisi != null)
                                                 <a href="{{Storage::disk('s3')->temporaryUrl($pendaftar->foto_kondisi, \Carbon\Carbon::now()->addMinutes(3600))}}" data-fancybox="images" data-caption="">
                                                     Lihat
                                                 </a>
+                                                @endif
                                                 <label for="fotokondisi">Foto Kondisi <small class="text-danger">*</small></label>
                                             </div>
+                                            @if($pendaftar->foto_kondisi != null)
                                             <input type="file" id="fotokondisi" name="foto_kondisi" data-show-remove="false" class="dropify" data-default-file="{{Storage::disk('s3')->temporaryUrl($pendaftar->foto_kondisi, \Carbon\Carbon::now()->addMinutes(3600))}}" />
+                                            @else
+                                            <input type="file" id="fotokondisi" name="foto_kondisi" data-show-remove="false" class="dropify" data-default-file="" />
+                                            @endif
                                             <div class="warn">
                                                 <small class="text-danger">Jenis File yang diterima : .png .jpg Max file 5mb</small>
                                             </div>
@@ -146,11 +152,17 @@
                                         <div class="col-md-12">
                                             <div class="form-group file-area">
                                                 <div class="d-flex flex-row-reverse justify-content-between">
+                                                    @if($pendaftar->foto_kondisi != null)
                                                     <a href="{{Storage::disk('s3')->temporaryUrl($pendaftar->foto_kondisi, \Carbon\Carbon::now()->addMinutes(3600))}}" target="_blank">Lihat</a>
+                                                    @endif
                                                     <label for="suratpengantar">Surat Pengantar <small class="text-danger">*</small></label>
                                                 </div>
                                                 <div style="position: relative">
+                                                    @if($pendaftar->foto_kondisi != null)
                                                     <input type="file" name="surat_pengantar" value="{{route('images-getter', ['module' => 'pendaftaran', 'filename' => $pendaftar->surat_pengantar])}}" accept="application/pdf" id="images2" multiple="multiple"/>
+                                                    @else
+                                                    <input type="file" name="surat_pengantar" value="" accept="application/pdf" id="images2" multiple="multiple"/>
+                                                    @endif
                                                     <div class="file-dummy">
                                                         <div class="success">Great, your files are selected. Keep on.</div>
                                                         <div class="default">

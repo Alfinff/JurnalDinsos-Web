@@ -13,7 +13,8 @@
     <title>Jurnal Dinsos</title>
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
     <style type="text/css">
-      .table thead th{ background-color:#007bff!important; color:#FFFFFF;}
+      .table thead th{ background-color:#007bff; color:#FFFFFF; border: 1px solid black;}
+      .table tbody td{ border: 1px solid black;}
     </style>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
@@ -99,7 +100,7 @@
         </thead>
     </table>
     </center>
-    <table class="table table-stripped" style="width: 100%">
+    <table class="table table-stripped table-bordered" style="width: 100%">
         <thead>
             <tr>
                 <th>No</th>
