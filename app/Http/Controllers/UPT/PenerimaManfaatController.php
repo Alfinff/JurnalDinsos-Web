@@ -582,7 +582,7 @@ class PenerimaManfaatController extends Controller
         $provinsi    = KodeWilayah::select(['prov_id', 'prov'])->distinct()->get();
         $jenis_aduan = JenisAduan::orderBy('nama', 'asc')->get();
         $jenis_kelamin = JenisKelamin::orderBy('nama', 'asc')->get();
-        $permasalahan = Permasalahan::orderBy('nama', 'asc')->get();
+        $permasalahan = Permasalahan::where('upt_id', auth()->user()->upt_id)->orderBy('nama', 'asc')->get();
         $upt         = Upt::get();
 
         if($_SERVER['REQUEST_METHOD'] == 'GET') {
