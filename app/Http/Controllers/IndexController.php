@@ -11,6 +11,9 @@ use App\Models\Pimpinan;
 use App\Models\Pendaftaran;
 use App\Models\VisiMisi;
 use App\Models\Video;
+use App\Models\Kegiatan;
+use App\Models\KegiatanTipe;
+use App\Helpers\Fungsi;
 use Auth;
 use DB;
 
@@ -53,11 +56,27 @@ class IndexController extends Controller
             }
             $count = Pendaftaran::where('upt_id', $uuid)->where('soft_delete', 0)->get()->count();
 
-            return view('detailProfilUpt', compact('detail', 'arrData', 'child3', 'pimpinan','count'));
+            $kegiatanUpt = array();
+            $kegiatanUpt = Fungsi::getKegiatan($uuid);
+
+            return view('detailProfilUpt', compact('detail', 'arrData', 'child3', 'pimpinan','count','kegiatanUpt'));
         } else {
             $upt = Upt::with(['namawilayah'])->get();
             return view('uptLanding', compact('upt'));
         }
+    }
+
+    public function uptDetailKegiatan(Request $request, $uuid, $idkegiatan) {
+        $semuakegiatan   = Kegiatan::with('tipe')->where('upt_id', $uuid)->where('soft_delete', 0)->orderBy('created_at', 'desc')->limit(5)->get();
+        $detail   = Kegiatan::with('tipe')->where('id', $idkegiatan)->first();
+        $kegiatanTipe   = KegiatanTipe::all();
+        if(!$detail) {
+            return redirect()->route('upt-kegiatan')->with(array(
+                'message'    => 'Data Kegiatan Tidak Ditemukan',
+                'alert-type' => 'error'
+            ));
+        }
+        return view('detailKegiatan', compact('semuakegiatan', 'detail', 'kegiatanTipe'));
     }
 
     public function tentang() {

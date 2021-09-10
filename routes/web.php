@@ -23,7 +23,10 @@ Route::namespace('App\Http\Controllers')->group(function() {
 
     // landing page routes
     Route::prefix('halaman')->group(function() {
-        Route::get('/upt/{uuid?}', 'IndexController@upt')->name('halaman-upt');
+        Route::prefix('upt')->group(function() {
+            Route::get('/{uuid?}', 'IndexController@upt')->name('halaman-upt');
+            Route::get('/{uuid}/kegiatan/{kegiatan_uuid}', 'IndexController@uptDetailKegiatan')->name('halaman-upt-detail-kegiatan');
+        });
         Route::get('/berita', 'IndexController@berita')->name('halaman-berita');
         Route::get('/berita/{id}', 'IndexController@detailberita')->name('detailberita');
         Route::get('/tentang', 'IndexController@tentang')->name('tentang');

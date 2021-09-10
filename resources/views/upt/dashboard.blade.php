@@ -1,6 +1,5 @@
 @extends('layout.template')
 @section('content')
-{{-- {{dd($lakiperempuan)}} --}}
 <div class="col-lg-10" style="background-color: #fbfbfb;">
   <div class="mx-2">
     <div class="row my-3">
@@ -88,16 +87,18 @@
             <hr>
             <div id="chartpiejeniskelamin"></div>
             <div class="d-flex justify-content-around" style="margin-top: 25px;">
-              <div class="jenis-legend">
-                <img style="widht: 32px; height: 32px;" src="{{asset('assets/images/man.png')}}" alt="">
-                <p>Laki-Laki</p>
-                <h3 id="red">{{$lakiperempuan[1]->jumlah}} orang</h3>
-              </div>
-              <div class="jenis-legend">
-                <img style="widht: 32px; height: 32px;" src="{{asset('assets/images/woman.png')}}" alt="">
-                <p>Perempuan</p>
-                <h3 id="blue">{{$lakiperempuan[0]->jumlah}} orang</h3>
-              </div>
+              @foreach ($lakiperempuan as $item)
+                  <div class="jenis-legend">
+                    @if($item->nama == 'Laki-laki')
+                      <img style="width: 32px; height: 32px;" src="{{asset('assets/images/man.png')}}" alt="">
+                      <p>Laki-Laki</p>
+                    @elseif($item->nama == 'Perempuan')
+                      <img style="width: 32px; height: 32px;" src="{{asset('assets/images/woman.png')}}" alt="">
+                      <p>Perempuan</p>
+                    @endif
+                    <h3 id="red">{{$item->jumlah}} orang</h3>
+                  </div>    
+              @endforeach
             </div>
           </div>
         </div>
@@ -250,8 +251,9 @@
         colors: ['transparent']
     },
     series: [
-        {{$lakiperempuan[1]->jumlah}},
-        {{$lakiperempuan[0]->jumlah}}
+        @foreach($lakiperempuan as $dd)
+            {{ $dd->jumlah ?? 0}},
+        @endforeach
     ],
     legend: {
         show: false,
@@ -263,7 +265,11 @@
         offsetX: 0,
         offsetY: 6
     },
-    labels: ["Laki-laki", "Perempuan"],
+    labels: [
+      @foreach($lakiperempuan as $dd)
+          "{{ $dd->nama ?? '-'}}",
+      @endforeach
+    ],
     colors: ["#F9544E", "#2E87FC"],
     responsive: [{
         breakpoint: 600,

@@ -19,7 +19,13 @@ class DashboardController extends Controller
         $countklien = Pendaftaran::where('upt_id', $upt_id)->where('soft_delete', 0)->count();
         $countupt = Upt::where('soft_delete', 0)->count();
 
-        $lakiperempuan = DB::select("SELECT k.nama, COUNT(p.jenis_kelamin) as jumlah FROM ms_pendaftaran p JOIN ms_jenis_kelamin k ON k.uuid = p.jenis_kelamin WHERE p.soft_delete = 0 AND upt_id = '$upt_id' GROUP BY p.jenis_kelamin");
+        $lakiperempuan = [];
+        foreach(JenisKelamin::all() as $item) {
+            $data = [];
+            $data = DB::select("SELECT k.nama, COUNT(p.jenis_kelamin) as jumlah FROM ms_pendaftaran p JOIN ms_jenis_kelamin k ON k.uuid = p.jenis_kelamin WHERE p.soft_delete = 0 AND upt_id = '$upt_id' AND k.uuid = '$item->uuid'");
+
+            array_push($lakiperempuan, $data[0]);
+        }
 
         $bulanygterisi = DB::select("SELECT MONTH(tanggal_masuk) as bulan FROM ms_pendaftaran WHERE soft_delete = 0 AND upt_id = '$upt_id' AND YEAR(tanggal_masuk) = '$tahunini' AND tindakan IN (0,1,2,3) GROUP BY MONTH(tanggal_masuk) ORDER BY MONTH(tanggal_masuk) ASC");
 
